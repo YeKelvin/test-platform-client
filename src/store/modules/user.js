@@ -25,11 +25,10 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        console.log(response)
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+      login({ username: username.trim(), password: password }).then(res => {
+        const result = res['result']
+        commit('SET_TOKEN', result.accessToken)
+        setToken(result.accessToken)
         resolve()
       }).catch(error => {
         reject(error)
@@ -40,18 +39,14 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
+      getInfo().then(res => {
+        if (!res) {
+          reject('身份认证失败或过期，请重新登录')
         }
 
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
+        commit('SET_NAME', res['result']['nickName'])
+        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+        resolve(res)
       }).catch(error => {
         reject(error)
       })
