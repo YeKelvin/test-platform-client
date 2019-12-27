@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import * as User from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -25,7 +25,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(res => {
+      User.login({ username: username.trim(), password: password }).then(res => {
         const result = res['result']
         commit('SET_TOKEN', result.accessToken)
         setToken(result.accessToken)
@@ -39,7 +39,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo().then(res => {
+      User.getInfo().then(res => {
         if (!res) {
           reject('身份认证失败或过期，请重新登录')
         }
@@ -56,7 +56,7 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      User.logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         removeToken()
         resetRouter()
