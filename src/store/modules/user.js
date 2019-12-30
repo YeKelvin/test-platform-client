@@ -5,18 +5,26 @@ import { resetRouter } from '@/router'
 const state = {
   token: getToken(),
   name: '',
-  avatar: ''
+  avatar: '',
+  introduction: '',
+  roles: []
 }
 
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
+  SET_INTRODUCTION: (state, introduction) => {
+    state.introduction = introduction
+  },
   SET_NAME: (state, name) => {
     state.name = name
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   }
 }
 
@@ -44,8 +52,10 @@ const actions = {
           reject('身份认证失败或过期，请重新登录')
         }
 
+        commit('SET_ROLES', res['result']['roles'])
         commit('SET_NAME', res['result']['nickName'])
         commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+        commit('SET_INTRODUCTION', res['result']['introduction'])
         resolve(res)
       }).catch(error => {
         reject(error)
@@ -58,6 +68,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       User.logout(state.token).then(() => {
         commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
         removeToken()
         resetRouter()
         resolve()
@@ -71,6 +82,7 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
       removeToken()
       resolve()
     })
