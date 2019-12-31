@@ -14,9 +14,6 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_INTRODUCTION: (state, introduction) => {
-    state.introduction = introduction
-  },
   SET_NAME: (state, name) => {
     state.name = name
   },
@@ -33,8 +30,8 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      User.login({ username: username.trim(), password: password }).then(res => {
-        const result = res['result']
+      User.login({ username: username.trim(), password: password }).then(response => {
+        const { result } = response
         commit('SET_TOKEN', result.accessToken)
         setToken(result.accessToken)
         resolve()
@@ -47,16 +44,16 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      User.getInfo().then(res => {
-        if (!res) {
+      User.getInfo().then(response => {
+        if (!response) {
           reject('身份认证失败或过期，请重新登录')
         }
 
-        commit('SET_ROLES', res['result']['roles'])
-        commit('SET_NAME', res['result']['nickName'])
+        const { result } = response
+        commit('SET_NAME', result.nickName)
         commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
-        commit('SET_INTRODUCTION', res['result']['introduction'])
-        resolve(res)
+        commit('SET_ROLES', result.roles)
+        resolve(result)
       }).catch(error => {
         reject(error)
       })
