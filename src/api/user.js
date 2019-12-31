@@ -8,6 +8,13 @@ export function login(data) {
   })
 }
 
+export function logout() {
+  return request({
+    url: '/user/logout',
+    method: 'post'
+  })
+}
+
 export function getInfo() {
   return request({
     url: '/user/info',
@@ -15,9 +22,10 @@ export function getInfo() {
   })
 }
 
-export function logout() {
+export function getInfoList(query) {
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: '/user/info/list',
+    method: 'get',
+    params: query
   })
 }
