@@ -4,27 +4,27 @@
       <div>查询条件</div>
       <el-divider />
       <div class="condition-items">
-        <el-input v-model="queryConditions.userNo" placeholder="userNo">
+        <el-input v-model="queryConditions.userNo" placeholder="userNo" class="condition-item">
           <template slot="prepend">用户编号:</template>
         </el-input>
 
-        <el-input v-model="queryConditions.userName" placeholder="userName">
+        <el-input v-model="queryConditions.userName" placeholder="userName" class="condition-item">
           <template slot="prepend">用户名称:</template>
         </el-input>
 
-        <el-input v-model="queryConditions.nickName" placeholder="nickName">
+        <el-input v-model="queryConditions.nickName" placeholder="nickName" class="condition-item">
           <template slot="prepend">用户昵称:</template>
         </el-input>
 
-        <el-input v-model="queryConditions.mobileNo" placeholder="mobileNo">
+        <el-input v-model="queryConditions.mobileNo" placeholder="mobileNo" class="condition-item">
           <template slot="prepend">手机号:</template>
         </el-input>
 
-        <el-input v-model="queryConditions.email" placeholder="email">
+        <el-input v-model="queryConditions.email" placeholder="email" class="condition-item">
           <template slot="prepend">邮箱地址:</template>
         </el-input>
 
-        <el-input v-model="queryConditions.state" placeholder="state">
+        <el-input v-model="queryConditions.state" placeholder="state" class="condition-item">
           <template slot="prepend">用户状态:</template>
         </el-input>
       </div>
@@ -118,19 +118,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@/styles/flex.scss";
-  .query-conditions{
-    @include flexbox;
-    @include flex-dir(column);
+  .query-conditions {
+    display: flex;
+    flex-direction: column;
   }
 
-  .condition-items{
-    @include flexbox;
-    @include flex-dir(row);
+  .condition-items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    flex: none;
   }
 
-  .query-buttons{
-    @include flexbox;
-    @include flex-dir(row);
+  .condition-item{
+    width: 20rem;
+  }
+
+  .query-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
 </style>
