@@ -1,0 +1,160 @@
+//----------------------------------------------------------------------
+//
+// Flexbox Containers
+//
+@mixin flexbox {
+  display: flex;
+}
+
+%flexbox {
+  @include flexbox;
+}
+
+//----------------------------------------------------------------------
+//
+// Inline Flexbox Containers
+//
+@mixin inline-flex {
+  display: inline-flex;
+}
+
+%inline-flex {
+  @include inline-flex;
+}
+
+//----------------------------------------------------------------------
+//
+// Flexbox Direction
+// Values: row | row-reverse | column | column-reverse
+// Default: row
+//
+@mixin flex-direction($value: row) {
+  flex-direction: $value;
+}
+
+// Shorter version:
+@mixin flex-dir($args...) {
+  @include flex-direction($args...);
+}
+
+//----------------------------------------------------------------------
+// Flexbox Wrap
+//
+// Values: nowrap | wrap | wrap-reverse
+// Default: nowrap
+//
+@mixin flex-wrap($value: nowrap) {
+  flex-wrap: $value;
+}
+
+//----------------------------------------------------------------------
+// Flexbox Flow (shorthand)
+//
+// Values: <flex-direction> | <flex-wrap>
+// Default: row nowrap
+//
+@mixin flex-flow($values: (row nowrap)) {
+  flex-flow: $values;
+}
+
+//----------------------------------------------------------------------
+// Flexbox Order
+//
+// Default: 0
+//
+@mixin order($int: 0) {
+  order: $int;
+}
+
+//----------------------------------------------------------------------
+// Flexbox Grow
+//
+// Default: 0
+//
+@mixin flex-grow($int: 0) {
+  flex-grow: $int;
+}
+
+//----------------------------------------------------------------------
+// Flexbox Shrink
+//
+// Default: 1
+//
+@mixin flex-shrink($int: 1) {
+  flex-shrink: $int;
+}
+
+//----------------------------------------------------------------------
+// Flexbox Basis
+//
+// Values: Like "width"
+// Default: auto
+//
+@mixin flex-basis($value: auto) {
+  flex-basis: $value;
+}
+
+//----------------------------------------------------------------------
+// Flexbox "Flex" (shorthand)
+//
+// Values: none | <flex-grow> <flex-shrink> || <flex-basis>
+// Default: See individual properties (1 1 0).
+//
+@mixin flex($fg: 1, $fs: null, $fb: null) {
+
+  // Set a variable to be used by box-flex properties
+  $fg-boxflex: $fg;
+
+  // Box-Flex only supports a flex-grow value so let's grab the
+  // first item in the list and just return that.
+  @if type-of($fg) == 'list' {
+    $fg-boxflex: nth($fg, 1);
+  }
+
+  flex: $fg $fs $fb;
+}
+
+//----------------------------------------------------------------------
+// Flexbox Justify Content
+//
+// Values: flex-start | flex-end | center | space-between | space-around
+// Default: flex-start
+//
+@mixin justify-content($value: flex-start) {
+  justify-content: $value;
+}
+
+// Shorter version:
+@mixin flex-just($args...) {
+  @include justify-content($args...);
+}
+
+//----------------------------------------------------------------------
+// Flexbox Align Items
+//
+// Values: flex-start | flex-end | center | baseline | stretch
+// Default: stretch
+//
+@mixin align-items($value: stretch) {
+  align-items: $value;
+}
+
+//----------------------------------
+// Flexbox Align Self
+//
+// Values: auto | flex-start | flex-end | center | baseline | stretch
+// Default: auto
+//
+@mixin align-self($value: auto) {
+  align-self: $value;
+}
+
+//----------------------------------------------------------------------
+// Flexbox Align Content
+//
+// Values: flex-start | flex-end | center | space-between | space-around | stretch
+// Default: stretch
+//
+@mixin align-content($value: stretch) {
+  align-content: $value;
+}

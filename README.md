@@ -37,14 +37,14 @@ File-Settings-Languages & Frameworks-JavaScript-Webpack选项中配置 webpack.c
 │   ├── styles                 // 全局样式
 │   ├── utils                  // 全局公用方法
 │   ├── vendor                 // 公用vendor
-│   ├── views                   // view
+│   ├── views                  // view
 │   ├── App.vue                // 入口页面
 │   ├── main.js                // 入口 加载组件 初始化等
 │   └── permission.js          // 权限管理
 ├── static                     // 第三方不打包资源
 │   └── Tinymce                // 富文本
 ├── .babelrc                   // babel-loader 配置
-├── .eslintrc.js                // eslint 配置项
+├── .eslintrc.js               // eslint 配置项
 ├── .gitignore                 // git 忽略项
 └── package.json               // package.json
 

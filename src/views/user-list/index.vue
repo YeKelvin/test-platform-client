@@ -1,33 +1,42 @@
 <template>
   <div class="app-container">
-    <span>
-      用户编号:
-      <el-input v-model="queryConditions.userNo" placeholder="userNo" />
-    </span>
-    <div>
-      用户名称:
-      <el-input v-model="queryConditions.userName" placeholder="userName" />
+    <div class="query-conditions">
+      <div>查询条件</div>
+      <el-divider />
+      <div class="condition-items">
+        <el-input v-model="queryConditions.userNo" placeholder="userNo">
+          <template slot="prepend">用户编号:</template>
+        </el-input>
+
+        <el-input v-model="queryConditions.userName" placeholder="userName">
+          <template slot="prepend">用户名称:</template>
+        </el-input>
+
+        <el-input v-model="queryConditions.nickName" placeholder="nickName">
+          <template slot="prepend">用户昵称:</template>
+        </el-input>
+
+        <el-input v-model="queryConditions.mobileNo" placeholder="mobileNo">
+          <template slot="prepend">手机号:</template>
+        </el-input>
+
+        <el-input v-model="queryConditions.email" placeholder="email">
+          <template slot="prepend">邮箱地址:</template>
+        </el-input>
+
+        <el-input v-model="queryConditions.state" placeholder="state">
+          <template slot="prepend">用户状态:</template>
+        </el-input>
+      </div>
+      <div class="query-buttons">
+        <el-button type="primary" @click="query">查询</el-button>
+        <el-button type="primary" @click="reset">重置</el-button>
+      </div>
     </div>
-    <div>
-      用户昵称:
-      <el-input v-model="queryConditions.nickName" placeholder="nickName" />
-    </div>
-    <div>
-      手机号:
-      <el-input v-model="queryConditions.mobileNo" placeholder="mobileNo" />
-    </div>
-    <div>
-      邮箱地址:
-      <el-input v-model="queryConditions.email" placeholder="email" />
-    </div>
-    <div>
-      用户状态:
-      <el-input v-model="queryConditions.state" placeholder="state" />
-    </div>
-    <div>
-      <el-button type="primary" @click="query">查询</el-button>
-      <el-button type="primary" @click="reset">重置</el-button>
-    </div>
+
+    <div>查询结果</div>
+    <el-divider />
+
     <el-table
       :data="tableData"
       style="width: 100%"
@@ -108,6 +117,20 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  @import "~@/styles/flex.scss";
+  .query-conditions{
+    @include flexbox;
+    @include flex-dir(column);
+  }
 
+  .condition-items{
+    @include flexbox;
+    @include flex-dir(row);
+  }
+
+  .query-buttons{
+    @include flexbox;
+    @include flex-dir(row);
+  }
 </style>

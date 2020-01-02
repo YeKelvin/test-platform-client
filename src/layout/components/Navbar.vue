@@ -24,7 +24,7 @@
           <a target="_blank" href="https://element.eleme.cn/#/zh-CN/component/installation">
             <el-dropdown-item>element-ui Docs</el-dropdown-item>
           </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
+          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/zh/">
             <el-dropdown-item>vue-element-admin Docs</el-dropdown-item>
           </a>
           <el-dropdown-item divided>
