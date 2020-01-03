@@ -1,6 +1,7 @@
 import * as User from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import userAvatar from '@/assets/user_avatar.gif'
 
 const state = {
   token: getToken(),
@@ -51,7 +52,7 @@ const actions = {
 
         const { result } = response
         commit('SET_NAME', result.nickName)
-        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+        commit('SET_AVATAR', userAvatar)
         commit('SET_ROLES', result.roles)
         resolve(result)
       }).catch(error => {

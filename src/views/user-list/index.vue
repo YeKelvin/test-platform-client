@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="user-list-container">
     <div class="query-conditions">
       <div>查询条件</div>
       <el-divider />
@@ -7,23 +7,18 @@
         <el-input v-model="queryConditions.userNo" placeholder="userNo" class="condition-item">
           <template slot="prepend">用户编号:</template>
         </el-input>
-
         <el-input v-model="queryConditions.userName" placeholder="userName" class="condition-item">
           <template slot="prepend">用户名称:</template>
         </el-input>
-
         <el-input v-model="queryConditions.nickName" placeholder="nickName" class="condition-item">
           <template slot="prepend">用户昵称:</template>
         </el-input>
-
         <el-input v-model="queryConditions.mobileNo" placeholder="mobileNo" class="condition-item">
           <template slot="prepend">手机号:</template>
         </el-input>
-
         <el-input v-model="queryConditions.email" placeholder="email" class="condition-item">
           <template slot="prepend">邮箱地址:</template>
         </el-input>
-
         <el-input v-model="queryConditions.state" placeholder="state" class="condition-item">
           <template slot="prepend">用户状态:</template>
         </el-input>
@@ -33,25 +28,33 @@
         <el-button type="primary" @click="reset">重置</el-button>
       </div>
     </div>
+    <div class="table-container">
+      <div>查询结果</div>
+      <el-divider />
 
-    <div>查询结果</div>
-    <el-divider />
-
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      height="400"
-      border
-    >
-      <el-table-column prop="userNo" label="编号" width="150" />
-      <el-table-column prop="userName" label="名称" width="120" />
-      <el-table-column prop="nickName" label="昵称" width="120" />
-      <el-table-column prop="mobileNo" label="手机号" width="120" />
-      <el-table-column prop="email" label="邮箱" width="300" />
-      <el-table-column prop="state" label="状态" width="120" />
-      <el-table-column fixed="right" label="操作" width="120" />
-    </el-table>
-    <div class="block">
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        height="400"
+        :border="true"
+        :stripe="true"
+        :fit="true"
+        :highlight-current-row="true"
+      >
+        <el-table-column prop="userNo" label="编号" min-width="150" />
+        <el-table-column prop="userName" label="名称" min-width="150" />
+        <el-table-column prop="nickName" label="昵称" min-width="150" />
+        <el-table-column prop="mobileNo" label="手机号" min-width="150" />
+        <el-table-column prop="email" label="邮箱" min-width="150" />
+        <el-table-column prop="state" label="状态" min-width="150" />
+        <el-table-column fixed="right" label="操作">
+          <template>
+            <el-button type="text" size="small">禁用</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="pagination">
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
         :current-page="currentPage"
@@ -108,19 +111,36 @@ export default {
       this.queryConditions.state = ''
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`)
+      this.pageSize = val
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
+      this.currentPage = val
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  .user-list-container {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 20px;
+
+    .el-divider--horizontal{
+      margin: 12px 0
+    }
+  }
+
   .query-conditions {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
   }
 
   .condition-items {
@@ -133,11 +153,24 @@ export default {
 
   .condition-item{
     width: 20rem;
+    padding-right: 24px;
+    padding-bottom: 12px;
   }
 
   .query-buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
+  }
+
+  .table-container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .pagination {
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 </style>

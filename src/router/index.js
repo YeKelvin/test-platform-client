@@ -30,63 +30,63 @@ import Layout from '@/layout'
  */
 export const constantRoutes = [
   {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+
+  {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
 
   {
+    path: '/401',
+    component: () => import('@/views/error-page/401'),
+    hidden: true
+  },
+
+  {
     path: '/404',
-    component: () => import('@/views/404'),
+    component: () => import('@/views/error-page/404'),
     hidden: true
   },
 
   {
     path: '/',
+    name: 'Index',
     component: Layout,
     redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
-  },
-
-  {
-    path: '/system',
-    component: Layout,
-    redirect: '/system/user-list',
-    name: '系统管理',
-    meta: { title: 'system', icon: 'example' },
     children: [
       {
-        path: 'user-list',
-        name: '用户列表',
-        component: () => import('@/views/user-list/index'),
-        meta: { title: '用户列表', icon: 'example' }
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '首页', icon: 'dashboard' }
       }
     ]
   },
 
   {
-    path: '/example',
+    path: '/system',
+    name: 'System',
+    alwaysShow: true,
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    redirect: 'noRedirect',
+    meta: { title: '系统管理', icon: 'example' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'user-list',
+        name: 'UserList',
+        component: () => import('@/views/user-list/index'),
+        meta: { title: '用户列表', icon: 'example' }
       }
     ]
   },

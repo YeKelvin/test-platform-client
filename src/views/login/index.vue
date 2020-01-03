@@ -7,9 +7,7 @@
       </div>
 
       <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
+        <span class="svg-container"><svg-icon icon-class="user" /></span>
         <el-input
           ref="username"
           v-model="loginForm.username"
@@ -22,9 +20,7 @@
       </el-form-item>
 
       <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
+        <span class="svg-container"><svg-icon icon-class="password" /></span>
         <el-input
           :key="passwordType"
           ref="password"
@@ -41,7 +37,9 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
+        Login
+      </el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
