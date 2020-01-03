@@ -51,7 +51,7 @@
           <el-table-column prop="state" label="状态" min-width="150" />
           <el-table-column fixed="right" label="操作">
             <template>
-              <el-button type="text" size="small">禁用</el-button>
+              <el-button type="text" size="small" @click="disable">禁用</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import { Message } from 'element-ui'
 import * as User from '@/api/user'
 
 export default {
@@ -103,23 +104,25 @@ export default {
         const { result } = response
         this.tableData = result['dataSet']
         this.totalSize = result['totalSize']
-      }).catch(error => {
-        console.error(error)
       })
     },
     reset() {
-      this.queryConditions.userNo = ''
-      this.queryConditions.userName = ''
-      this.queryConditions.nickName = ''
-      this.queryConditions.mobileNo = ''
-      this.queryConditions.email = ''
-      this.queryConditions.state = ''
+      Object.keys(this.queryConditions).forEach(key => {
+        this.queryConditions[key] = ''
+      })
     },
     handleSizeChange(val) {
       this.pageSize = val
     },
     handleCurrentChange(val) {
       this.currentPage = val
+    },
+    disable() {
+      Message({
+        message: '还没实现呢',
+        type: 'error',
+        duration: 5 * 1000
+      })
     }
   }
 }

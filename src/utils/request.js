@@ -6,7 +6,6 @@ import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
-  // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json; charset=utf-8'
@@ -33,31 +32,24 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    const res = response.data
+    const { data } = response
     if (response.status !== 200) {
       Message({
-        message: response.statusText || 'Error',
+        message: response.statusText || 'Error!',
         type: 'error',
         duration: 5 * 1000
       })
-      return Promise.reject(new Error(response.statusText || 'Error'))
-    /*
-    // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-    if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-      // to re-login
-      MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-        confirmButtonText: 'Re-Login',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(() => {
-        store.dispatch('user/resetToken').then(() => {
-          location.reload()
-        })
-      })
-    }
-    */
+      return Promise.reject(new Error(response.statusText || 'Error!'))
     } else {
-      return res
+      if (!data.success || data.errorCode) {
+        Message({
+          message: data.errorMsg || 'Error!',
+          type: 'error',
+          duration: 5 * 1000
+        })
+        return Promise.reject(new Error(data.errorMsg || 'Error!'))
+      }
+      return data
     }
   },
   error => {
