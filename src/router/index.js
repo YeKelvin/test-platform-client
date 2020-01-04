@@ -86,7 +86,20 @@ export const constantRoutes = [
         path: 'user-list',
         name: 'UserList',
         component: () => import('@/views/user-list/index'),
-        meta: { title: '用户列表', icon: 'example' }
+        meta: { title: '用户管理', icon: 'example' }
+      },
+      {
+        path: 'register',
+        name: 'Register',
+        hidden: true,
+        component: () => import('@/views/register/index'),
+        meta: { title: '用户注册', icon: 'example' }
+      },
+      {
+        path: 'permission-list',
+        name: 'PermissionList',
+        component: () => import('@/views/permission-list/index'),
+        meta: { title: '权限管理', icon: 'example' }
       }
     ]
   },

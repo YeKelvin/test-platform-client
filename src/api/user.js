@@ -29,3 +29,19 @@ export function getInfoList(query) {
     params: query
   })
 }
+
+export function register(data) {
+  return request({
+    url: '/user/register',
+    method: 'post',
+    data
+  })
+}
+
+export function getPermissionList(query) {
+  return request({
+    url: '/user/permission/list',
+    method: 'get',
+    params: query
+  })
+}
