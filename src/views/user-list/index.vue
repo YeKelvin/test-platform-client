@@ -49,15 +49,18 @@
           :fit="true"
           :highlight-current-row="true"
         >
-          <el-table-column prop="userNo" label="编号" min-width="150" />
-          <el-table-column prop="username" label="名称" min-width="150" />
-          <el-table-column prop="nickname" label="昵称" min-width="150" />
+          <el-table-column prop="userNo" label="用户编号" min-width="150" />
+          <el-table-column prop="username" label="用户名称" min-width="150" />
+          <el-table-column prop="nickname" label="用户昵称" min-width="150" />
           <el-table-column prop="mobileNo" label="手机号" min-width="150" />
           <el-table-column prop="email" label="邮箱" min-width="150" />
           <el-table-column prop="state" label="状态" min-width="150" />
-          <el-table-column fixed="right" label="操作">
-            <template>
-              <el-button type="text" size="small" @click="disable">禁用</el-button>
+          <el-table-column fixed="right" label="操作" min-width="150">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="updateUser">编辑</el-button>
+              <el-button v-if="scope.row.status='NORMAL'" type="text" size="mini" @click="disable">禁用</el-button>
+              <el-button v-else size="small" @click="disable">启用</el-button>
+              <el-button type="text" size="small" @click="disable">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -74,8 +77,9 @@
           @current-change="handleCurrentChange"
         />
       </div>
-
     </div>
+    <el-dialog class="register-container"></el-dialog>
+    <el-dialog class="update-container"></el-dialog>
   </scrollbar>
 </template>
 
@@ -106,7 +110,7 @@ export default {
       const queryConditions = this.queryConditions
       queryConditions.page = this.currentPage
       queryConditions.pageSize = this.pageSize
-      User.getInfoList(queryConditions).then(response => {
+      User.getUserList(queryConditions).then(response => {
         const { result } = response
         this.tableData = result['dataSet']
         this.totalSize = result['totalSize']
@@ -122,8 +126,16 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val
+      this.query()
     },
     disable() {
+      Message({
+        message: '还没实现呢',
+        type: 'error',
+        duration: 5 * 1000
+      })
+    },
+    updateUser() {
       Message({
         message: '还没实现呢',
         type: 'error',

@@ -6,25 +6,29 @@
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <el-input v-model="queryConditions.roleName" placeholder="userNo" class="condition-item">
-            <template slot="prepend">角色名称:</template>
+          <el-input v-model="queryConditions.permissionNo" placeholder="permissionNo" class="condition-item">
+            <template slot="prepend">权限编号:</template>
           </el-input>
-          <el-input v-model="queryConditions.permissionName" placeholder="userName" class="condition-item">
+          <el-input v-model="queryConditions.permissionName" placeholder="permissionName" class="condition-item">
             <template slot="prepend">权限名称:</template>
           </el-input>
-          <el-input v-model="queryConditions.endpoint" placeholder="nickName" class="condition-item">
+          <el-input v-model="queryConditions.endpoint" placeholder="endpoint" class="condition-item">
             <template slot="prepend">请求路由:</template>
           </el-input>
-          <el-input v-model="queryConditions.method" placeholder="mobileNo" class="condition-item">
+          <el-input v-model="queryConditions.method" placeholder="method" class="condition-item">
             <template slot="prepend">请求方法:</template>
           </el-input>
           <el-input v-model="queryConditions.state" placeholder="state" class="condition-item">
             <template slot="prepend">权限状态:</template>
           </el-input>
         </div>
-        <div class="query-buttons">
-          <el-button type="primary" @click="query">查询</el-button>
-          <el-button type="primary" @click="reset">重置</el-button>
+        <div class="query-buttons-container">
+          <div />
+          <div class="query-buttons">
+            <el-button type="primary" @click="query">查询</el-button>
+            <el-button type="primary" @click="reset">重置</el-button>
+          </div>
+          <el-button type="primary">新增</el-button>
         </div>
       </div>
 
@@ -40,15 +44,17 @@
           :fit="true"
           :highlight-current-row="true"
         >
-          <el-table-column prop="roleName" label="角色名称" min-width="150" />
+          <el-table-column prop="permissionNo" label="权限编号" min-width="150" />
           <el-table-column prop="permissionName" label="权限名称" min-width="150" />
           <el-table-column prop="endpoint" label="请求路由" min-width="150" />
           <el-table-column prop="method" label="请求方法" min-width="150" />
           <el-table-column prop="state" label="状态" min-width="150" />
-          <el-table-column fixed="right" label="操作">
-            <template>
-              <el-button type="text" size="small" @click="disable">禁用</el-button>
-              <el-button type="text" size="small" @click="delPermission">删除</el-button>
+          <el-table-column fixed="right" label="操作" min-width="150">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="updatePermission">编辑</el-button>
+              <el-button v-if="scope.row.status='NORMAL'" type="text" size="mini" @click="disable">禁用</el-button>
+              <el-button v-else size="small" @click="disable">启用</el-button>
+              <el-button type="text" size="small" @click="deletePermission">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -65,8 +71,9 @@
           @current-change="handleCurrentChange"
         />
       </div>
-
     </div>
+    <el-dialog class="create-container"></el-dialog>
+    <el-dialog class="update-container"></el-dialog>
   </scrollbar>
 </template>
 
@@ -79,7 +86,7 @@ export default {
   data() {
     return {
       queryConditions: {
-        roleName: '',
+        permissionNo: '',
         permissionName: '',
         endpoint: '',
         method: '',
@@ -112,6 +119,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val
+      this.query()
     },
     disable() {
       Message({
@@ -120,7 +128,14 @@ export default {
         duration: 5 * 1000
       })
     },
-    delPermission() {
+    updatePermission() {
+      Message({
+        message: '还没实现呢',
+        type: 'error',
+        duration: 5 * 1000
+      })
+    },
+    deletePermission() {
       Message({
         message: '还没实现呢',
         type: 'error',
@@ -167,6 +182,11 @@ export default {
     width: 20rem;
     padding-right: 24px;
     padding-bottom: 12px;
+  }
+
+  .query-buttons-container {
+    display: flex;
+    justify-content: space-between;
   }
 
   .query-buttons-container {

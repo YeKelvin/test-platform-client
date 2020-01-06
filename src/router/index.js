@@ -100,6 +100,18 @@ export const constantRoutes = [
         name: 'PermissionList',
         component: () => import('@/views/permission-list/index'),
         meta: { title: '权限管理', icon: 'example' }
+      },
+      {
+        path: 'role-list',
+        name: 'RoleList',
+        component: () => import('@/views/role-list/index'),
+        meta: { title: '角色管理', icon: 'example' }
+      },
+      {
+        path: 'role-permission-rel-list',
+        name: 'RolePermissionRelList',
+        component: () => import('@/views/role-permission-rel-list/index'),
+        meta: { title: '角色权限关联管理', icon: 'example' }
       }
     ]
   },
