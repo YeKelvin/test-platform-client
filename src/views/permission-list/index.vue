@@ -6,20 +6,20 @@
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <el-input v-model="queryConditions.permissionNo" placeholder="permissionNo" class="condition-item">
-            <template slot="prepend">权限编号:</template>
+          <el-input v-model="queryConditions.permissionNo" class="condition-item">
+            <template slot="prepend">权限编号</template>
           </el-input>
-          <el-input v-model="queryConditions.permissionName" placeholder="permissionName" class="condition-item">
-            <template slot="prepend">权限名称:</template>
+          <el-input v-model="queryConditions.permissionName" class="condition-item">
+            <template slot="prepend">权限名称</template>
           </el-input>
-          <el-input v-model="queryConditions.endpoint" placeholder="endpoint" class="condition-item">
-            <template slot="prepend">请求路由:</template>
+          <el-input v-model="queryConditions.endpoint" class="condition-item">
+            <template slot="prepend">请求路由</template>
           </el-input>
-          <el-input v-model="queryConditions.method" placeholder="method" class="condition-item">
-            <template slot="prepend">请求方法:</template>
+          <el-input v-model="queryConditions.method" class="condition-item">
+            <template slot="prepend">请求方法</template>
           </el-input>
-          <el-input v-model="queryConditions.state" placeholder="state" class="condition-item">
-            <template slot="prepend">权限状态:</template>
+          <el-input v-model="queryConditions.state" class="condition-item">
+            <template slot="prepend">权限状态</template>
           </el-input>
         </div>
         <div class="query-buttons-container">
@@ -72,8 +72,18 @@
         />
       </div>
     </div>
-    <el-dialog class="create-container"></el-dialog>
-    <el-dialog class="update-container"></el-dialog>
+    <el-dialog
+      title="新增权限"
+      width="50%"
+      :visible.sync="createDialogVisible"
+      :before-close="handleClose"
+    />
+    <el-dialog
+      title="编辑权限"
+      width="50%"
+      :visible.sync="modifyDialogVisible"
+      :before-close="handleClose"
+    />
   </scrollbar>
 </template>
 
@@ -95,7 +105,10 @@ export default {
       tableData: [],
       currentPage: 1,
       pageSize: 10,
-      totalSize: 0
+      totalSize: 0,
+
+      createDialogVisible: false,
+      modifyDialogVisible: false
     }
   },
   methods: {
@@ -141,6 +154,9 @@ export default {
         type: 'error',
         duration: 5 * 1000
       })
+    },
+    handleClose(done) {
+      done()
     }
   }
 }

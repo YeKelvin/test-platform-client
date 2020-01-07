@@ -89,13 +89,6 @@ export const constantRoutes = [
         meta: { title: '用户管理', icon: 'example' }
       },
       {
-        path: 'register',
-        name: 'Register',
-        hidden: true,
-        component: () => import('@/views/register/index'),
-        meta: { title: '用户注册', icon: 'example' }
-      },
-      {
         path: 'permission-list',
         name: 'PermissionList',
         component: () => import('@/views/permission-list/index'),
