@@ -236,11 +236,6 @@ export default {
     justify-content: space-between;
   }
 
-  .query-buttons-container {
-    display: flex;
-    justify-content: space-between;
-  }
-
   .query-buttons {
     display: flex;
     justify-content: center;
