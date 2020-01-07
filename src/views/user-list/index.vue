@@ -1,38 +1,42 @@
 <template>
   <scrollbar class="app-main-container">
-    <div class="user-list-container">
+    <div class="user-manager-container">
 
       <div class="query-conditions">
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <el-input v-model="queryConditions.userNo" class="condition-item">
-            <template slot="prepend">用户编号</template>
-          </el-input>
-          <el-input v-model="queryConditions.username" class="condition-item">
-            <template slot="prepend">用户名称</template>
-          </el-input>
-          <el-input v-model="queryConditions.nickname" class="condition-item">
-            <template slot="prepend">用户昵称</template>
-          </el-input>
-          <el-input v-model="queryConditions.mobileNo" class="condition-item">
-            <template slot="prepend">手机号</template>
-          </el-input>
-          <el-input v-model="queryConditions.email" class="condition-item">
-            <template slot="prepend">邮箱地址</template>
-          </el-input>
-          <el-input v-model="queryConditions.state" class="condition-item">
-            <template v-slot:prepend>用户状态</template>
-          </el-input>
-          <el-select v-model="queryConditions.state" placeholder="请选择" :clearable="true" class="condition-item">
-            <template v-slot:prefix>用户状态</template>
-            <el-option
-              v-for="(value, key) in UserState"
-              :key="key"
-              :label="value"
-              :value="value"
-            />
-          </el-select>
+          <div class="condition-item">
+            <label class="condition-label">用户编号</label>
+            <el-input v-model="queryConditions.userNo" />
+          </div>
+          <div class="condition-item">
+            <label class="condition-label">用户名称</label>
+            <el-input v-model="queryConditions.username" />
+          </div>
+          <div class="condition-item">
+            <label class="condition-label">用户昵称</label>
+            <el-input v-model="queryConditions.nickname" />
+          </div>
+          <div class="condition-item">
+            <label class="condition-label">手机号</label>
+            <el-input v-model="queryConditions.mobileNo" />
+          </div>
+          <div class="condition-item">
+            <label class="condition-label">邮箱地址</label>
+            <el-input v-model="queryConditions.email" />
+          </div>
+          <div class="condition-item">
+            <label class="condition-label">用户状态</label>
+            <el-select v-model="queryConditions.state" :clearable="true">
+              <el-option
+                v-for="(value, key) in UserState"
+                :key="key"
+                :label="value"
+                :value="value"
+              />
+            </el-select>
+          </div>
         </div>
         <div class="query-buttons-container">
           <div />
@@ -64,7 +68,7 @@
           <el-table-column prop="state" label="状态" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="openUpdateDialogVisible(scope.row)">编辑</el-button>
+              <el-button type="text" size="small" @click="openModifyDialogVisible(scope.row)">编辑</el-button>
               <el-button v-if="scope.row.status='NORMAL'" type="text" size="mini" @click="disableUser">禁用</el-button>
               <el-button v-else size="small" @click="disableUser">启用</el-button>
               <el-button type="text" size="small" @click="disableUser">删除</el-button>
@@ -304,7 +308,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    openUpdateDialogVisible(row) {
+    openModifyDialogVisible(row) {
       this.modifyDialogVisible = true
       this.userModifyForm = { ...row }
     },
@@ -316,7 +320,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .user-list-container {
+  .user-manager-container {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -348,9 +352,24 @@ export default {
   }
 
   .condition-item {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #909399;
+    font-size: 14px;
     width: 20rem;
     padding-right: 24px;
     padding-bottom: 12px;
+
+    .el-select{
+      width: 100%;
+    }
+  }
+
+  .condition-label{
+    margin-right: 6px;
+    width: fit-content;
+    white-space: nowrap;
   }
 
   .query-buttons-container {
