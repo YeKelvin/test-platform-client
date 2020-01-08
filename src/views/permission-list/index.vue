@@ -100,7 +100,6 @@
 </template>
 
 <script>
-import { Message } from 'element-ui'
 import * as User from '@/api/user'
 import { PermissionState } from '@/api/enum'
 
@@ -151,14 +150,14 @@ export default {
       this.query()
     },
     disablePermission() {
-      Message({
+      this.$message({
         message: '还没实现呢',
         type: 'error',
         duration: 5 * 1000
       })
     },
     deletePermission() {
-      Message({
+      this.$message({
         message: '还没实现呢',
         type: 'error',
         duration: 5 * 1000

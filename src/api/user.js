@@ -40,8 +40,24 @@ export function getUserList(query) {
 
 export function modifyUser(data) {
   return request({
-    url: '/user',
+    url: '/user/info',
     method: 'put',
+    data
+  })
+}
+
+export function modifyUserState(data) {
+  return request({
+    url: '/user/info/state',
+    method: 'patch',
+    data
+  })
+}
+
+export function deleteUser(data) {
+  return request({
+    url: '/user',
+    method: 'delete',
     data
   })
 }

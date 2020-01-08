@@ -67,11 +67,11 @@
           <el-table-column prop="email" label="邮箱" min-width="150" />
           <el-table-column prop="state" label="状态" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" @click="openModifyDialogVisible(scope.row)">编辑</el-button>
-              <el-button v-if="scope.row.status='NORMAL'" type="text" size="mini" @click="disableUser">禁用</el-button>
-              <el-button v-else size="small" @click="disableUser">启用</el-button>
-              <el-button type="text" size="small" @click="disableUser">删除</el-button>
+            <template slot-scope="{row}">
+              <el-button type="text" size="small" @click="openModifyDialogVisible(row)">编辑</el-button>
+              <el-button v-if="row.status='NORMAL'" type="text" size="small" @click="modifyUserState(row,'DISABLE')">禁用</el-button>
+              <el-button v-else type="text" size="small" @click="modifyUserState(row,'NORMAL')">启用</el-button>
+              <el-button type="text" size="small" @click="disableUser(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -90,18 +90,13 @@
       </div>
     </div>
 
-    <el-dialog
-      title="用户注册"
-      width="50%"
-      :visible.sync="registerDialogVisible"
-      :before-close="handleClose"
-    >
+    <el-dialog title="用户注册" width="50%" :visible.sync="registerDialogVisible">
       <el-form
         ref="registerForm"
-        :model="registerForm"
-        :rules="registerFormRules"
         label-width="100px"
         style="width: 80%"
+        :model="registerForm"
+        :rules="registerFormRules"
       >
         <el-form-item label="用户名称：" prop="username">
           <el-input v-model="registerForm.username" />
@@ -120,23 +115,17 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitRegisterForm('registerForm')">注册</el-button>
-          <el-button @click="resetForm('registerForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
 
-    <el-dialog
-      title="编辑用户"
-      width="50%"
-      :visible.sync="modifyDialogVisible"
-      :before-close="handleClose"
-    >
+    <el-dialog title="编辑用户" width="50%" :visible.sync="modifyDialogVisible">
       <el-form
         ref="userModifyForm"
-        :model="userModifyForm"
-        :rules="userModifyFormRules"
         label-width="100px"
         style="width: 80%"
+        :model="userModifyForm"
+        :rules="userModifyFormRules"
       >
         <el-form-item label="用户名称：" prop="username">
           <el-input v-model="userModifyForm.username" />
@@ -152,7 +141,6 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitModifyForm('userModifyForm')">更新</el-button>
-          <el-button @click="resetForm('userModifyForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -160,7 +148,6 @@
 </template>
 
 <script>
-import { Message } from 'element-ui'
 import * as User from '@/api/user'
 import { UserState } from '@/api/enum'
 
@@ -244,24 +231,12 @@ export default {
       this.currentPage = val
       this.query()
     },
-    disableUser(row) {
-      Message({
-        message: '还没实现呢',
-        type: 'error',
-        duration: 5 * 1000
-      })
-    },
     submitRegisterForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           User.register(this.registerForm).then(response => {
-            const { success } = response
-            if (success) {
-              Message({
-                message: '注册成功',
-                type: 'info',
-                duration: 2 * 1000
-              })
+            if (response.success) {
+              this.$message({ message: '注册成功', type: 'info', duration: 2 * 1000 })
               // 关闭dialog
               this.registerDialogVisible = false
               // 重新查询列表
@@ -269,11 +244,7 @@ export default {
             }
           })
         } else {
-          Message({
-            message: '数据校验不通过',
-            type: 'error',
-            duration: 2 * 1000
-          })
+          this.$message({ message: '数据校验不通过', type: 'error', duration: 2 * 1000 })
           return false
         }
       })
@@ -281,28 +252,55 @@ export default {
     submitModifyForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          User.modifyUser(this.userModifyForm).then(response => {
-            const { success } = response
-            if (success) {
-              Message({
-                message: '更新用户信息成功',
-                type: 'info',
-                duration: 2 * 1000
-              })
-              // 关闭dialog
-              this.modifyDialogVisible = false
-              // 重新查询列表
-              this.query()
-            }
+          this.$confirm('确定修改用户信息?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            User.modifyUser(this.userModifyForm).then(response => {
+              if (response.success) {
+                this.$message({ message: '更新用户信息成功', type: 'info', duration: 2 * 1000 })
+                // 关闭dialog
+                this.modifyDialogVisible = false
+                // 重新查询列表
+                this.query()
+              }
+            })
           })
         } else {
-          Message({
-            message: '数据校验不通过',
-            type: 'error',
-            duration: 2 * 1000
-          })
+          this.$message({ message: '数据校验不通过', type: 'error', duration: 2 * 1000 })
           return false
         }
+      })
+    },
+    modifyUserState(row, state) {
+      this.$confirm('确定禁用或启用该用户?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        User.modifyUserState({ userNo: row.userNo, state: state }).then(response => {
+          if (response.success) {
+            this.$message({ message: '删除用户成功', type: 'info', duration: 2 * 1000 })
+            // 重新查询列表
+            this.query()
+          }
+        })
+      })
+    },
+    disableUser(row) {
+      this.$confirm('将永久删除该用户, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        User.deleteUser({ userNo: row.userNo }).then(response => {
+          if (response.success) {
+            this.$message({ message: '删除用户成功', type: 'info', duration: 2 * 1000 })
+            // 重新查询列表
+            this.query()
+          }
+        })
       })
     },
     resetForm(formName) {
@@ -311,9 +309,6 @@ export default {
     openModifyDialogVisible(row) {
       this.modifyDialogVisible = true
       this.userModifyForm = { ...row }
-    },
-    handleClose(done) {
-      done()
     }
   }
 }

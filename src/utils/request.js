@@ -16,7 +16,6 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-
     if (store.getters.token) {
       config.headers['Authorization'] = 'JWT ' + getToken()
     }
@@ -24,7 +23,7 @@ service.interceptors.request.use(
   },
   error => {
     // do something with request error
-    console.log(error) // for debug
+    Message({ message: error.message, type: 'error', duration: 5 * 1000 })
     return Promise.reject(error)
   }
 )
@@ -34,11 +33,7 @@ service.interceptors.response.use(
   response => {
     const { data } = response
     if (response.status !== 200) {
-      Message({
-        message: response.statusText || 'Error!',
-        type: 'error',
-        duration: 5 * 1000
-      })
+      Message({ message: response.statusText || 'Error!', type: 'error', duration: 5 * 1000 })
       return Promise.reject(new Error(response.statusText || 'Error!'))
     } else {
       // 判断用户 token是否有效，无效或失效则转跳至登录页
@@ -54,23 +49,15 @@ service.interceptors.response.use(
         })
       }
       if (!data.success || data.errorCode) {
-        Message({
-          message: data.errorMsg || 'Error!',
-          type: 'error',
-          duration: 5 * 1000
-        })
+        Message({ message: data.errorMsg || 'Error!', type: 'error', duration: 5 * 1000 })
         return Promise.reject(new Error(data.errorMsg || 'Error!'))
       }
       return data
     }
   },
   error => {
-    console.log('err:' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    // do something with request error
+    Message({ message: error.message, type: 'error', duration: 5 * 1000 })
     return Promise.reject(error)
   }
 )
