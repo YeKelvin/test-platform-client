@@ -2,7 +2,7 @@
   <scrollbar class="app-main-container">
     <div class="permission-manager-container">
 
-      <div class="query-conditions">
+      <div class="query-conditions-container">
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
@@ -72,7 +72,7 @@
         </el-table>
       </div>
 
-      <div class="pagination">
+      <div class="pagination-container">
         <el-pagination
           layout="total, sizes, prev, pager, next, jumper"
           :current-page="currentPage"
@@ -192,7 +192,7 @@ export default {
     }
   }
 
-  .query-conditions {
+  .query-conditions-container {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -250,7 +250,7 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   }
 
-  .pagination {
+  .pagination-container {
     padding-top: 12px;
     padding-bottom: 12px;
   }

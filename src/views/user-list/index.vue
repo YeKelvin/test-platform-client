@@ -2,41 +2,16 @@
   <scrollbar class="app-main-container">
     <div class="user-manager-container">
 
-      <div class="query-conditions">
+      <div class="query-conditions-container">
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <div class="condition-item">
-            <label class="condition-label">用户编号</label>
-            <el-input v-model="queryConditions.userNo" />
-          </div>
-          <div class="condition-item">
-            <label class="condition-label">用户名称</label>
-            <el-input v-model="queryConditions.username" />
-          </div>
-          <div class="condition-item">
-            <label class="condition-label">用户昵称</label>
-            <el-input v-model="queryConditions.nickname" />
-          </div>
-          <div class="condition-item">
-            <label class="condition-label">手机号</label>
-            <el-input v-model="queryConditions.mobileNo" />
-          </div>
-          <div class="condition-item">
-            <label class="condition-label">邮箱地址</label>
-            <el-input v-model="queryConditions.email" />
-          </div>
-          <div class="condition-item">
-            <label class="condition-label">用户状态</label>
-            <el-select v-model="queryConditions.state" :clearable="true">
-              <el-option
-                v-for="(value, key) in UserState"
-                :key="key"
-                :label="value"
-                :value="value"
-              />
-            </el-select>
-          </div>
+          <condition-input v-model="queryConditions.userNo" label="用户编号" class="condition-item" />
+          <condition-input v-model="queryConditions.username" label="用户名称" class="condition-item" />
+          <condition-input v-model="queryConditions.nickname" label="用户昵称" class="condition-item" />
+          <condition-input v-model="queryConditions.mobileNo" label="手机号" class="condition-item" />
+          <condition-input v-model="queryConditions.email" label="邮箱地址" class="condition-item" />
+          <condition-select v-model="queryConditions.state" :options="UserState" label="用户状态" class="condition-item" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -69,7 +44,10 @@
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
               <el-button type="text" size="small" @click="openModifyDialogVisible(row)">编辑</el-button>
-              <el-button v-if="row.status='NORMAL'" type="text" size="small" @click="modifyUserState(row,'DISABLE')">禁用</el-button>
+              <el-button type="text" size="small" @click="resetPassword(row)">重置密码</el-button>
+              <el-button v-if="row.state==='NORMAL'" type="text" size="small" @click="modifyUserState(row,'DISABLE')">
+                禁用
+              </el-button>
               <el-button v-else type="text" size="small" @click="modifyUserState(row,'NORMAL')">启用</el-button>
               <el-button type="text" size="small" @click="disableUser(row)">删除</el-button>
             </template>
@@ -77,7 +55,7 @@
         </el-table>
       </div>
 
-      <div class="pagination">
+      <div class="pagination-container">
         <el-pagination
           layout="total, sizes, prev, pager, next, jumper"
           :current-page="currentPage"
@@ -150,9 +128,12 @@
 <script>
 import * as User from '@/api/user'
 import { UserState } from '@/api/enum'
+import ConditionInput from '@/components/QueryCondition/condition-input'
+import ConditionSelect from '@/components/QueryCondition/condition-select'
 
 export default {
   name: 'UserList',
+  components: { ConditionInput, ConditionSelect },
   data() {
     return {
       // 查询条件
@@ -217,6 +198,7 @@ export default {
         const { result } = response
         this.tableData = result['dataSet']
         this.totalSize = result['totalSize']
+      }).catch(() => {
       })
     },
     resetQueryConditions() {
@@ -242,6 +224,7 @@ export default {
               // 重新查询列表
               this.query()
             }
+          }).catch(() => {
           })
         } else {
           this.$message({ message: '数据校验不通过', type: 'error', duration: 2 * 1000 })
@@ -265,7 +248,9 @@ export default {
                 // 重新查询列表
                 this.query()
               }
+            }).catch(() => {
             })
+          }).catch(() => {
           })
         } else {
           this.$message({ message: '数据校验不通过', type: 'error', duration: 2 * 1000 })
@@ -274,18 +259,36 @@ export default {
       })
     },
     modifyUserState(row, state) {
-      this.$confirm('确定禁用或启用该用户?', '警告', {
+      const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
+      this.$confirm(`确定${stateMsg}该用户?`, '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         User.modifyUserState({ userNo: row.userNo, state: state }).then(response => {
           if (response.success) {
-            this.$message({ message: '删除用户成功', type: 'info', duration: 2 * 1000 })
+            this.$message({ message: `${stateMsg}用户成功`, type: 'info', duration: 2 * 1000 })
             // 重新查询列表
             this.query()
           }
+        }).catch(() => {
         })
+      }).catch(() => {
+      })
+    },
+    resetPassword(row) {
+      this.$confirm('确定重置用户密码?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        User.resetPassword({ userNo: row.userNo }).then(response => {
+          if (response.success) {
+            this.$message({ message: '重置用户密码成功', type: 'info', duration: 2 * 1000 })
+          }
+        }).catch(() => {
+        })
+      }).catch(() => {
       })
     },
     disableUser(row) {
@@ -300,7 +303,9 @@ export default {
             // 重新查询列表
             this.query()
           }
+        }).catch(() => {
         })
+      }).catch(() => {
       })
     },
     resetForm(formName) {
@@ -329,7 +334,7 @@ export default {
     }
   }
 
-  .query-conditions {
+  .query-conditions-container {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -355,16 +360,6 @@ export default {
     width: 20rem;
     padding-right: 24px;
     padding-bottom: 12px;
-
-    .el-select{
-      width: 100%;
-    }
-  }
-
-  .condition-label{
-    margin-right: 6px;
-    width: fit-content;
-    white-space: nowrap;
   }
 
   .query-buttons-container {
@@ -387,7 +382,7 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   }
 
-  .pagination {
+  .pagination-container {
     padding-top: 12px;
     padding-bottom: 12px;
   }
