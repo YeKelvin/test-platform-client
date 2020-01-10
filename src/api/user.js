@@ -94,6 +94,14 @@ export function modifyPermission(data) {
   })
 }
 
+export function modifyPermissionState(data) {
+  return request({
+    url: '/user/permission/state',
+    method: 'patch',
+    data
+  })
+}
+
 export function deletePermission(data) {
   return request({
     url: '/user/permission',
@@ -122,6 +130,14 @@ export function modifyRole(data) {
   return request({
     url: '/user/role',
     method: 'put',
+    data
+  })
+}
+
+export function modifyRoleState(data) {
+  return request({
+    url: '/user/role/state',
+    method: 'patch',
     data
   })
 }
