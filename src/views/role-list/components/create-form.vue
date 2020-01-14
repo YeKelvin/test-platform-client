@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增权限" width="50%" v-bind="$attrs" v-on="$listeners">
+  <el-dialog title="新增角色" width="50%" v-bind="$attrs" v-on="$listeners">
     <el-form
       ref="createForm"
       label-width="100px"
@@ -8,21 +8,11 @@
       :rules="createFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="权限名称：" prop="permissionName">
-        <el-input v-model="createForm.permissionName" clearable />
+      <el-form-item label="角色名称：" prop="roleName">
+        <el-input v-model="createForm.roleName" clearable />
       </el-form-item>
-      <el-form-item label="请求路由：" prop="endpoint">
-        <el-input v-model="createForm.endpoint" clearable />
-      </el-form-item>
-      <el-form-item label="请求方法：" prop="method">
-        <el-select v-model="createForm.method" clearable style="width: 100%;">
-          <el-option
-            v-for="(value, key) in HttpMethods"
-            :key="key"
-            :label="value"
-            :value="value"
-          />
-        </el-select>
+      <el-form-item label="角色备注：" prop="remark">
+        <el-input v-model="createForm.remark" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('createForm')">新增</el-button>
@@ -41,14 +31,12 @@ export default {
     return {
       HttpMethods: HttpMethods,
       createForm: {
-        permissionName: '',
-        endpoint: '',
-        method: ''
+        roleName: '',
+        remark: ''
       },
       createFormRules: {
-        permissionName: [{ required: true, message: '权限名称不能为空', trigger: 'blur' }],
-        endpoint: [{ required: true, message: '请求路由不能为空', trigger: 'blur' }],
-        method: [{ required: true, message: '请求方法不能为空', trigger: 'change' }]
+        roleName: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }],
+        remark: [{ required: true, message: '角色备注不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -56,9 +44,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          User.createPermission(this.createForm).then(response => {
+          User.createRole(this.createForm).then(response => {
             if (response.success) {
-              this.$message({ message: '新增权限成功', type: 'info', duration: 2 * 1000 })
+              this.$message({ message: '新增角色成功', type: 'info', duration: 2 * 1000 })
               // 关闭dialog
               this.$emit('update:visible', false)
               // 重新查询列表

@@ -21,7 +21,7 @@
         <el-input v-model="modifyForm.email" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitModifyForm('userModifyForm')">更新</el-button>
+        <el-button type="primary" @click="submitForm('userModifyForm')">更新</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -64,7 +64,7 @@ export default {
     }
   },
   methods: {
-    submitModifyForm(formName) {
+    submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('确定修改用户信息?', '提示', {

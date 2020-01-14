@@ -24,7 +24,7 @@
         <el-input v-model="registerForm.email" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitRegisterForm('registerForm')">注册</el-button>
+        <el-button type="primary" @click="submitForm('registerForm')">注册</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -57,7 +57,7 @@ export default {
     }
   },
   methods: {
-    submitRegisterForm(formName) {
+    submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           User.register(this.registerForm).then(response => {
