@@ -26,7 +26,7 @@ export function register(data) {
 export function resetPassword(data) {
   return request({
     url: '/user/password/reset',
-    method: 'post',
+    method: 'patch',
     data
   })
 }

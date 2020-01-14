@@ -9,7 +9,7 @@
           <condition-input v-model="queryConditions.permissionNo" label="权限编号" class="condition-item" />
           <condition-input v-model="queryConditions.permissionName" label="权限名称" class="condition-item" />
           <condition-input v-model="queryConditions.endpoint" label="请求路由" class="condition-item" />
-          <condition-input v-model="queryConditions.method" label="请求方法" class="condition-item" />
+          <condition-select v-model="queryConditions.method" :options="HttpMethods" label="请求方法" class="condition-item" />
           <condition-select v-model="queryConditions.state" :options="PermissionState" label="权限状态" class="condition-item" />
         </div>
         <div class="query-buttons-container">
@@ -26,9 +26,9 @@
         <div>查询结果</div>
         <el-divider />
         <el-table
-          :data="tableData"
           style="width: 100%"
-          height="160"
+          height="150"
+          :data="tableData"
           :border="true"
           :stripe="true"
           :fit="true"
@@ -41,7 +41,7 @@
           <el-table-column prop="state" label="状态" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
-              <el-button type="text" size="small" @click="openModifyDialogVisible(row)">编辑</el-button>
+              <el-button type="text" size="small" @click="openModifyDialog(row)">编辑</el-button>
               <el-button v-if="row.state==='NORMAL'" type="text" size="small" @click="modifyPermissionState(row,'DISABLE')">
                 禁用
               </el-button>
@@ -65,65 +65,9 @@
       </div>
     </div>
 
-    <el-dialog title="新增权限" width="50%" :visible.sync="createDialogVisible">
-      <el-form
-        ref="createForm"
-        label-width="100px"
-        style="width: 80%"
-        :model="createForm"
-        :rules="createFormRules"
-      >
-        <el-form-item label="权限名称：" prop="permissionName">
-          <el-input v-model="createForm.permissionName" />
-        </el-form-item>
-        <el-form-item label="请求路由：" prop="endpoint">
-          <el-input v-model="createForm.endpoint" />
-        </el-form-item>
-        <el-form-item label="请求方法：" prop="method">
-          <el-select v-model="modifyForm.method" :clearable="true" style="width: 100%;">
-            <el-option
-              v-for="(value, key) in HttpMethods"
-              :key="key"
-              :label="value"
-              :value="value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitCreateForm('createForm')">新增</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+    <create-form :visible.sync="createDialogVisible" @re-query="query" />
+    <modify-form :visible.sync="modifyDialogVisible" :current-row="currentRow" @re-query="query" />
 
-    <el-dialog title="编辑权限" width="50%" :visible.sync="modifyDialogVisible">
-      <el-form
-        ref="modifyForm"
-        label-width="100px"
-        style="width: 80%"
-        :model="modifyForm"
-        :rules="modifyFormRules"
-      >
-        <el-form-item label="权限名称：" prop="permissionName">
-          <el-input v-model="modifyForm.permissionName" />
-        </el-form-item>
-        <el-form-item label="请求路由：" prop="endpoint">
-          <el-input v-model="modifyForm.endpoint" />
-        </el-form-item>
-        <el-form-item label="请求方法：" prop="method">
-          <el-select v-model="modifyForm.method" :clearable="true" style="width: 100%;">
-            <el-option
-              v-for="(value, key) in HttpMethods"
-              :key="key"
-              :label="value"
-              :value="value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitModifyForm('modifyForm')">更新</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
   </scrollbar>
 </template>
 
@@ -132,10 +76,12 @@ import * as User from '@/api/user'
 import { PermissionState, HttpMethods } from '@/api/enum'
 import ConditionInput from '@/components/QueryCondition/condition-input'
 import ConditionSelect from '@/components/QueryCondition/condition-select'
+import CreateForm from './components/create-form'
+import ModifyForm from './components/modify-form'
 
 export default {
   name: 'PermissionList',
-  components: { ConditionInput, ConditionSelect },
+  components: { ConditionInput, ConditionSelect, CreateForm, ModifyForm },
   data() {
     return {
       // 查询条件
@@ -154,31 +100,9 @@ export default {
       currentPage: 1,
       pageSize: 10,
       totalSize: 0,
-      // 用户注册 dialog相关属性
+      currentRow: {},
       createDialogVisible: false,
-      createForm: {
-        permissionName: '',
-        endpoint: '',
-        method: ''
-      },
-      createFormRules: {
-        permissionName: [{ required: true, message: '权限名称不能为空', trigger: 'blur' }],
-        endpoint: [{ required: true, message: '请求路由不能为空', trigger: 'blur' }],
-        method: [{ required: true, message: '请求方法不能为空', trigger: 'blur' }]
-      },
-      // 用户编辑 dialog相关属性
-      modifyDialogVisible: false,
-      modifyForm: {
-        permissionNo: '',
-        permissionName: '',
-        endpoint: '',
-        method: ''
-      },
-      modifyFormRules: {
-        permissionName: [{ required: true, message: '权限名称不能为空', trigger: 'blur' }],
-        endpoint: [{ required: true, message: '请求路由不能为空', trigger: 'blur' }],
-        method: [{ required: true, message: '请求方法不能为空', trigger: 'blur' }]
-      }
+      modifyDialogVisible: false
     }
   },
   methods: {
@@ -200,55 +124,11 @@ export default {
     },
     handlePageSizeChange(val) {
       this.pageSize = val
+      this.query()
     },
     handleCurrentPageChange(val) {
       this.currentPage = val
       this.query()
-    },
-    submitCreateForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          User.createPermission(this.createForm).then(response => {
-            if (response.success) {
-              this.$message({ message: '新增权限成功', type: 'info', duration: 2 * 1000 })
-              // 关闭dialog
-              this.createDialogVisible = false
-              // 重新查询列表
-              this.query()
-            }
-          }).catch(() => {
-          })
-        } else {
-          this.$message({ message: '数据校验不通过', type: 'error', duration: 2 * 1000 })
-          return false
-        }
-      })
-    },
-    submitModifyForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.$confirm('确定修改权限信息?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            User.modifyPermission(this.modifyForm).then(response => {
-              if (response.success) {
-                this.$message({ message: '更新权限成功', type: 'info', duration: 2 * 1000 })
-                // 关闭dialog
-                this.modifyDialogVisible = false
-                // 重新查询列表
-                this.query()
-              }
-            }).catch(() => {
-            })
-          }).catch(() => {
-          })
-        } else {
-          this.$message({ message: '数据校验不通过', type: 'error', duration: 2 * 1000 })
-          return false
-        }
-      })
     },
     modifyPermissionState(row, state) {
       const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
@@ -288,9 +168,9 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    openModifyDialogVisible(row) {
+    openModifyDialog(row) {
       this.modifyDialogVisible = true
-      this.modifyForm = { ...row }
+      this.currentRow = { ...row }
     }
   }
 }
