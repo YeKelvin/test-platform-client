@@ -134,7 +134,7 @@ export default {
     },
     modifyUserState(row, state) {
       const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
-      this.$confirm(`确定${stateMsg}该用户?`, '警告', {
+      this.$confirm(`${stateMsg}该用户，是否继续?`, '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -162,7 +162,7 @@ export default {
       }).catch(() => {})
     },
     deleteUser(row) {
-      this.$confirm('将永久删除该用户, 是否继续?', '警告', {
+      this.$confirm('删除该用户, 是否继续?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -175,9 +175,6 @@ export default {
           }
         }).catch(() => {})
       }).catch(() => {})
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
     },
     openModifyDialog(row) {
       this.modifyDialogVisible = true

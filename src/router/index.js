@@ -101,6 +101,12 @@ export const constantRoutes = [
         meta: { title: '角色管理', icon: 'example' }
       },
       {
+        path: 'user-role-rel-list',
+        name: 'UserRoleRelList',
+        component: () => import('@/views/user-role-list/index'),
+        meta: { title: '用户角色关联管理', icon: 'example' }
+      },
+      {
         path: 'role-permission-rel-list',
         name: 'RolePermissionRelList',
         component: () => import('@/views/role-permission-rel-list/index'),

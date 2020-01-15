@@ -1,15 +1,15 @@
 <template>
   <scrollbar class="app-main-container">
-    <div class="role-manager-container">
+    <div class="user-role-manager-container">
 
       <div class="query-conditions-container">
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
+          <condition-input v-model="queryConditions.userNo" label="用户编号" class="condition-item" />
           <condition-input v-model="queryConditions.roleNo" label="角色编号" class="condition-item" />
+          <condition-input v-model="queryConditions.username" label="用户名称" class="condition-item" />
           <condition-input v-model="queryConditions.roleName" label="角色名称" class="condition-item" />
-          <condition-select v-model="queryConditions.state" :options="RoleState" label="角色状态" class="condition-item" />
-          <condition-input v-model="queryConditions.remark" label="角色备注" class="condition-item" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -33,18 +33,13 @@
           :fit="true"
           :highlight-current-row="true"
         >
+          <el-table-column prop="userNo" label="用户编号" min-width="150" />
           <el-table-column prop="roleNo" label="角色编号" min-width="150" />
+          <el-table-column prop="username" label="用户名称" min-width="150" />
           <el-table-column prop="roleName" label="角色名称" min-width="150" />
-          <el-table-column prop="state" label="状态" min-width="150" />
-          <el-table-column prop="remark" label="备注" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
-              <el-button type="text" size="small" @click="openModifyDialog(row)">编辑</el-button>
-              <el-button v-if="row.state==='NORMAL'" type="text" size="small" @click="modifyRoleState(row,'DISABLE')">
-                禁用
-              </el-button>
-              <el-button v-else type="text" size="small" @click="modifyRoleState(row,'NORMAL')">启用</el-button>
-              <el-button type="text" size="small" @click="disableRole(row)">删除</el-button>
+              <el-button type="text" size="small" @click="disableRel(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -64,31 +59,26 @@
     </div>
 
     <create-form :visible.sync="createDialogVisible" @re-query="query" />
-    <modify-form :visible.sync="modifyDialogVisible" :current-row="currentRow" @re-query="query" />
 
   </scrollbar>
 </template>
 
 <script>
 import * as User from '@/api/user'
-import { RoleState } from '@/api/enum'
 import ConditionInput from '@/components/QueryCondition/condition-input'
-import ConditionSelect from '@/components/QueryCondition/condition-select'
 import CreateForm from './components/create-form'
-import ModifyForm from './components/modify-form'
 
 export default {
-  name: 'RoleList',
-  components: { ConditionInput, ConditionSelect, CreateForm, ModifyForm },
+  name: 'UserRoleRelList',
+  components: { ConditionInput, CreateForm },
   data() {
     return {
       // 查询条件
-      RoleState: RoleState,
       queryConditions: {
+        userNo: '',
         roleNo: '',
-        roleName: '',
-        state: '',
-        remark: ''
+        username: '',
+        roleName: ''
       },
       // 表格数据
       tableData: [],
@@ -96,9 +86,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       totalSize: 0,
-      currentRow: {},
-      createDialogVisible: false,
-      modifyDialogVisible: false
+      createDialogVisible: false
     }
   },
   methods: {
@@ -106,7 +94,7 @@ export default {
       const queryConditions = this.queryConditions
       queryConditions.page = this.currentPage
       queryConditions.pageSize = this.pageSize
-      User.getRoleList(queryConditions).then(response => {
+      User.getUserRoleRelList(queryConditions).then(response => {
         const { result } = response
         this.tableData = result['dataSet']
         this.totalSize = result['totalSize']
@@ -125,47 +113,27 @@ export default {
       this.currentPage = val
       this.query()
     },
-    modifyRoleState(row, state) {
-      const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
-      this.$confirm(`${stateMsg}该角色，是否继续?`, '警告', {
+    disableRel(row) {
+      this.$confirm('删除该用户角色关联关系, 是否继续?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        User.modifyRoleState({ roleNo: row.roleNo, state: state }).then(response => {
+        User.deleteUserRoleRel({ userNo: row.userNo, roleNo: row.roleNo }).then(response => {
           if (response.success) {
-            this.$message({ message: `${stateMsg}角色成功`, type: 'info', duration: 2 * 1000 })
+            this.$message({ message: '删除用户角色关联关系成功', type: 'info', duration: 2 * 1000 })
             // 重新查询列表
             this.query()
           }
         }).catch(() => {})
       }).catch(() => {})
-    },
-    disableRole(row) {
-      this.$confirm('删除该角色, 是否继续?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        User.deleteRole({ roleNo: row.roleNo }).then(response => {
-          if (response.success) {
-            this.$message({ message: '删除角色成功', type: 'info', duration: 2 * 1000 })
-            // 重新查询列表
-            this.query()
-          }
-        }).catch(() => {})
-      }).catch(() => {})
-    },
-    openModifyDialog(row) {
-      this.modifyDialogVisible = true
-      this.currentRow = { ...row }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .role-manager-container {
+  .user-role-manager-container {
     display: flex;
     flex: 1;
     flex-direction: column;

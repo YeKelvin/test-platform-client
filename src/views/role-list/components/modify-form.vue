@@ -56,7 +56,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$confirm('确定修改角色信息?', '提示', {
+          this.$confirm('修改该角色信息，是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'

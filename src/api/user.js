@@ -46,6 +46,13 @@ export function getUserList(query) {
   })
 }
 
+export function getUserAll() {
+  return request({
+    url: '/user/all',
+    method: 'get'
+  })
+}
+
 export function modifyUser(data) {
   return request({
     url: '/user/info',
@@ -164,6 +171,30 @@ export function deleteRole(data) {
   })
 }
 
+export function getUserRoleRelList(query) {
+  return request({
+    url: '/user/role/rel/list',
+    method: 'get',
+    params: query
+  })
+}
+
+export function createUserRoleRel(data) {
+  return request({
+    url: '/user/role/rel',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteUserRoleRel(data) {
+  return request({
+    url: '/user/role/rel',
+    method: 'delete',
+    data
+  })
+}
+
 export function getRolePermissionRelList(query) {
   return request({
     url: '/user/role/permission/rel/list',
@@ -176,14 +207,6 @@ export function createRolePermissionRel(data) {
   return request({
     url: '/user/role/permission/rel',
     method: 'post',
-    data
-  })
-}
-
-export function modifyRolePermissionRel(data) {
-  return request({
-    url: '/user/role/permission/rel',
-    method: 'put',
     data
   })
 }

@@ -124,7 +124,7 @@ export default {
       this.query()
     },
     disableRel(row) {
-      this.$confirm('将永久删除该角色权限关联关系, 是否继续?', '警告', {
+      this.$confirm('删除该角色权限关联关系, 是否继续?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -139,9 +139,6 @@ export default {
         })
       }).catch(() => {
       })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
     }
   }
 }
