@@ -114,8 +114,7 @@ export default {
         const { result } = response
         this.tableData = result['dataSet']
         this.totalSize = result['totalSize']
-      }).catch(() => {
-      })
+      }).catch(() => {})
     },
     resetQueryConditions() {
       Object.keys(this.queryConditions).forEach(key => {
@@ -143,10 +142,8 @@ export default {
             // 重新查询列表
             this.query()
           }
-        }).catch(() => {
-        })
-      }).catch(() => {
-      })
+        }).catch(() => {})
+      }).catch(() => {})
     },
     disablePermission(row) {
       this.$confirm('将永久删除该权限, 是否继续?', '警告', {
@@ -160,10 +157,8 @@ export default {
             // 重新查询列表
             this.query()
           }
-        }).catch(() => {
-        })
-      }).catch(() => {
-      })
+        }).catch(() => {})
+      }).catch(() => {})
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()

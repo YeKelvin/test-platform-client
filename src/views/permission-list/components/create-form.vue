@@ -26,6 +26,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('createForm')">新增</el-button>
+        <el-button @click="resetForm('createForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -64,13 +65,15 @@ export default {
               // 重新查询列表
               this.$emit('re-query')
             }
-          }).catch(() => {
-          })
+          }).catch(() => {})
         } else {
           this.$message({ message: '数据校验不通过', type: 'error', duration: 2 * 1000 })
           return false
         }
       })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }

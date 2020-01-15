@@ -80,10 +80,8 @@ export default {
                 // 重新查询列表
                 this.$emit('re-query')
               }
-            }).catch(() => {
-            })
-          }).catch(() => {
-          })
+            }).catch(() => {})
+          }).catch(() => {})
         } else {
           this.$message({ message: '数据校验不通过', type: 'error', duration: 2 * 1000 })
           return false

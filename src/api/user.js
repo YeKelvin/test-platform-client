@@ -78,6 +78,13 @@ export function getPermissionList(query) {
   })
 }
 
+export function getPermissionAll() {
+  return request({
+    url: '/user/permission/all',
+    method: 'get'
+  })
+}
+
 export function createPermission(data) {
   return request({
     url: '/user/permission',
@@ -115,6 +122,13 @@ export function getRoleList(query) {
     url: '/user/role/list',
     method: 'get',
     params: query
+  })
+}
+
+export function getRoleAll() {
+  return request({
+    url: '/user/role/all',
+    method: 'get'
   })
 }
 

@@ -63,3 +63,6 @@ service.interceptors.response.use(
 )
 
 export default service
+
+// todo axios防抖处理
+// todo 页面转跳时取消所有未返回的请求
