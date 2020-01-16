@@ -115,6 +115,23 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/log',
+    name: 'Log',
+    alwaysShow: true,
+    component: Layout,
+    redirect: 'noRedirect',
+    meta: { title: '系统日志', icon: 'example' },
+    children: [
+      {
+        path: 'action-log',
+        name: 'ActionLog',
+        component: () => import('@/views/action-log/index'),
+        meta: { title: '操作日志', icon: 'example' }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

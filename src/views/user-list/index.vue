@@ -58,7 +58,7 @@
       <div class="pagination-container">
         <el-pagination
           layout="total, sizes, prev, pager, next, jumper"
-          :current-page="currentPage"
+          :current-page="page"
           :page-sizes="[10, 25, 50, 100]"
           :page-size="pageSize"
           :total="totalSize"
@@ -100,7 +100,7 @@ export default {
       // 表格数据
       tableData: [],
       // 分页信息
-      currentPage: 1,
+      page: 1,
       pageSize: 10,
       totalSize: 0,
       currentRow: {},
@@ -110,10 +110,9 @@ export default {
   },
   methods: {
     query() {
-      const queryConditions = this.queryConditions
-      queryConditions.page = this.currentPage
-      queryConditions.pageSize = this.pageSize
-      User.getUserList(queryConditions).then(response => {
+      User.getUserList(
+        { ...this.queryConditions, page: this.page, pageSize: this.pageSize }
+      ).then(response => {
         const { result } = response
         this.tableData = result['dataSet']
         this.totalSize = result['totalSize']
@@ -129,7 +128,7 @@ export default {
       this.query()
     },
     handleCurrentPageChange(val) {
-      this.currentPage = val
+      this.page = val
       this.query()
     },
     modifyUserState(row, state) {
