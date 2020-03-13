@@ -11,8 +11,8 @@
       <el-form-item label="角色名称：" prop="roleName">
         <el-input v-model="createForm.roleName" clearable />
       </el-form-item>
-      <el-form-item label="角色备注：" prop="remark">
-        <el-input v-model="createForm.remark" clearable />
+      <el-form-item label="角色备注：" prop="description">
+        <el-input v-model="createForm.description" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('createForm')">新增</el-button>
@@ -31,11 +31,11 @@ export default {
     return {
       createForm: {
         roleName: '',
-        remark: ''
+        description: ''
       },
       createFormRules: {
         roleName: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }],
-        remark: [{ required: true, message: '角色备注不能为空', trigger: 'blur' }]
+        description: [{ required: true, message: '角色备注不能为空', trigger: 'blur' }]
       }
     }
   },

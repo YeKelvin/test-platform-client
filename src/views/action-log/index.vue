@@ -40,7 +40,7 @@
           <el-table-column prop="actionPath" label="操作路径" min-width="150" />
           <el-table-column prop="createdBy" label="操作人" min-width="150" />
           <el-table-column prop="createdTime" label="操作时间" min-width="150" />
-          <el-table-column prop="remark" label="备注" min-width="150" />
+          <el-table-column prop="description" label="备注" min-width="150" />
         </el-table>
       </div>
 
