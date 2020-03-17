@@ -80,36 +80,36 @@ export const constantRoutes = [
     alwaysShow: true,
     component: Layout,
     redirect: 'noRedirect',
-    meta: { title: '系统管理', icon: 'example' },
+    meta: { title: '用户管理', icon: 'example' },
     children: [
       {
         path: 'user-list',
         name: 'UserList',
-        component: () => import('@/views/user-list/index'),
+        component: () => import('@/views/user/user-list/index'),
         meta: { title: '用户管理', icon: 'example' }
       },
       {
         path: 'permission-list',
         name: 'PermissionList',
-        component: () => import('@/views/permission-list/index'),
+        component: () => import('@/views/user/permission-list/index'),
         meta: { title: '权限管理', icon: 'example' }
       },
       {
         path: 'role-list',
         name: 'RoleList',
-        component: () => import('@/views/role-list/index'),
+        component: () => import('@/views/user/role-list/index'),
         meta: { title: '角色管理', icon: 'example' }
       },
       {
         path: 'user-role-rel-list',
         name: 'UserRoleRelList',
-        component: () => import('@/views/user-role-list/index'),
+        component: () => import('@/views/user/user-role-list/index'),
         meta: { title: '用户角色关联管理', icon: 'example' }
       },
       {
         path: 'role-permission-rel-list',
         name: 'RolePermissionRelList',
-        component: () => import('@/views/role-permission-rel-list/index'),
+        component: () => import('@/views/user/role-permission-rel-list/index'),
         meta: { title: '角色权限关联管理', icon: 'example' }
       }
     ]
@@ -121,13 +121,72 @@ export const constantRoutes = [
     alwaysShow: true,
     component: Layout,
     redirect: 'noRedirect',
-    meta: { title: '系统日志', icon: 'example' },
+    meta: { title: '系统管理', icon: 'example' },
     children: [
       {
         path: 'action-log',
         name: 'ActionLog',
-        component: () => import('@/views/action-log/index'),
+        component: () => import('@/views/system/action-log/index'),
         meta: { title: '操作日志', icon: 'example' }
+      }
+    ]
+  },
+
+  {
+    path: '/script',
+    name: 'Script',
+    alwaysShow: true,
+    component: Layout,
+    redirect: 'noRedirect',
+    meta: { title: '脚本管理', icon: 'example' },
+    children: [
+      {
+        path: 'script-editor',
+        name: 'ScriptEditor',
+        component: () => import('@/views/script/script-editor/index'),
+        meta: { title: '脚本编辑', icon: 'example' }
+      },
+      {
+        path: 'batch-execution',
+        name: 'BatchExecution',
+        component: () => import('@/views/script/batch-execution/index'),
+        meta: { title: '批量执行', icon: 'example' }
+      },
+      {
+        path: 'element-package',
+        name: 'ElementPackage',
+        component: () => import('@/views/script/element-package/index'),
+        meta: { title: '元素封装', icon: 'example' }
+      },
+      {
+        path: 'item-management',
+        name: 'ItemManagement',
+        component: () => import('@/views/script/item-management/index'),
+        meta: { title: '项目管理', icon: 'example' }
+      },
+      {
+        path: 'topic-management',
+        name: 'TopicManagement',
+        component: () => import('@/views/script/topic-management/index'),
+        meta: { title: '主题管理', icon: 'example' }
+      },
+      {
+        path: 'environment-variable-management',
+        name: 'EnvironmentVariableManagement',
+        component: () => import('@/views/script/environment-variable-management/index'),
+        meta: { title: '环境变量管理', icon: 'example' }
+      },
+      {
+        path: 'http-header-management',
+        name: 'HTTPHeaderManagement',
+        component: () => import('@/views/script/http-header-management/index'),
+        meta: { title: 'HTTP头部管理', icon: 'example' }
+      },
+      {
+        path: 'sql-configuration-management',
+        name: 'SQLConfigurationManagement',
+        component: () => import('@/views/script/sql-configuration-management/index'),
+        meta: { title: 'SQL配置管理', icon: 'example' }
       }
     ]
   },
