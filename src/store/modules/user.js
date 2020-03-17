@@ -51,7 +51,7 @@ const actions = {
         }
 
         const { result } = response
-        commit('SET_NAME', result.nickName)
+        commit('SET_NAME', result.nickname)
         commit('SET_AVATAR', userAvatar)
         commit('SET_ROLES', result.roles)
         resolve(result)

@@ -36,6 +36,7 @@ router.beforeEach(async(to, from, next) => {
           // 获取用户信息
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
           const { roles } = await store.dispatch('user/getInfo')
+          checkRoles(roles)
 
           // 基于角色生成可访问路由图
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
@@ -48,7 +49,7 @@ router.beforeEach(async(to, from, next) => {
         } catch (error) {
           // 移除 token并重定向到登录页
           await store.dispatch('user/resetToken')
-          Message.error(error || 'Has Error')
+          Message.error(error.toString() || 'Has Error')
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }
@@ -73,3 +74,9 @@ router.afterEach(() => {
   // 进度条完成
   NProgress.done()
 })
+
+function checkRoles(roles) {
+  if (!roles || roles.length <= 0) {
+    throw new Error('用户角色列表不允许为空')
+  }
+}
