@@ -43,9 +43,9 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  queryInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      User.getInfo().then(response => {
+      User.queryInfo().then(response => {
         if (!response) {
           reject('身份认证失败或过期，请重新登录')
         }

@@ -56,13 +56,13 @@ export default {
     }
   },
   mounted() {
-    User.getUserAll().then(response => {
+    User.queryUserAll().then(response => {
       if (response.success) {
         this.userList = response.result
       }
     }).catch(() => {})
 
-    User.getRoleAll().then(response => {
+    User.queryRoleAll().then(response => {
       if (response.success) {
         this.roleList = response.result
       }

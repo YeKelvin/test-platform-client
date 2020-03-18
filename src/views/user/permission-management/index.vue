@@ -1,15 +1,16 @@
 <template>
   <scrollbar class="app-main-container">
-    <div class="user-role-manager-container">
+    <div class="permission-management-container">
 
       <div class="query-conditions-container">
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <condition-input v-model="queryConditions.userNo" label="用户编号" class="condition-item" />
-          <condition-input v-model="queryConditions.roleNo" label="角色编号" class="condition-item" />
-          <condition-input v-model="queryConditions.username" label="用户名称" class="condition-item" />
-          <condition-input v-model="queryConditions.roleName" label="角色名称" class="condition-item" />
+          <condition-input v-model="queryConditions.permissionNo" label="权限编号" class="condition-item" />
+          <condition-input v-model="queryConditions.permissionName" label="权限名称" class="condition-item" />
+          <condition-input v-model="queryConditions.endpoint" label="请求路由" class="condition-item" />
+          <condition-select v-model="queryConditions.method" :options="HttpMethods" label="请求方法" class="condition-item" />
+          <condition-select v-model="queryConditions.state" :options="PermissionState" label="权限状态" class="condition-item" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -33,13 +34,19 @@
           :fit="true"
           :highlight-current-row="true"
         >
-          <el-table-column prop="userNo" label="用户编号" min-width="150" />
-          <el-table-column prop="roleNo" label="角色编号" min-width="150" />
-          <el-table-column prop="username" label="用户名称" min-width="150" />
-          <el-table-column prop="roleName" label="角色名称" min-width="150" />
+          <el-table-column prop="permissionNo" label="权限编号" min-width="150" />
+          <el-table-column prop="permissionName" label="权限名称" min-width="150" />
+          <el-table-column prop="endpoint" label="请求路由" min-width="150" />
+          <el-table-column prop="method" label="请求方法" min-width="150" />
+          <el-table-column prop="state" label="状态" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
-              <el-button type="text" size="small" @click="disableRel(row)">删除</el-button>
+              <el-button type="text" size="small" @click="openModifyDialog(row)">编辑</el-button>
+              <el-button v-if="row.state==='NORMAL'" type="text" size="small" @click="modifyPermissionState(row,'DISABLE')">
+                禁用
+              </el-button>
+              <el-button v-else type="text" size="small" @click="modifyPermissionState(row,'NORMAL')">启用</el-button>
+              <el-button type="text" size="small" @click="disablePermission(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -59,26 +66,33 @@
     </div>
 
     <create-form :visible.sync="createDialogVisible" @re-query="query" />
+    <modify-form :visible.sync="modifyDialogVisible" :current-row="currentRow" @re-query="query" />
 
   </scrollbar>
 </template>
 
 <script>
 import * as User from '@/api/user'
+import { PermissionState, HttpMethods } from '@/api/enum'
 import ConditionInput from '@/components/QueryCondition/condition-input'
+import ConditionSelect from '@/components/QueryCondition/condition-select'
 import CreateForm from './components/create-form'
+import ModifyForm from './components/modify-form'
 
 export default {
-  name: 'UserRoleRelList',
-  components: { ConditionInput, CreateForm },
+  name: 'PermissionManagement',
+  components: { ConditionInput, ConditionSelect, CreateForm, ModifyForm },
   data() {
     return {
       // 查询条件
+      PermissionState: PermissionState,
+      HttpMethods: HttpMethods,
       queryConditions: {
-        userNo: '',
-        roleNo: '',
-        username: '',
-        roleName: ''
+        permissionNo: '',
+        permissionName: '',
+        endpoint: '',
+        method: '',
+        state: ''
       },
       // 表格数据
       tableData: [],
@@ -86,12 +100,14 @@ export default {
       page: 1,
       pageSize: 10,
       totalSize: 0,
-      createDialogVisible: false
+      currentRow: {},
+      createDialogVisible: false,
+      modifyDialogVisible: false
     }
   },
   methods: {
     query() {
-      User.getUserRoleRelList(
+      User.queryPermissionList(
         { ...this.queryConditions, page: this.page, pageSize: this.pageSize }
       ).then(response => {
         const { result } = response
@@ -112,27 +128,47 @@ export default {
       this.page = val
       this.query()
     },
-    disableRel(row) {
-      this.$confirm('删除该用户角色关联关系, 是否继续?', '警告', {
+    modifyPermissionState(row, state) {
+      const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
+      this.$confirm(`${stateMsg}该权限，是否继续?`, '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        User.deleteUserRoleRel({ userNo: row.userNo, roleNo: row.roleNo }).then(response => {
+        User.modifyPermissionState({ permissionNo: row.permissionNo, state: state }).then(response => {
           if (response.success) {
-            this.$message({ message: '删除用户角色关联关系成功', type: 'info', duration: 2 * 1000 })
+            this.$message({ message: `${stateMsg}权限成功`, type: 'info', duration: 2 * 1000 })
             // 重新查询列表
             this.query()
           }
         }).catch(() => {})
       }).catch(() => {})
+    },
+    disablePermission(row) {
+      this.$confirm('删除该权限, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        User.deletePermission({ permissionNo: row.permissionNo }).then(response => {
+          if (response.success) {
+            this.$message({ message: '删除权限成功', type: 'info', duration: 2 * 1000 })
+            // 重新查询列表
+            this.query()
+          }
+        }).catch(() => {})
+      }).catch(() => {})
+    },
+    openModifyDialog(row) {
+      this.modifyDialogVisible = true
+      this.currentRow = { ...row }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .user-role-manager-container {
+  .permission-management-container {
     display: flex;
     flex: 1;
     flex-direction: column;

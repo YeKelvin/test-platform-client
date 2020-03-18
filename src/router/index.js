@@ -75,49 +75,49 @@ export const constantRoutes = [
   },
 
   {
-    path: '/system',
-    name: 'System',
+    path: '/user',
+    name: 'User',
     alwaysShow: true,
     component: Layout,
     redirect: 'noRedirect',
     meta: { title: '用户管理', icon: 'example' },
     children: [
       {
-        path: 'user-list',
-        name: 'UserList',
-        component: () => import('@/views/user/user-list/index'),
+        path: 'user-management',
+        name: 'UserManagement',
+        component: () => import('@/views/user/user-management/index'),
         meta: { title: '用户管理', icon: 'example' }
       },
       {
-        path: 'permission-list',
-        name: 'PermissionList',
-        component: () => import('@/views/user/permission-list/index'),
+        path: 'permission-management',
+        name: 'PermissionManagement',
+        component: () => import('@/views/user/permission-management/index'),
         meta: { title: '权限管理', icon: 'example' }
       },
       {
-        path: 'role-list',
-        name: 'RoleList',
-        component: () => import('@/views/user/role-list/index'),
+        path: 'role-management',
+        name: 'RoleManagement',
+        component: () => import('@/views/user/role-management/index'),
         meta: { title: '角色管理', icon: 'example' }
       },
       {
-        path: 'user-role-rel-list',
-        name: 'UserRoleRelList',
-        component: () => import('@/views/user/user-role-list/index'),
+        path: 'user-role-rel-management',
+        name: 'UserRoleRelManagement',
+        component: () => import('@/views/user/user-role-rel-management/index'),
         meta: { title: '用户角色关联管理', icon: 'example' }
       },
       {
-        path: 'role-permission-rel-list',
-        name: 'RolePermissionRelList',
-        component: () => import('@/views/user/role-permission-rel-list/index'),
+        path: 'role-permission-rel-management',
+        name: 'RolePermissionRelManagement',
+        component: () => import('@/views/user/role-permission-rel-management/index'),
         meta: { title: '角色权限关联管理', icon: 'example' }
       }
     ]
   },
 
   {
-    path: '/log',
-    name: 'Log',
+    path: '/system',
+    name: 'System',
     alwaysShow: true,
     component: Layout,
     redirect: 'noRedirect',
@@ -141,10 +141,18 @@ export const constantRoutes = [
     meta: { title: '脚本管理', icon: 'example' },
     children: [
       {
-        path: 'script-editor',
-        name: 'ScriptEditor',
-        component: () => import('@/views/script/script-editor/index'),
-        meta: { title: '脚本编辑', icon: 'example' }
+        path: 'item-list',
+        name: 'ItemList',
+        component: () => import('@/views/script/item-list/index'),
+        meta: { title: '脚本编辑', icon: 'example' },
+        children: [
+          {
+            path: 'script-editor',
+            name: 'ScriptEditor',
+            component: () => import('@/views/script/script-editor/index'),
+            hidden: true
+          }
+        ]
       },
       {
         path: 'batch-execution',

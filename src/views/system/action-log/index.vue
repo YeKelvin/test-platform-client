@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     query() {
-      System.getActionLogList(
+      System.queryActionLogList(
         { ...this.queryConditions, page: this.page, pageSize: this.pageSize }
       ).then(response => {
         const { result } = response

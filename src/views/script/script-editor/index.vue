@@ -1,7 +1,7 @@
 <template>
   <scrollbar class="app-main-container">
     <div class="script-editor-container">
-      <p>脚本编辑</p>
+      <div class="item-list-container"></div>
     </div>
   </scrollbar>
 </template>

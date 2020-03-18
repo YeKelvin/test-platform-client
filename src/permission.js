@@ -35,7 +35,7 @@ router.beforeEach(async(to, from, next) => {
         try {
           // 获取用户信息
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-          const { roles } = await store.dispatch('user/getInfo')
+          const { roles } = await store.dispatch('user/queryInfo')
           checkRoles(roles)
 
           // 基于角色生成可访问路由图

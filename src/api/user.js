@@ -1,7 +1,5 @@
 import request from '@/utils/request'
 
-// const prefix = '/user'
-
 export function login(data) {
   return request({
     url: '/user/login',
@@ -33,14 +31,14 @@ export function resetPassword(data) {
   })
 }
 
-export function getInfo() {
+export function queryInfo() {
   return request({
     url: '/user/info',
     method: 'get'
   })
 }
 
-export function getUserList(query) {
+export function queryUserList(query) {
   return request({
     url: '/user/list',
     method: 'get',
@@ -48,7 +46,7 @@ export function getUserList(query) {
   })
 }
 
-export function getUserAll() {
+export function queryUserAll() {
   return request({
     url: '/user/all',
     method: 'get'
@@ -79,7 +77,7 @@ export function deleteUser(data) {
   })
 }
 
-export function getPermissionList(query) {
+export function queryPermissionList(query) {
   return request({
     url: '/user/permission/list',
     method: 'get',
@@ -87,7 +85,7 @@ export function getPermissionList(query) {
   })
 }
 
-export function getPermissionAll() {
+export function queryPermissionAll() {
   return request({
     url: '/user/permission/all',
     method: 'get'
@@ -126,7 +124,7 @@ export function deletePermission(data) {
   })
 }
 
-export function getRoleList(query) {
+export function queryRoleList(query) {
   return request({
     url: '/user/role/list',
     method: 'get',
@@ -134,7 +132,7 @@ export function getRoleList(query) {
   })
 }
 
-export function getRoleAll() {
+export function queryRoleAll() {
   return request({
     url: '/user/role/all',
     method: 'get'
@@ -173,7 +171,7 @@ export function deleteRole(data) {
   })
 }
 
-export function getUserRoleRelList(query) {
+export function queryUserRoleRelList(query) {
   return request({
     url: '/user/role/rel/list',
     method: 'get',
@@ -197,7 +195,7 @@ export function deleteUserRoleRel(data) {
   })
 }
 
-export function getRolePermissionRelList(query) {
+export function queryRolePermissionRelList(query) {
   return request({
     url: '/user/role/permission/rel/list',
     method: 'get',
