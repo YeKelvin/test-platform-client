@@ -49,14 +49,14 @@ export default {
     return {
       itemList: [],
       activities: [{
-        content: '活动按期开始',
+        content: '还没做好啊',
         timestamp: '2020-03-18'
       }, {
-        content: '通过审核',
-        timestamp: '2018-04-17'
+        content: '还没做好啊',
+        timestamp: '2020-03-17'
       }, {
-        content: '创建成功',
-        timestamp: '2018-04-16'
+        content: '还没做好啊',
+        timestamp: '2020-03-16'
       }]
     }
   },
@@ -137,6 +137,7 @@ export default {
 
     i {
       font-size: 26px;
+      color: #409EFF;
       cursor:pointer;
     }
   }

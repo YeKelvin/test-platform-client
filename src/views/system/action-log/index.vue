@@ -7,7 +7,8 @@
         <el-divider />
         <div class="condition-items">
           <condition-input v-model="queryConditions.actionDetail" label="操作描述" class="condition-item" />
-          <condition-input v-model="queryConditions.actionPath" label="操作路径" class="condition-item" />
+          <condition-input v-model="queryConditions.actionMethod" label="操作方法" class="condition-item" />
+          <condition-input v-model="queryConditions.actionEndpoint" label="操作路由" class="condition-item" />
           <condition-input v-model="queryConditions.createdBy" label="操作人" class="condition-item" />
           <div class="condition-item">
             <label class="condition-label">开始时间</label>
@@ -30,17 +31,19 @@
         <el-table
           style="width: 100%"
           height="150"
-          :data="dataSet"
+          :data="tableData"
           :border="true"
           :stripe="true"
           :fit="true"
           :highlight-current-row="true"
         >
           <el-table-column prop="actionDetail" label="操作描述" min-width="150" />
-          <el-table-column prop="actionPath" label="操作路径" min-width="150" />
+          <el-table-column prop="actionMethod" label="请求方法" min-width="150" />
+          <el-table-column prop="actionEndpoint" label="请求路由" min-width="150" />
+          <el-table-column prop="oldValue" label="旧值" min-width="150" />
+          <el-table-column prop="newValue" label="新值" min-width="150" />
           <el-table-column prop="createdBy" label="操作人" min-width="150" />
           <el-table-column prop="createdTime" label="操作时间" min-width="150" />
-          <el-table-column prop="description" label="备注" min-width="150" />
         </el-table>
       </div>
 
@@ -72,7 +75,8 @@ export default {
       // 查询条件
       queryConditions: {
         actionDetail: '',
-        actionPath: '',
+        actionMethod: '',
+        actionEndpoint: '',
         createdBy: '',
         startTime: '',
         endTime: ''
