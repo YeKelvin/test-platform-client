@@ -4,7 +4,20 @@
       <div class="item-list-sidebar-container">
         <div><b>测试项目</b></div>
         <el-divider />
-        <el-card v-for="(item, index) in itemList" :key="index">{{ item }}</el-card>
+        <el-card
+          v-for="(item, index) in itemList"
+          :key="index"
+          class="item-card"
+          @click="queryActivityLogList(item.itemNo)"
+        >
+          <div class="item-card-inner">
+            {{ item.itemName }}
+            <div class="edit-button-container">
+              <el-divider direction="vertical" />
+              <i class="el-icon-s-promotion" @click="gotoScriptEditor(item.itemNo)"/>
+            </div>
+          </div>
+        </el-card>
       </div>
       <div class="item-action-log-container">
         <div><b>项目动态</b></div>
@@ -16,7 +29,7 @@
               :key="index"
               :timestamp="activity.timestamp"
             >
-              <!--              v-infinite-scroll="load"-->
+              <!--              v-infinite-scroll="queryActivityLogList"-->
               <!--              style="overflow:auto"-->
               {{ activity.content }}
             </el-timeline-item>
@@ -56,11 +69,14 @@ export default {
     queryItemAll() {
       Item.queryItemAll().then(response => {
         const { result } = response
-        this.itemList.concat(result)
+        this.itemList = result
       }).catch(() => {})
     },
-    load() {
+    queryActivityLogList() {
       //
+    },
+    gotoScriptEditor(itemNo) {
+      this.$router.push({ name: 'ScriptEditor', params: { itemNo: itemNo }})
     }
   }
 }
@@ -81,7 +97,7 @@ export default {
     }
   }
 
-  .item-list-sidebar-container{
+  .item-list-sidebar-container {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -90,9 +106,42 @@ export default {
     padding: 12px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+
+    /deep/.el-card__body {
+      padding: 15px;
+    }
   }
 
-  .item-action-log-container{
+  .item-card {
+    margin: 8px 10px 8px 10px;
+
+    &:hover {
+      background-color: #F5F5F5;
+      border-color: #DCDCDC;
+      border-radius: 12px;
+    }
+  }
+
+  .item-card-inner {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .edit-button-container {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
+
+    i {
+      font-size: 26px;
+      cursor:pointer;
+    }
+  }
+
+  .item-action-log-container {
     display: flex;
     flex: 1;
     flex-direction: column;

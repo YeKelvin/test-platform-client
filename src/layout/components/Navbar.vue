@@ -27,8 +27,8 @@
           <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/zh/">
             <el-dropdown-item>vue-element-admin Docs</el-dropdown-item>
           </a>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">Log Out</span>
+          <el-dropdown-item divided @click.native="logout">
+            <span style="display:block;">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

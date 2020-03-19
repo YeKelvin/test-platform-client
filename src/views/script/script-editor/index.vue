@@ -1,14 +1,24 @@
 <template>
   <scrollbar class="app-main-container">
     <div class="script-editor-container">
-      <div class="item-list-container"></div>
+      {{ itemNo }}
     </div>
   </scrollbar>
 </template>
 
 <script>
 export default {
-  name: 'ScriptEditor'
+  name: 'ScriptEditor',
+
+  data() {
+    return {
+      itemNo: ''
+    }
+  },
+
+  mounted: function() {
+    this.itemNo = this.$route.params.itemNo
+  }
 }
 </script>
 
