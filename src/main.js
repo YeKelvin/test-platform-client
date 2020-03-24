@@ -22,6 +22,18 @@ Vue.use(ElementUI)
 
 // 全局注册组件
 Vue.component('Scrollbar', Scrollbar)
+Vue.directive('noMoreClick', {
+  inserted(el, binding) {
+    el.addEventListener('click', e => {
+      el.classList.add('is-disabled')
+      el.disabled = true
+      setTimeout(() => {
+        el.disabled = false
+        el.classList.remove('is-disabled')
+      }, 3000)
+    })
+  }
+})
 
 // 绑定到 Vue原型上
 Vue.prototype.$_ = _
