@@ -8,10 +8,19 @@ export function queryElementList(query) {
   })
 }
 
-export function queryElementAll() {
+export function queryElementAll(query) {
   return request({
     url: '/script/element/all',
-    method: 'get'
+    method: 'get',
+    params: query
+  })
+}
+
+export function queryElementChild(query) {
+  return request({
+    url: '/script/element/child',
+    method: 'get',
+    params: query
   })
 }
 

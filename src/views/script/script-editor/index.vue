@@ -4,14 +4,14 @@
       <div class="element-sidebar-container">
         <el-input
           v-model="searchKeyword"
-          placeholder="测试集合 | 测试案例 | 测试步骤"
+          placeholder="测试集合 | 测试案例 | 取样器"
           prefix-icon="el-icon-search"
           @keyup.enter.native="handleEnterSearch"
         />
-        <el-tabs v-model="elementSidebarTabsActiveName" :stretch="true" @tab-click="handleElementSidebarTabClick">
+        <el-tabs v-model="elementSidebarTabActiveName" :stretch="true" @tab-click="handleElementSidebarTabClick">
           <el-tab-pane label="测试集合" name="collection">
             <div class="collection-operation-button-container">
-              <el-button type="text" icon="el-icon-plus" @click="addTab(editElementTabsActiveName)">新增</el-button>
+              <el-button type="text" icon="el-icon-plus" @click="addCreateCollectionTab">新增</el-button>
               <el-divider direction="vertical" />
               <el-button type="text" icon="el-icon-delete">删除</el-button>
               <el-divider direction="vertical" />
@@ -20,10 +20,17 @@
               <el-button type="text" icon="el-icon-bottom-left">粘贴</el-button>
             </div>
             <el-divider />
+            <div class="collection-list-container">
+              <ul class="collection-list-container">
+                <li v-for="collection in collectionList" :key="collection.elementNo">
+                  {{ collection.elementName }}
+                </li>
+              </ul>
+            </div>
           </el-tab-pane>
           <el-tab-pane label="测试案例" name="group">
             <div class="collection-operation-button-container">
-              <el-button type="text" icon="el-icon-plus">新增</el-button>
+              <el-button type="text" icon="el-icon-plus" @click="addCreateGroupTab">新增</el-button>
               <el-divider direction="vertical" />
               <el-button type="text" icon="el-icon-delete">删除</el-button>
               <el-divider direction="vertical" />
@@ -33,9 +40,9 @@
             </div>
             <el-divider />
           </el-tab-pane>
-          <el-tab-pane label="测试步骤" name="sampler">
+          <el-tab-pane label="取样器" name="sampler">
             <div class="collection-operation-button-container">
-              <el-button type="text" icon="el-icon-plus">新增</el-button>
+              <el-button type="text" icon="el-icon-plus" @click="addCreateSamplerTab">新增</el-button>
               <el-divider direction="vertical" />
               <el-button type="text" icon="el-icon-delete">删除</el-button>
               <el-divider direction="vertical" />
@@ -48,20 +55,26 @@
         </el-tabs>
       </div>
 
-      <!--   编辑页   --><!--   编辑页   --><!--   编辑页   --><!--   编辑页   --><!--   编辑页   -->
       <div class="editor-main-container">
-        <el-tabs v-model="editElementTabsActiveName" type="card" @tab-remove="removeTab">
-          <el-tab-pane label="动态" name="activities">
-            动态
-          </el-tab-pane>
+        <el-tabs v-model="editElementTabActiveName" type="card" @tab-remove="removeTab">
           <el-tab-pane
-            v-for="(element, index) in editElementTabs"
-            :key="index"
+            v-for="element in editElementTabs"
+            :key="`${element.elementNo}::${element.elementName}::${element.elementType}}`"
             :label="element.elementName"
-            :name="element.elementName"
-            closable
+            :name="`${element.elementNo}::${element.elementName}`"
+            :closable="element.elementType !=='activity'"
+            style="height: 100%"
           >
-            测试集合 | 测试组 | 测试取样器
+            <keep-alive>
+              <component
+                :is="elementViews[element.elementType]"
+                :item-no="itemNo"
+                :element-no="element.elementNo"
+                :action="element.action"
+                @re-query-collection="queryCollectionByItem"
+                @close-tab="removeTab(`${element.elementNo}::${element.elementName}`)"
+              />
+            </keep-alive>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -71,76 +84,118 @@
 
 <script>
 import * as Element from '@/api/script/element'
+import ActivityView from './components/activity-view'
+import CollectionEditor from './components/collection-editor'
+import GroupEditor from './components/group-editor.vue'
+import SamplerMainEditor from './components/sampler-main-editor'
+
 export default {
   name: 'ScriptEditor',
+
+  components: { ActivityView, CollectionEditor, GroupEditor, SamplerMainEditor },
 
   data() {
     return {
       itemNo: '',
       searchKeyword: '',
-      elementSidebarTabsActiveName: 'collection',
+      elementSidebarTabActiveName: 'collection',
       collectionList: [],
-      editElementTabsActiveName: 'activities',
-      editElementTabs: [],
-      tabIndex: 0
+      groupList: [],
+      samplerList: [],
+      elementViews: {
+        activity: 'ActivityView',
+        collection: 'CollectionEditor',
+        group: 'GroupEditor',
+        sampler: 'SamplerMainEditor'
+      },
+      editElementTabActiveNo: '0',
+      editElementTabActiveName: '0::动态',
+      editElementTabs: [
+        {
+          elementNo: '0',
+          elementName: '动态',
+          elementType: 'activity',
+          action: 'QUERY'
+        }
+      ]
     }
   },
 
   mounted: function() {
     // 存储路由跳转时传递的itemNo
     this.itemNo = this.$route.params.itemNo
-    // this.queryCollectionByItem()
+    this.queryCollectionAll()
   },
 
   methods: {
     handleEnterSearch(event, keyword) {
-      console.log(keyword)
+      //
     },
     handleElementSidebarTabClick(tab, event) {
-      console.log(tab, event)
+      //
     },
-    addTab(targetName) {
-      const newTabName = ++this.tabIndex + ''
-      this.editElementTabs.push({
-        elementNo: 'New Tab',
-        elementName: newTabName
-      })
-      this.editElementTabsActiveName = newTabName
-    },
-    removeTab(targetName) {
+    addTab(elementNo, elementName, elementType, action) {
       const tabs = this.editElementTabs
-      let activeName = this.editElementTabsActiveName
-      if (activeName === targetName) {
+      const newTabName = `${elementNo}::${elementName}`
+      let isAllowAdd = true
+      tabs.forEach(tab => {
+        const tabName = `${tab.elementNo}::${tab.elementName}`
+        if (tabName === newTabName) {
+          isAllowAdd = false
+        }
+      })
+      if (isAllowAdd) {
+        this.editElementTabs.push({
+          elementNo: elementNo,
+          elementName: elementName,
+          elementType: elementType,
+          action: action
+        })
+        this.editElementTabActiveNo = elementNo
+        this.editElementTabActiveName = `${elementNo}::${elementName}`
+      }
+    },
+    removeTab(removeTabName) {
+      const tabs = this.editElementTabs
+      let activeNo = ''
+      let activeName = ''
+      const activeTabName = this.editElementTabActiveName
+      if (activeTabName === removeTabName) {
         tabs.forEach((tab, index) => {
-          if (tab.elementName === targetName) {
+          const tabName = `${tab.elementNo}::${tab.elementName}`
+          if (tabName === removeTabName) {
             const nextTab = tabs[index + 1] || tabs[index - 1]
             if (nextTab) {
+              activeNo = nextTab.elementNo
               activeName = nextTab.elementName
             }
           }
         })
       }
 
-      this.editElementTabsActiveName = activeName
-      this.editElementTabs = tabs.filter(tab => tab.elementName !== targetName)
+      this.editElementTabActiveNo = activeNo
+      this.editElementTabActiveName = `${activeNo}::${activeName}`
+      this.editElementTabs = tabs.filter(tab => `${tab.elementNo}::${tab.elementName}` !== removeTabName)
     },
-    queryCollectionByItem() {
-      Element.queryElementList({ itemNo: this.itemNo, elementType: 'COLLECTION' }).then(response => {
+    addCreateCollectionTab() {
+      this.addTab('0', '新增集合', 'collection', 'CREATE')
+    },
+    addCreateGroupTab() {
+      this.addTab('0', '新增案例', 'group', 'CREATE')
+    },
+    addCreateSamplerTab() {
+      this.addTab('0', '新增取样器', 'sampler', 'CREATE')
+    },
+    queryCollectionAll() {
+      Element.queryElementAll({ itemNo: this.itemNo, elementType: 'COLLECTION' }).then(response => {
         const { result } = response
         this.collectionList = result
       }).catch(() => {})
     },
-    createCollection(name, comments, propertys) {
-      Element.createElement(
-        {
-          elementName: name,
-          elementComments: comments,
-          elementType: 'COLLECTION',
-          propertys: propertys,
-          itemNo: this.itemNo
-        }
-      ).then(response => {
-
+    queryGroupByCollection(elementNo) {
+      Element.queryElementChild({ elementNo: elementNo, elementType: 'GROUP' }).then(response => {
+        const { result } = response
+        this.groupList = result
       }).catch(() => {})
     }
   }
@@ -193,5 +248,6 @@ export default {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     margin-left: 6px;
+
   }
 </style>
