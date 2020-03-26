@@ -2,7 +2,7 @@
   <el-dialog title="编辑用户" width="50%" v-bind="$attrs" v-on="$listeners">
     <el-form
       ref="userModifyForm"
-      label-width="100px"
+      label-width="auto"
       style="width: 80%"
       :model="modifyForm"
       :rules="modifyFormRules"

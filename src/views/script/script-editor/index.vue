@@ -21,11 +21,18 @@
             </div>
             <el-divider />
             <div class="collection-list-container">
-              <ul class="collection-list-container">
-                <li v-for="collection in collectionList" :key="collection.elementNo">
+              <el-card
+                v-for="collection in collectionList"
+                :key="collection.elementNo"
+                class="collection-card"
+                :class="{'active-card':activeCollectionName===`${collection.elementNo}::${collection.elementName}`}"
+                @click.native="activateCollectionCard(collection.elementNo, collection.elementName)"
+                @dblclick.native="addCollectionDetailTab(collection.elementNo, collection.elementName)"
+              >
+                <div class="collection-card-inner">
                   {{ collection.elementName }}
-                </li>
-              </ul>
+                </div>
+              </el-card>
             </div>
           </el-tab-pane>
           <el-tab-pane label="测试案例" name="group">
@@ -71,7 +78,7 @@
                 :item-no="itemNo"
                 :element-no="element.elementNo"
                 :action="element.action"
-                @re-query-collection="queryCollectionByItem"
+                @re-query-collection="queryCollectionAll"
                 @close-tab="removeTab(`${element.elementNo}::${element.elementName}`)"
               />
             </keep-alive>
@@ -100,6 +107,7 @@ export default {
       searchKeyword: '',
       elementSidebarTabActiveName: 'collection',
       collectionList: [],
+      activeCollectionName: '',
       groupList: [],
       samplerList: [],
       elementViews: {
@@ -128,6 +136,9 @@ export default {
   },
 
   methods: {
+    activateCollectionCard(elementNo, elementName) {
+      this.activeCollectionName = `${elementNo}::${elementName}`
+    },
     handleEnterSearch(event, keyword) {
       //
     },
@@ -186,6 +197,9 @@ export default {
     addCreateSamplerTab() {
       this.addTab('0', '新增取样器', 'sampler', 'CREATE')
     },
+    addCollectionDetailTab(elementNo, elementName) {
+      this.addTab(elementNo, elementName, 'collection', 'QUERY')
+    },
     queryCollectionAll() {
       Element.queryElementAll({ itemNo: this.itemNo, elementType: 'COLLECTION' }).then(response => {
         const { result } = response
@@ -217,6 +231,11 @@ export default {
     }
   }
 
+  .active-card {
+    color: white;
+    background-color: #409EFF;
+  }
+
   .element-sidebar-container{
     display: flex;
     flex: 1;
@@ -239,6 +258,45 @@ export default {
         padding-top: 6px;
         padding-bottom: 6px;
     }
+  }
+
+  .collection-list-container{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+
+    /deep/.el-card__body {
+      padding: 15px;
+    }
+  }
+
+  .collection-card{
+    margin-bottom: 6px;
+
+    &:hover {
+      /*
+       * <div @mouseover="mouseOver" @mouseleave="mouseLeave" :style="active">Hover over me!</div>
+       * Vue({
+       *  data: {
+       *    active: ''
+       *  },
+       *  methods: {
+       *      mouseOver: function(){this.active = 'background-color: #cccccc'},
+       *      mouseLeave: function () {this.active = ''},
+       *  }
+       */
+      /*background-color: #F5F5F5;*/
+      border-color: #DCDCDC;
+      border-radius: 12px;
+    }
+  }
+
+  .collection-card-inner {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .editor-main-container{

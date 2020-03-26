@@ -8,13 +8,13 @@
           v-for="(item, index) in itemList"
           :key="index"
           class="item-card"
-          @click="queryActivityLogList(item.itemNo)"
+          @click.native="queryActivityLogList(item.itemNo)"
         >
           <div class="item-card-inner">
             {{ item.itemName }}
             <div class="edit-button-container">
               <el-divider direction="vertical" />
-              <i class="el-icon-s-promotion" @click="gotoScriptEditor(item.itemNo)"/>
+              <i class="el-icon-s-promotion" @click="gotoScriptEditor(item.itemNo)" />
             </div>
           </div>
         </el-card>

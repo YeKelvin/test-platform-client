@@ -2,7 +2,7 @@
   <el-dialog title="新增角色权限关联关系" width="50%" v-bind="$attrs" v-on="$listeners">
     <el-form
       ref="createForm"
-      label-width="100px"
+      label-width="auto"
       style="width: 80%"
       :model="createForm"
       :rules="createFormRules"

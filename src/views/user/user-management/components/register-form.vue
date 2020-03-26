@@ -2,7 +2,7 @@
   <el-dialog title="用户注册" width="50%" v-bind="$attrs" v-on="$listeners">
     <el-form
       ref="registerForm"
-      label-width="100px"
+      label-width="auto"
       style="width: 80%"
       :model="registerForm"
       :rules="registerFormRules"

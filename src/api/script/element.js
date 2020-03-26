@@ -16,6 +16,13 @@ export function queryElementAll(query) {
   })
 }
 
+export function queryElementInfo(query) {
+  return request({
+    url: '/script/element/info',
+    method: 'get',
+    params: query
+  })
+}
 export function queryElementChild(query) {
   return request({
     url: '/script/element/child',
