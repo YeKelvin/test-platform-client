@@ -79,6 +79,7 @@
                 :element-no="element.elementNo"
                 :action="element.action"
                 @re-query-collection="queryCollectionAll"
+                @rename-tab="renameTab(arguments, element)"
                 @close-tab="removeTab(`${element.elementNo}::${element.elementName}`)"
               />
             </keep-alive>
@@ -153,6 +154,8 @@ export default {
         const tabName = `${tab.elementNo}::${tab.elementName}`
         if (tabName === newTabName) {
           isAllowAdd = false
+          this.editElementTabActiveNo = tab.elementNo
+          this.editElementTabActiveName = `${tab.elementNo}::${tab.elementName}`
         }
       })
       if (isAllowAdd) {
@@ -187,6 +190,10 @@ export default {
       this.editElementTabActiveNo = activeNo
       this.editElementTabActiveName = `${activeNo}::${activeName}`
       this.editElementTabs = tabs.filter(tab => `${tab.elementNo}::${tab.elementName}` !== removeTabName)
+    },
+    renameTab(args, element) {
+      element.elementName = args[0]
+      this.editElementTabActiveName = `${element.elementNo}::${element.elementName}`
     },
     addCreateCollectionTab() {
       this.addTab('0', '新增集合', 'collection', 'CREATE')

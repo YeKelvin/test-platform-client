@@ -8,7 +8,7 @@
       :rules="modifyFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="用户名称：" prop="username">
+      <el-form-item label="登录名称：" prop="username">
         <el-input v-model="modifyForm.username" clearable />
       </el-form-item>
       <el-form-item label="用户昵称：" prop="nickname">

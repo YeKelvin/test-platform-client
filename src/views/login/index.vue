@@ -51,13 +51,11 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (this.$_.isEmpty(value)) {
         callback(new Error('Please enter the correct user name'))
       } else {
         callback()
@@ -111,7 +109,6 @@ export default {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {
-            console.info('login failed')
             this.loading = false
           })
         } else {

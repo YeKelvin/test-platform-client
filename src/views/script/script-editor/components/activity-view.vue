@@ -1,5 +1,5 @@
 <template>
-  <div>动态组件</div>
+  <div>测试元素动态，还没实现呢</div>
 </template>
 
 <script>

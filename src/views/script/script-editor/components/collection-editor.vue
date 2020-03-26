@@ -88,7 +88,7 @@ export default {
       return !this.isReadOnly && this.innerAction === 'MODIFY'
     },
     isCreate() {
-      return !this.isReadOnly
+      return !this.isReadOnly && this.innerAction === 'CREATE'
     }
   },
 
@@ -119,13 +119,14 @@ export default {
           Element.modifyElement({ elementNo: this.elementNo, ...this.elementForm }).then(response => {
             if (response['success']) {
               this.$message({ message: '修改测试元素成功', type: 'info', duration: 2 * 1000 })
-              // 关闭tab
-              this.$emit('close-tab')
+              // 修改 tab标题
+              this.$emit('rename-tab', this.elementForm.elementName)
               // 重新查询测试集合列表
               this.$emit('re-query-collection')
+              // 表单设置为只读
+              this.editNow(false)
             }
           }).catch(() => {})
-          this.editNow(false)
         } else {
           this.$message({ message: '数据校验不通过', type: 'error', duration: 2 * 1000 })
           return false
