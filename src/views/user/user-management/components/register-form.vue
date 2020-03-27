@@ -8,7 +8,7 @@
       :rules="registerFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="登录名称：" prop="username">
+      <el-form-item label="登录账号：" prop="username">
         <el-input v-model="registerForm.username" clearable />
       </el-form-item>
       <el-form-item label="用户昵称：" prop="nickname">
