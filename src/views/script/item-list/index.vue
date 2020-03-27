@@ -4,20 +4,26 @@
       <div class="item-list-sidebar-container">
         <div><b>测试项目</b></div>
         <el-divider />
-        <el-card
-          v-for="(item, index) in itemList"
-          :key="index"
-          class="item-card"
-          @click.native="queryActivityLogList(item.itemNo)"
-        >
-          <div class="item-card-inner">
-            {{ item.itemName }}
-            <div class="edit-button-container">
-              <el-divider direction="vertical" />
-              <i class="el-icon-s-promotion" @click="gotoScriptEditor(item.itemNo)" />
-            </div>
-          </div>
-        </el-card>
+        <el-tabs v-model="itemType" :stretch="true">
+          <el-tab-pane label="团队项目" name="team">
+            <el-card
+              v-for="(item, index) in itemList"
+              :key="index"
+              class="item-card"
+              @click.native="queryActivityLogList(item.itemNo)"
+              @dblclick.native="gotoScriptEditor(item.itemNo)"
+            >
+              <div class="item-card-inner">
+                {{ item.itemName }}
+                <div class="edit-button-container">
+                  <el-divider direction="vertical" />
+                  <i class="el-icon-s-promotion" @click="gotoScriptEditor(item.itemNo)" />
+                </div>
+              </div>
+            </el-card>
+          </el-tab-pane>
+          <el-tab-pane label="个人项目" name="person" />
+        </el-tabs>
       </div>
       <div class="item-action-log-container">
         <div><b>项目动态</b></div>
@@ -47,6 +53,7 @@ export default {
 
   data() {
     return {
+      itemType: 'team',
       itemList: [],
       activities: [{
         content: '还没做好啊',

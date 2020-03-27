@@ -13,11 +13,11 @@
             <div class="collection-operation-button-container">
               <el-button type="text" icon="el-icon-plus" @click="addCreateCollectionTab">新增</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-delete">删除</el-button>
+              <el-button type="text" icon="el-icon-view" @click="addCollectionDetailTab(activeCollectionNo, activeCollectionName)">详情</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-copy-document">复制</el-button>
+              <el-button type="text" icon="el-icon-sort-up">上移</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-bottom-left">粘贴</el-button>
+              <el-button type="text" icon="el-icon-sort-down">下移</el-button>
             </div>
             <el-divider />
             <div class="collection-list-container">
@@ -25,12 +25,24 @@
                 v-for="collection in collectionList"
                 :key="collection.elementNo"
                 class="collection-card"
-                :class="{'active-card':activeCollectionName===`${collection.elementNo}::${collection.elementName}`}"
+                :class="{'active-card':activeCollectionNo===collection.elementNo && activeCollectionName===collection.elementName}"
                 @click.native="activateCollectionCard(collection.elementNo, collection.elementName)"
                 @dblclick.native="addCollectionDetailTab(collection.elementNo, collection.elementName)"
               >
                 <div class="collection-card-inner">
                   {{ collection.elementName }}
+                  <div class="more-operation-container">
+                    <el-divider direction="vertical" />
+                    <el-dropdown trigger="click" placement="bottom-start">
+                      <i class="el-icon-more rotate-90" />
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-turn-off">禁用</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </div>
                 </div>
               </el-card>
             </div>
@@ -39,11 +51,11 @@
             <div class="collection-operation-button-container">
               <el-button type="text" icon="el-icon-plus" @click="addCreateGroupTab">新增</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-delete">删除</el-button>
+              <el-button type="text" icon="el-icon-view">详情</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-copy-document">复制</el-button>
+              <el-button type="text" icon="el-icon-sort-up">上移</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-bottom-left">粘贴</el-button>
+              <el-button type="text" icon="el-icon-sort-down">下移</el-button>
             </div>
             <el-divider />
           </el-tab-pane>
@@ -51,11 +63,11 @@
             <div class="collection-operation-button-container">
               <el-button type="text" icon="el-icon-plus" @click="addCreateSamplerTab">新增</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-delete">删除</el-button>
+              <el-button type="text" icon="el-icon-view">详情</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-copy-document">复制</el-button>
+              <el-button type="text" icon="el-icon-sort-up">上移</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-bottom-left">粘贴</el-button>
+              <el-button type="text" icon="el-icon-sort-down">下移</el-button>
             </div>
             <el-divider />
           </el-tab-pane>
@@ -108,9 +120,14 @@ export default {
       searchKeyword: '',
       elementSidebarTabActiveName: 'collection',
       collectionList: [],
+      activeCollectionNo: '',
       activeCollectionName: '',
       groupList: [],
+      activeGroupNo: '',
+      activeGroupName: '',
       samplerList: [],
+      activeSamplerNo: '',
+      activeSamplerName: '',
       elementViews: {
         activity: 'ActivityView',
         collection: 'CollectionEditor',
@@ -138,7 +155,22 @@ export default {
 
   methods: {
     activateCollectionCard(elementNo, elementName) {
-      this.activeCollectionName = `${elementNo}::${elementName}`
+      this.activeCollectionNo = elementNo
+      this.activeCollectionName = elementName
+    },
+    activateGroupCard(elementNo, elementName) {
+      this.activeGroupNo = elementNo
+      this.activeGroupName = elementName
+    },
+    activateSamplerCard(elementNo, elementName) {
+      this.activeSamplerNo = elementNo
+      this.activeSamplerName = elementName
+    },
+    changeToGroupSidebarTab() {
+      this.elementSidebarTabActiveName = 'group'
+    },
+    changeToSamplerSidebarTab() {
+      this.elementSidebarTabActiveName = 'sampler'
     },
     handleEnterSearch(event, keyword) {
       //
@@ -205,7 +237,9 @@ export default {
       this.addTab('0', '新增取样器', 'sampler', 'CREATE')
     },
     addCollectionDetailTab(elementNo, elementName) {
-      this.addTab(elementNo, elementName, 'collection', 'QUERY')
+      if (elementNo && elementName) {
+        this.addTab(elementNo, elementName, 'collection', 'QUERY')
+      }
     },
     queryCollectionAll() {
       Element.queryElementAll({ itemNo: this.itemNo, elementType: 'COLLECTION' }).then(response => {
@@ -304,6 +338,22 @@ export default {
     flex: 1;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .more-operation-container{
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
+
+    i {
+      font-size: 20px;
+      cursor:pointer;
+    }
+  }
+
+  .rotate-90{
+    transform: rotate(90deg)
   }
 
   .editor-main-container{
