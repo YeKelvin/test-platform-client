@@ -23,6 +23,7 @@ export function queryElementInfo(query) {
     params: query
   })
 }
+
 export function queryElementChild(query) {
   return request({
     url: '/script/element/child',
@@ -111,9 +112,17 @@ export function modifyElementChild(data) {
   })
 }
 
-export function modifyElementChildOrder(data) {
+export function moveUpElementChildOrder(data) {
   return request({
-    url: '/script/element/child/order',
+    url: '/script/element/child/order/up',
+    method: 'patch',
+    data
+  })
+}
+
+export function moveDownElementChildOrder(data) {
+  return request({
+    url: '/script/element/child/order/down',
     method: 'patch',
     data
   })

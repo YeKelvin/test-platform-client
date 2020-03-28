@@ -16,11 +16,11 @@
       <el-form-item label="注释：" prop="elementComments">
         <el-input v-model="elementForm.elementComments" placeholder="元素注释" clearable :readonly="isReadOnly" />
       </el-form-item>
-      <el-form-item label="顺序执行：" prop="serialized">
-        <el-switch v-model="elementForm.propertys['TestCollection.serialized']" :disabled="isReadOnly" />
+      <el-form-item label="顺序执行：" prop="propertys.TestCollection__serialized">
+        <el-switch v-model="elementForm.propertys.TestCollection__serialized" :disabled="isReadOnly" />
       </el-form-item>
-      <el-form-item label="延迟ms：" prop="delay">
-        <el-input v-model="elementForm.propertys['TestCollection.delay']" placeholder="还没有实现" clearable :readonly="isReadOnly" />
+      <el-form-item label="延迟ms：" prop="propertys.TestCollection__delay">
+        <el-input v-model="elementForm.propertys.TestCollection__delay" placeholder="还没有实现" clearable :readonly="isReadOnly" />
       </el-form-item>
       <el-form-item v-if="isQuery">
         <el-button type="primary" @click="editNow(true)">编辑</el-button>
@@ -70,12 +70,12 @@ export default {
         elementComments: '',
         elementType: 'COLLECTION',
         propertys: {
-          'TestCollection.serialized': true,
-          'TestCollection.delay': ''
+          TestCollection__serialized: true,
+          TestCollection__delay: ''
         }
       },
       elementFormRules: {
-        elementName: [{ required: true, message: '测试集合名称不能为空', trigger: 'blur' }]
+        elementName: [{ required: true, message: '元素名称不能为空', trigger: 'blur' }]
       }
     }
   },

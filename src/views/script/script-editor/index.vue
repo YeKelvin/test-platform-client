@@ -13,11 +13,7 @@
             <div class="collection-operation-button-container">
               <el-button type="text" icon="el-icon-plus" @click="addCreateCollectionTab">新增</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-view" @click="addCollectionDetailTab(activeCollectionNo, activeCollectionName)">详情</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-sort-up">上移</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-sort-down">下移</el-button>
+              <el-button type="text" icon="el-icon-view" @click="addCollectionDetailTab">详情</el-button>
             </div>
             <el-divider />
             <div class="collection-list-container">
@@ -27,17 +23,63 @@
                 class="collection-card"
                 :class="{'active-card':activeCollectionNo===collection.elementNo && activeCollectionName===collection.elementName}"
                 @click.native="activateCollectionCard(collection.elementNo, collection.elementName)"
-                @dblclick.native="addCollectionDetailTab(collection.elementNo, collection.elementName)"
+                @dblclick.native="changeToGroupSidebarTab"
               >
                 <div class="collection-card-inner">
                   {{ collection.elementName }}
+                  <span v-if="!collection.enabled" style="margin-left: 10px">
+                    <el-tag type="danger" size="mini">已禁用</el-tag>
+                  </span>
                   <div class="more-operation-container">
                     <el-divider direction="vertical" />
                     <el-dropdown trigger="click" placement="bottom-start">
                       <i class="el-icon-more rotate-90" />
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-turn-off">禁用</el-dropdown-item>
+                        <el-dropdown-item v-if="collection.enabled" icon="el-icon-turn-off" @click.native="disableElement(collection.elementNo, collection.elementType)">禁用</el-dropdown-item>
+                        <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(collection.elementNo, collection.elementType)">启用</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </div>
+                </div>
+              </el-card>
+            </div>
+          </el-tab-pane>
+
+          <el-tab-pane label="测试案例" name="group">
+            <div class="group-operation-button-container">
+              <el-button type="text" icon="el-icon-plus" @click="addCreateGroupTab">新增</el-button>
+              <el-divider direction="vertical" />
+              <el-button type="text" icon="el-icon-view" @click="addGroupDetailTab">详情</el-button>
+              <el-divider direction="vertical" />
+              <el-button type="text" icon="el-icon-sort-up" @click="moveUpGroup">上移</el-button>
+              <el-divider direction="vertical" />
+              <el-button type="text" icon="el-icon-sort-down" @click="moveDownGroup">下移</el-button>
+            </div>
+            <el-divider />
+            <div class="group-list-container">
+              <el-card
+                v-for="group in groupList"
+                :key="group.elementNo"
+                class="group-card"
+                :class="{'active-card':activeGroupNo===group.elementNo && activeGroupName===group.elementName}"
+                @click.native="activateGroupCard(group.elementNo, group.elementName)"
+                @dblclick.native="changeToSamplerSidebarTab"
+              >
+                <div class="group-card-inner">
+                  {{ group.elementName }}
+                  <span v-if="!group.enabled" style="margin-left: 10px">
+                    <el-tag type="danger" size="mini">已禁用</el-tag>
+                  </span>
+                  <div class="more-operation-container">
+                    <el-divider direction="vertical" />
+                    <el-dropdown trigger="click" placement="bottom-start">
+                      <i class="el-icon-more rotate-90" />
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
+                        <el-dropdown-item v-if="group.enabled" icon="el-icon-turn-off" @click.native="disableElement(group.elementNo, group.elementType)">禁用</el-dropdown-item>
+                        <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(group.elementNo, group.elementType)">启用</el-dropdown-item>
                         <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
                         <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
                       </el-dropdown-menu>
@@ -47,29 +89,48 @@
               </el-card>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="测试案例" name="group">
-            <div class="collection-operation-button-container">
-              <el-button type="text" icon="el-icon-plus" @click="addCreateGroupTab">新增</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-view">详情</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-sort-up">上移</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-sort-down">下移</el-button>
-            </div>
-            <el-divider />
-          </el-tab-pane>
+
           <el-tab-pane label="取样器" name="sampler">
-            <div class="collection-operation-button-container">
+            <div class="sampler-operation-button-container">
               <el-button type="text" icon="el-icon-plus" @click="addCreateSamplerTab">新增</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-view">详情</el-button>
+              <el-button type="text" icon="el-icon-view" @click="addSamplerDetailTab">详情</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-sort-up">上移</el-button>
+              <el-button type="text" icon="el-icon-sort-up" @click="moveUpSampler">上移</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-sort-down">下移</el-button>
+              <el-button type="text" icon="el-icon-sort-down" @click="moveDownSampler">下移</el-button>
             </div>
             <el-divider />
+            <div class="sampler-list-container">
+              <el-card
+                v-for="sampler in samplerList"
+                :key="sampler.elementNo"
+                class="sampler-card"
+                :class="{'active-card':activeSamplerNo===sampler.elementNo && activeSamplerName===sampler.elementName}"
+                @click.native="activateSamplerCard(sampler.elementNo, sampler.elementName)"
+                @dblclick.native="addSamplerDetailTab"
+              >
+                <div class="sampler-card-inner">
+                  {{ sampler.elementName }}
+                  <span v-if="!sampler.enabled" style="margin-left: 10px">
+                    <el-tag type="danger" size="mini">已禁用</el-tag>
+                  </span>
+                  <div class="more-operation-container">
+                    <el-divider direction="vertical" />
+                    <el-dropdown trigger="click" placement="bottom-start">
+                      <i class="el-icon-more rotate-90" />
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
+                        <el-dropdown-item v-if="sampler.enabled" icon="el-icon-turn-off" @click.native="disableElement(sampler.elementNo, sampler.elementType)">禁用</el-dropdown-item>
+                        <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(sampler.elementNo, sampler.elementType)">启用</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </div>
+                </div>
+              </el-card>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -85,12 +146,18 @@
             style="height: 100%"
           >
             <keep-alive>
+              <!-- :element-no为当前测试元素的 elementNo -->
               <component
                 :is="elementViews[element.elementType]"
                 :item-no="itemNo"
+                :collection-no="activeCollectionNo"
+                :group-no="activeGroupNo"
+                :sampler-no="activeSamplerNo"
                 :element-no="element.elementNo"
                 :action="element.action"
-                @re-query-collection="queryCollectionAll"
+                @re-query-collection="queryCollections"
+                @re-query-group="queryGroupsByCollection"
+                @re-query-sampler="querySamplersByGroup"
                 @rename-tab="renameTab(arguments, element)"
                 @close-tab="removeTab(`${element.elementNo}::${element.elementName}`)"
               />
@@ -150,7 +217,7 @@ export default {
   mounted: function() {
     // 存储路由跳转时传递的itemNo
     this.itemNo = this.$route.params.itemNo
-    this.queryCollectionAll()
+    this.queryCollections()
   },
 
   methods: {
@@ -168,6 +235,7 @@ export default {
     },
     changeToGroupSidebarTab() {
       this.elementSidebarTabActiveName = 'group'
+      this.queryGroupsByCollection()
     },
     changeToSamplerSidebarTab() {
       this.elementSidebarTabActiveName = 'sampler'
@@ -236,21 +304,124 @@ export default {
     addCreateSamplerTab() {
       this.addTab('0', '新增取样器', 'sampler', 'CREATE')
     },
-    addCollectionDetailTab(elementNo, elementName) {
-      if (elementNo && elementName) {
-        this.addTab(elementNo, elementName, 'collection', 'QUERY')
+    addCollectionDetailTab() {
+      if (!this.activeCollectionNo && !this.activeCollectionName) {
+        return
       }
+      this.addTab(this.activeCollectionNo, this.activeCollectionName, 'collection', 'QUERY')
     },
-    queryCollectionAll() {
+    addGroupDetailTab() {
+      if (!this.activeGroupNo && !this.activeGroupName) {
+        return
+      }
+      this.addTab(this.activeGroupNo, this.activeGroupName, 'group', 'QUERY')
+    },
+    addSamplerDetailTab() {
+      if (!this.activeSamplerNo && !this.activeSamplerName) {
+        return
+      }
+      this.addTab(this.activeSamplerNo, this.activeSamplerName, 'sampler', 'QUERY')
+    },
+    queryCollections() {
       Element.queryElementAll({ itemNo: this.itemNo, elementType: 'COLLECTION' }).then(response => {
         const { result } = response
         this.collectionList = result
       }).catch(() => {})
     },
-    queryGroupByCollection(elementNo) {
-      Element.queryElementChild({ elementNo: elementNo, elementType: 'GROUP' }).then(response => {
+    queryGroupsByCollection() {
+      Element.queryElementChild({ elementNo: this.activeCollectionNo, elementType: 'GROUP' }).then(response => {
         const { result } = response
         this.groupList = result
+      }).catch(() => {})
+    },
+    querySamplersByGroup() {
+      Element.queryElementChild({ elementNo: this.activeSamplerNo, elementType: 'SAMPLER' }).then(response => {
+        const { result } = response
+        this.samplerList = result
+      }).catch(() => {})
+    },
+    enableElement(elementNo, elementType) {
+      if (!elementNo && !elementType) {
+        return
+      }
+      Element.enableElement({ elementNo: elementNo }).then(response => {
+        if (elementType === 'COLLECTION') {
+          this.queryCollections()
+        } else if (elementType === 'GROUP') {
+          this.queryGroupsByCollection()
+        } else if (elementType === 'SAMPLER') {
+          this.querySamplersByGroup()
+        }
+      }).catch(() => {})
+    },
+    disableElement(elementNo, elementType) {
+      if (!elementNo && !elementType) {
+        return
+      }
+      Element.disableElement({ elementNo: elementNo }).then(response => {
+        if (elementType === 'COLLECTION') {
+          this.queryCollections()
+        } else if (elementType === 'GROUP') {
+          this.queryGroupsByCollection()
+        } else if (elementType === 'SAMPLER') {
+          this.querySamplersByGroup()
+        }
+      }).catch(() => {})
+    },
+    moveUpGroup() {
+      if (!this.activeCollectionNo && !this.activeGroupNo) {
+        return
+      }
+      Element.moveUpElementChildOrder(
+        { parentNo: this.activeCollectionNo, childNo: this.activeGroupNo }
+      ).then(response => {
+        this.queryGroupsByCollection()
+      }).catch(() => {
+      })
+    },
+    moveDownGroup() {
+      if (!this.activeCollectionNo && !this.activeGroupNo) {
+        return
+      }
+      Element.moveDownElementChildOrder(
+        { parentNo: this.activeCollectionNo, childNo: this.activeGroupNo }
+      ).then(response => {
+        this.queryGroupsByCollection()
+      }).catch(() => {
+      })
+    },
+    moveUpSampler() {
+      if (!this.activeGroupNo && !this.activeSamplerNo) {
+        return
+      }
+      Element.moveUpElementChildOrder(
+        { parentNo: this.activeGroupNo, childNo: this.activeSamplerNo }
+      ).then(response => {
+        this.querySamplersByGroup()
+      }).catch(() => {
+      })
+    },
+    moveDownSampler() {
+      if (!this.activeGroupNo && !this.activeSamplerNo) {
+        return
+      }
+      Element.moveDownElementChildOrder(
+        { parentNo: this.activeGroupNo, childNo: this.activeSamplerNo }
+      ).then(response => {
+        this.querySamplersByGroup()
+      }).catch(() => {
+      })
+    },
+    deleteCollection(elementNo) {
+      Element.deleteElement({ elementNo: elementNo }).then(response => {
+      }).catch(() => {})
+    },
+    deleteGroup(elementNo) {
+      Element.deleteElement({ elementNo: elementNo }).then(response => {
+      }).catch(() => {})
+    },
+    deleteSampler(elementNo) {
+      Element.deleteElement({ elementNo: elementNo }).then(response => {
       }).catch(() => {})
     }
   }
@@ -334,6 +505,86 @@ export default {
   }
 
   .collection-card-inner {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .group-operation-button-container{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    .el-button--text {
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+  }
+
+  .group-list-container{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+
+    /deep/.el-card__body {
+      padding: 15px;
+    }
+  }
+
+  .group-card{
+    margin-bottom: 6px;
+
+    &:hover {
+      border-color: #DCDCDC;
+      border-radius: 12px;
+    }
+  }
+
+  .group-card-inner {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sampler-operation-button-container{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    .el-button--text {
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+  }
+
+  .sampler-list-container{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+
+    /deep/.el-card__body {
+      padding: 15px;
+    }
+  }
+
+  .sampler-card{
+    margin-bottom: 6px;
+
+    &:hover {
+      border-color: #DCDCDC;
+      border-radius: 12px;
+    }
+  }
+
+  .sampler-card-inner {
     display: flex;
     flex: 1;
     justify-content: space-between;
