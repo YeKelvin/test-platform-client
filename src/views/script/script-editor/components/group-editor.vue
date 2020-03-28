@@ -33,6 +33,12 @@
       <el-form-item label="每秒启动的协程数：" prop="propertys.CoroutineGroup__startups_per_second">
         <el-input v-model="elementForm.propertys.CoroutineGroup__startups_per_second" placeholder="还没有实现" clearable :readonly="isReadOnly" />
       </el-form-item>
+      <el-form-item label="循环次数：" prop="propertys.LoopController__loops">
+        <el-input v-model="elementForm.propertys.LoopController__loops" clearable :readonly="isReadOnly" />
+      </el-form-item>
+      <el-form-item label="无限循环：" prop="propertys.LoopController__continue_forever">
+        <el-switch v-model="elementForm.propertys.LoopController__continue_forever" clearable :disabled="isReadOnly" />
+      </el-form-item>
       <el-form-item v-if="isQuery">
         <el-button type="primary" @click="editNow(true)">编辑</el-button>
         <el-button @click="closeTab">关闭</el-button>
@@ -83,13 +89,16 @@ export default {
         propertys: {
           CoroutineGroup__on_sample_error: 'start_next_coroutine_loop',
           CoroutineGroup__number_coroutines: '1',
-          CoroutineGroup__startups_per_second: ''
+          CoroutineGroup__startups_per_second: '',
+          LoopController__loops: '1',
+          LoopController__continue_forever: false
         }
       },
       elementFormRules: {
         elementName: [{ required: true, message: '元素名称不能为空', trigger: 'blur' }],
         'propertys.CoroutineGroup__on_sample_error': [{ required: true, message: '失败时的处理动作不能为空', trigger: 'blur' }],
-        'propertys.CoroutineGroup__number_coroutines': [{ required: true, message: '协程数不能为空', trigger: 'blur' }]
+        'propertys.CoroutineGroup__number_coroutines': [{ required: true, message: '协程数不能为空', trigger: 'blur' }],
+        'propertys.LoopController__loops': [{ required: true, message: '循环次数不能为空', trigger: 'blur' }]
       }
     }
   },
