@@ -123,11 +123,9 @@ export default {
       this.query()
     },
     disableRel(row) {
-      this.$confirm('删除该角色权限关联关系, 是否继续?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      this.$confirm(
+        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
         User.deleteRolePermissionRel({ roleNo: row.roleNo, permissionNo: row.permissionNo }).then(response => {
           if (response.success) {
             this.$message({ message: '删除角色权限关联关系成功', type: 'info', duration: 2 * 1000 })

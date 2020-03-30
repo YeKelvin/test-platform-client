@@ -80,7 +80,7 @@
                         <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
                         <el-dropdown-item v-if="group.enabled" icon="el-icon-turn-off" @click.native="disableElement(group.elementNo, group.elementType)">禁用</el-dropdown-item>
                         <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(group.elementNo, group.elementType)">启用</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-copy-document" @click.native="duplicateGroup(group.elementNo)">复制</el-dropdown-item>
                         <el-dropdown-item icon="el-icon-delete" @click.native="deleteGroup(group.elementNo)">删除</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
@@ -123,7 +123,7 @@
                         <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
                         <el-dropdown-item v-if="sampler.enabled" icon="el-icon-turn-off" @click.native="disableElement(sampler.elementNo, sampler.elementType)">禁用</el-dropdown-item>
                         <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(sampler.elementNo, sampler.elementType)">启用</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-copy-document" @click.native="duplicateSampler(sampler.elementNo)">复制</el-dropdown-item>
                         <el-dropdown-item icon="el-icon-delete" @click.native="deleteSampler(sampler.elementNo)">删除</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
@@ -467,6 +467,26 @@ export default {
           this.activeSamplerNo = ''
           this.activeSamplerName = ''
         }).catch(() => {})
+      }).catch(() => {})
+    },
+    duplicateGroup(elementNo) {
+      this.$confirm(
+        '确认复制？', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
+        // Element.duplicateElement({ elementNo: elementNo }).then(response => {
+        // }).catch(() => {})
+
+        this.queryGroupsByCollection()
+      }).catch(() => {})
+    },
+    duplicateSampler(elementNo) {
+      this.$confirm(
+        '确认复制？', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
+        // Element.duplicateElement({ elementNo: elementNo }).then(response => {
+        // }).catch(() => {})
+
+        this.querySamplersByGroup()
       }).catch(() => {})
     }
   }

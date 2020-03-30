@@ -119,3 +119,11 @@ export function moveDownElementChildOrder(data) {
     data
   })
 }
+
+export function duplicateElement(data) {
+  return request({
+    url: '/script/element/duplicate',
+    method: 'post',
+    data
+  })
+}

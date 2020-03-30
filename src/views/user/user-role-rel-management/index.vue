@@ -113,11 +113,9 @@ export default {
       this.query()
     },
     deleteRel(row) {
-      this.$confirm('删除该用户角色关联关系, 是否继续?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      this.$confirm(
+        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
         User.deleteUserRoleRel({ userNo: row.userNo, roleNo: row.roleNo }).then(response => {
           if (response.success) {
             this.$message({ message: '删除用户角色关联关系成功', type: 'info', duration: 2 * 1000 })

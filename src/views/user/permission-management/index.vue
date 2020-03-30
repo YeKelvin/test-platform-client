@@ -130,11 +130,9 @@ export default {
     },
     modifyPermissionState(row, state) {
       const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
-      this.$confirm(`${stateMsg}该权限，是否继续?`, '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      this.$confirm(
+        `确认${stateMsg}？`, '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
         User.modifyPermissionState({ permissionNo: row.permissionNo, state: state }).then(response => {
           if (response.success) {
             this.$message({ message: `${stateMsg}权限成功`, type: 'info', duration: 2 * 1000 })
@@ -145,11 +143,9 @@ export default {
       }).catch(() => {})
     },
     disablePermission(row) {
-      this.$confirm('删除该权限, 是否继续?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      this.$confirm(
+        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
         User.deletePermission({ permissionNo: row.permissionNo }).then(response => {
           if (response.success) {
             this.$message({ message: '删除权限成功', type: 'info', duration: 2 * 1000 })

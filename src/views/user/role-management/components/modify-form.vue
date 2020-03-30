@@ -56,11 +56,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$confirm('修改该角色信息，是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
+          this.$confirm(
+            '确认修改？', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+          ).then(() => {
             User.modifyRole(this.modifyForm).then(response => {
               if (response.success) {
                 this.$message({ message: '更新角色成功', type: 'info', duration: 2 * 1000 })

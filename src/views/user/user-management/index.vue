@@ -133,11 +133,9 @@ export default {
     },
     modifyUserState(row, state) {
       const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
-      this.$confirm(`${stateMsg}该用户，是否继续?`, '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      this.$confirm(
+        `确认${stateMsg}？`, '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
         User.modifyUserState({ userNo: row.userNo, state: state }).then(response => {
           if (response.success) {
             this.$message({ message: `${stateMsg}用户成功`, type: 'info', duration: 2 * 1000 })
@@ -148,11 +146,9 @@ export default {
       }).catch(() => {})
     },
     resetPassword(row) {
-      this.$confirm('确定重置用户密码?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      this.$confirm(
+        '确定重置密码？', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
         User.resetPassword({ userNo: row.userNo }).then(response => {
           if (response.success) {
             this.$message({ message: '重置用户密码成功', type: 'info', duration: 2 * 1000 })
@@ -161,11 +157,9 @@ export default {
       }).catch(() => {})
     },
     deleteUser(row) {
-      this.$confirm('删除该用户, 是否继续?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      this.$confirm(
+        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
         User.deleteUser({ userNo: row.userNo }).then(response => {
           if (response.success) {
             this.$message({ message: '删除用户成功', type: 'info', duration: 2 * 1000 })

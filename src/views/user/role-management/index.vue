@@ -126,11 +126,9 @@ export default {
     },
     modifyRoleState(row, state) {
       const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
-      this.$confirm(`${stateMsg}该角色，是否继续?`, '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      this.$confirm(
+        `确认${stateMsg}？`, '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
         User.modifyRoleState({ roleNo: row.roleNo, state: state }).then(response => {
           if (response.success) {
             this.$message({ message: `${stateMsg}角色成功`, type: 'info', duration: 2 * 1000 })
@@ -141,11 +139,9 @@ export default {
       }).catch(() => {})
     },
     deleteRole(row) {
-      this.$confirm('删除该角色, 是否继续?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      this.$confirm(
+        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
         User.deleteRole({ roleNo: row.roleNo }).then(response => {
           if (response.success) {
             this.$message({ message: '删除角色成功', type: 'info', duration: 2 * 1000 })
