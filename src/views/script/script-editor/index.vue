@@ -38,7 +38,7 @@
                         <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
                         <el-dropdown-item v-if="collection.enabled" icon="el-icon-turn-off" @click.native="disableElement(collection.elementNo, collection.elementType)">禁用</el-dropdown-item>
                         <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(collection.elementNo, collection.elementType)">启用</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-delete" @click.native="deleteCollection(collection.elementNo)">删除</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </div>
@@ -47,7 +47,7 @@
             </div>
           </el-tab-pane>
 
-          <el-tab-pane label="测试案例" name="group">
+          <el-tab-pane label="测试案例" name="group" :disabled="!activeCollectionNo&&!activeCollectionName">
             <div class="group-operation-button-container">
               <el-button type="text" icon="el-icon-plus" @click="addCreateGroupTab">新增</el-button>
               <el-divider direction="vertical" />
@@ -81,7 +81,7 @@
                         <el-dropdown-item v-if="group.enabled" icon="el-icon-turn-off" @click.native="disableElement(group.elementNo, group.elementType)">禁用</el-dropdown-item>
                         <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(group.elementNo, group.elementType)">启用</el-dropdown-item>
                         <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-delete" @click.native="deleteGroup(group.elementNo)">删除</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </div>
@@ -90,7 +90,7 @@
             </div>
           </el-tab-pane>
 
-          <el-tab-pane label="取样器" name="sampler">
+          <el-tab-pane label="取样器" name="sampler" :disabled="!activeGroupNo&&!activeGroupName">
             <div class="sampler-operation-button-container">
               <el-button type="text" icon="el-icon-plus" @click="addCreateSamplerTab">新增</el-button>
               <el-divider direction="vertical" />
@@ -124,7 +124,7 @@
                         <el-dropdown-item v-if="sampler.enabled" icon="el-icon-turn-off" @click.native="disableElement(sampler.elementNo, sampler.elementType)">禁用</el-dropdown-item>
                         <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(sampler.elementNo, sampler.elementType)">启用</el-dropdown-item>
                         <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-delete" @click.native="deleteSampler(sampler.elementNo)">删除</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </div>
@@ -413,15 +413,60 @@ export default {
       })
     },
     deleteCollection(elementNo) {
-      Element.deleteElement({ elementNo: elementNo }).then(response => {
+      this.$confirm(
+        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
+        Element.deleteElement({ elementNo: elementNo }).then(response => {
+          const { result } = response
+          result.forEach((deletedElement) => {
+            const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
+            this.removeTab(tabName)
+          })
+          this.queryCollections()
+          this.activeCollectionNo = ''
+          this.activeCollectionName = ''
+          this.groupList = []
+          this.activeGroupNo = ''
+          this.activeGroupName = ''
+          this.samplerList = []
+          this.activeSamplerNo = ''
+          this.activeSamplerName = ''
+        }).catch(() => {})
       }).catch(() => {})
     },
     deleteGroup(elementNo) {
-      Element.deleteElement({ elementNo: elementNo }).then(response => {
+      this.$confirm(
+        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
+        Element.deleteElement({ elementNo: elementNo }).then(response => {
+          const { result } = response
+          result.forEach((deletedElement) => {
+            const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
+            this.removeTab(tabName)
+          })
+          this.queryGroupsByCollection()
+          this.activeGroupNo = ''
+          this.activeGroupName = ''
+          this.samplerList = []
+          this.activeSamplerNo = ''
+          this.activeSamplerName = ''
+        }).catch(() => {})
       }).catch(() => {})
     },
     deleteSampler(elementNo) {
-      Element.deleteElement({ elementNo: elementNo }).then(response => {
+      this.$confirm(
+        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
+        Element.deleteElement({ elementNo: elementNo }).then(response => {
+          const { result } = response
+          result.forEach((deletedElement) => {
+            const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
+            this.removeTab(tabName)
+          })
+          this.querySamplersByGroup()
+          this.activeSamplerNo = ''
+          this.activeSamplerName = ''
+        }).catch(() => {})
       }).catch(() => {})
     }
   }

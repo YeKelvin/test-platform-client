@@ -36,9 +36,6 @@
       <el-form-item label="循环次数：" prop="propertys.LoopController__loops">
         <el-input v-model="elementForm.propertys.LoopController__loops" clearable :readonly="isReadOnly" />
       </el-form-item>
-      <el-form-item label="无限循环：" prop="propertys.LoopController__continue_forever">
-        <el-switch v-model="elementForm.propertys.LoopController__continue_forever" clearable :disabled="isReadOnly" />
-      </el-form-item>
       <el-form-item v-if="isQuery">
         <el-button type="primary" @click="editNow(true)">编辑</el-button>
         <el-button @click="closeTab">关闭</el-button>

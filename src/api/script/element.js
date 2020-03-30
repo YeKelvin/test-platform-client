@@ -88,14 +88,6 @@ export function modifyElementProperty(data) {
   })
 }
 
-export function deleteElementProperty(data) {
-  return request({
-    url: '/script/element/property',
-    method: 'delete',
-    data
-  })
-}
-
 export function addElementChild(data) {
   return request({
     url: '/script/element/child',
