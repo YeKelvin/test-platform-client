@@ -121,6 +121,7 @@ export default {
 
   .item-card {
     margin: 8px 10px 8px 10px;
+    user-select: none;
 
     &:hover {
       background-color: #F5F5F5;

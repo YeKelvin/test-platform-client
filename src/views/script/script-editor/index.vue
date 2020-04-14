@@ -143,7 +143,7 @@
             :label="element.elementName"
             :name="`${element.elementNo}::${element.elementName}`"
             :closable="element.elementType !=='activity'"
-            style="height: 100%"
+            style="height: 100%; overflow: auto;"
           >
             <keep-alive>
               <!-- :element-no为当前测试元素的 elementNo -->
@@ -506,6 +506,17 @@ export default {
     .el-divider--horizontal {
       margin: 10px 0
     }
+
+    .el-tabs{
+      height: 100%;
+    }
+
+    /*/deep/.el-tabs__content {*/
+    /*  flex: 1;*/
+    /*  overflow: auto !important;*/
+
+    /*  height: 100%;*/
+    /*}*/
   }
 
   .active-card {
@@ -550,6 +561,7 @@ export default {
 
   .collection-card{
     margin-bottom: 6px;
+    user-select: none;
 
     &:hover {
       /*
@@ -602,6 +614,7 @@ export default {
 
   .group-card{
     margin-bottom: 6px;
+    user-select: none;
 
     &:hover {
       border-color: #DCDCDC;
@@ -642,6 +655,7 @@ export default {
 
   .sampler-card{
     margin-bottom: 6px;
+    user-select: none;
 
     &:hover {
       border-color: #DCDCDC;
