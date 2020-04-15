@@ -102,34 +102,39 @@
             </div>
             <el-divider />
             <div class="sampler-list-container">
-              <el-card
-                v-for="sampler in samplerList"
-                :key="sampler.elementNo"
-                class="sampler-card"
-                :class="{'active-card':activeSamplerNo===sampler.elementNo && activeSamplerName===sampler.elementName}"
-                @click.native="activateSamplerCard(sampler.elementNo, sampler.elementName)"
-                @dblclick.native="addSamplerDetailTab"
-              >
-                <div class="sampler-card-inner">
-                  {{ sampler.elementName }}
-                  <span v-if="!sampler.enabled" style="margin-left: 10px">
-                    <el-tag type="danger" size="mini">已禁用</el-tag>
-                  </span>
-                  <div class="more-operation-container">
-                    <el-divider direction="vertical" />
-                    <el-dropdown trigger="click" placement="bottom-start">
-                      <i class="el-icon-more rotate-90" />
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
-                        <el-dropdown-item v-if="sampler.enabled" icon="el-icon-turn-off" @click.native="disableElement(sampler.elementNo, sampler.elementType)">禁用</el-dropdown-item>
-                        <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(sampler.elementNo, sampler.elementType)">启用</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-copy-document" @click.native="duplicateSampler(sampler.elementNo)">复制</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-delete" @click.native="deleteSampler(sampler.elementNo)">删除</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </el-dropdown>
-                  </div>
-                </div>
-              </el-card>
+              <!--              <el-card-->
+              <!--                v-for="sampler in samplerList"-->
+              <!--                :key="sampler.elementNo"-->
+              <!--                class="sampler-card"-->
+              <!--                :class="{'active-card':activeSamplerNo===sampler.elementNo && activeSamplerName===sampler.elementName}"-->
+              <!--                @click.native="activateSamplerCard(sampler.elementNo, sampler.elementName)"-->
+              <!--                @dblclick.native="addSamplerDetailTab"-->
+              <!--              >-->
+              <!--                <div class="sampler-card-inner">-->
+              <!--                  {{ sampler.elementName }}-->
+              <!--                  <span v-if="!sampler.enabled" style="margin-left: 10px">-->
+              <!--                    <el-tag type="danger" size="mini">已禁用</el-tag>-->
+              <!--                  </span>-->
+              <!--                  <div class="more-operation-container">-->
+              <!--                    <el-divider direction="vertical" />-->
+              <!--                    <el-dropdown trigger="click" placement="bottom-start">-->
+              <!--                      <i class="el-icon-more rotate-90" />-->
+              <!--                      <el-dropdown-menu slot="dropdown">-->
+              <!--                        <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>-->
+              <!--                        <el-dropdown-item v-if="sampler.enabled" icon="el-icon-turn-off" @click.native="disableElement(sampler.elementNo, sampler.elementType)">禁用</el-dropdown-item>-->
+              <!--                        <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(sampler.elementNo, sampler.elementType)">启用</el-dropdown-item>-->
+              <!--                        <el-dropdown-item icon="el-icon-copy-document" @click.native="duplicateSampler(sampler.elementNo)">复制</el-dropdown-item>-->
+              <!--                        <el-dropdown-item icon="el-icon-delete" @click.native="deleteSampler(sampler.elementNo)">删除</el-dropdown-item>-->
+              <!--                      </el-dropdown-menu>-->
+              <!--                    </el-dropdown>-->
+              <!--                  </div>-->
+              <!--                </div>-->
+              <!--              </el-card>-->
+              <el-tree :data="samplerTreeData" node-key="id" @node-click="handleNodeClick">
+                <span slot-scope="{ node, data }">
+                  <span>{{ node.label }}</span>
+                </span>
+              </el-tree>
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -192,7 +197,16 @@ export default {
       groupList: [],
       activeGroupNo: '',
       activeGroupName: '',
-      samplerList: [],
+      samplerList: [{
+        elementNo: '1111',
+        elementName: '取样器111',
+        enabled: true,
+        childList: [{
+          elementNo: '222',
+          elementName: '取样器222',
+          enabled: true
+        }]
+      }],
       activeSamplerNo: '',
       activeSamplerName: '',
       elementViews: {
@@ -214,6 +228,13 @@ export default {
     }
   },
 
+  computed: {
+    samplerTreeData: function() {
+      const samplerList = this.samplerList
+      return this.getSamplerTreeData(samplerList)
+    }
+  },
+
   mounted: function() {
     // 存储路由跳转时传递的itemNo
     this.itemNo = this.$route.params.itemNo
@@ -221,6 +242,26 @@ export default {
   },
 
   methods: {
+    handleNodeClick(data) {
+      const elementNo = data.id
+      const elementName = data.label
+      this.activateSamplerCard(elementNo, elementName)
+    },
+    getSamplerTreeData(samplerList) {
+      const treeData = []
+      samplerList.forEach(sampler => {
+        const item = {}
+        const { childList } = sampler
+        item.id = sampler['elementNo']
+        item.label = sampler['elementName']
+        item.disabled = !sampler['enabled']
+        if (childList) {
+          item.children = this.getSamplerTreeData(childList)
+        }
+        treeData.push(item)
+      })
+      return treeData
+    },
     activateCollectionCard(elementNo, elementName) {
       this.activeCollectionNo = elementNo
       this.activeCollectionName = elementName
