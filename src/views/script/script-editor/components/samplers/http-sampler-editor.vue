@@ -42,29 +42,33 @@
             label-width="auto"
             style="width: 100%"
             size="small"
-            :model="elementForm"
-            :rules="elementFormRules"
+            :model="headerForm"
+            :rules="headerFormRules"
           >
-            <div class="http-header-item">
-              <span>Key</span><span> : </span><span>Value</span>
-              <el-form-item
-                v-for="header in httpHeaders"
-                :key="header.name"
-                label="Key:"
-                :prop="header.name"
-              >
-                <el-input v-model="header.name" />
-              </el-form-item>
-              <el-form-item
-                v-for="header in httpHeaders"
-                :key="header.name"
-                label="Value:"
-                :prop="header.value"
-              >
-                <el-input v-model="header.value" />
-                <el-button @click.prevent="removeDomain(domain)">删除</el-button>
-              </el-form-item>
-            </div>
+            <el-table :data="headerForm.httpHeaders" stripe border style="width: 100%" size="mini" class="http-header-table">
+              <el-table-column label="KEY" min-width="50">
+                <template slot-scope="scope">
+                  <el-form-item :prop="'httpHeaders.' + scope.$index + '.name'" :rules="headerFormRules.name">
+                    <el-input v-model="scope.row.name" />
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="VALUE" min-width="50">
+                <template slot-scope="scope">
+                  <el-form-item :prop="'httpHeaders.' + scope.$index + '.value'" :rules="headerFormRules.value">
+                    <el-input v-model="scope.row.value" />
+                  </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column min-width="5" fixed="right" align="center">
+                <template slot="header">
+                  <el-button type="text" size="mini" @click="newHttpHeader">NEW</el-button>
+                </template>
+                <template slot-scope="scope">
+                  <el-button type="text" icon="el-icon-delete" @click="delHttpHeader(scope.row,scope.$index)" />
+                </template>
+              </el-table-column>
+            </el-table>
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="Params" name="Params" />
@@ -91,6 +95,9 @@
             :model="elementForm"
             :rules="elementFormRules"
           >
+            <el-form-item label="Encoding：" prop="propertys.HTTPSampler__encoding">
+              <el-input v-model="elementForm.propertys.HTTPSampler__encoding" placeholder="编码" clearable :readonly="isReadOnly" />
+            </el-form-item>
             <el-form-item label="Follow Redirects：" prop="propertys.HTTPSampler__follow_redirects">
               <el-switch v-model="elementForm.propertys.HTTPSampler__follow_redirects" :readonly="isReadOnly" />
             </el-form-item>
@@ -165,6 +172,7 @@ export default {
           HTTPSampler__params: '',
           HTTPSampler__data: '',
           HTTPSampler__files: '',
+          HTTPSampler__encoding: '',
           HTTPSampler__follow_redirects: false,
           HTTPSampler__auto_redirects: false,
           HTTPSampler__keep_alive: false,
@@ -175,10 +183,16 @@ export default {
       elementFormRules: {
         elementName: [{ required: true, message: '元素名称不能为空', trigger: 'blur' }]
       },
-      httpHeaders: [{
-        name: '',
-        value: ''
-      }]
+      headerForm: {
+        httpHeaders: [{
+          name: '',
+          value: ''
+        }]
+      },
+      headerFormRules: {
+        name: [{ required: true, message: 'HTTP头部名称不能为空', trigger: 'blur' }],
+        value: [{ required: true, message: 'HTTP头部值不能为空', trigger: 'blur' }]
+      }
     }
   },
 
@@ -263,6 +277,12 @@ export default {
     },
     closeTab() {
       this.$emit('close-tab')
+    },
+    newHttpHeader() {
+      this.headerForm.httpHeaders.push({ name: '', value: '' })
+    },
+    delHttpHeader(row, index) {
+
     }
   }
 }
@@ -286,18 +306,10 @@ export default {
     margin-bottom: 22px;
   }
 
-  .http-header-item {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    align-content: center;
+  .http-header-table{
 
-    .el-form-item{
-      width: 100%;
-    }
-
-    /deep/.el-form-item__content{
-      display: flex;
+    /deep/.el-form-item{
+      margin-bottom: 0;
     }
   }
 
