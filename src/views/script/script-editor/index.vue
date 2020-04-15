@@ -130,9 +130,16 @@
               <!--                  </div>-->
               <!--                </div>-->
               <!--              </el-card>-->
-              <el-tree :data="samplerTreeData" node-key="id" @node-click="handleNodeClick">
-                <span slot-scope="{ node, data }">
-                  <span>{{ node.label }}</span>
+              <el-tree
+                :data="samplerTreeData"
+                node-key="id"
+                :expand-on-click-node="true"
+                :check-on-click-node="true"
+                class="sampler-tree-container"
+                @node-click="handleNodeClick"
+              >
+                <span slot-scope="{ node, data }" class="sampler-tree-node-container">
+                  {{ node.label }}
                 </span>
               </el-tree>
             </div>
@@ -179,12 +186,12 @@ import * as Element from '@/api/script/element'
 import ActivityView from './components/activity-view'
 import CollectionEditor from './components/collection-editor'
 import GroupEditor from './components/group-editor.vue'
-import SamplerMainEditor from './components/sampler-main-editor'
+import HTTPSamplerEditor from './components/samplers/http-sampler-editor'
 
 export default {
   name: 'ScriptEditor',
 
-  components: { ActivityView, CollectionEditor, GroupEditor, SamplerMainEditor },
+  components: { ActivityView, CollectionEditor, GroupEditor, HTTPSamplerEditor },
 
   data() {
     return {
@@ -213,7 +220,7 @@ export default {
         activity: 'ActivityView',
         collection: 'CollectionEditor',
         group: 'GroupEditor',
-        sampler: 'SamplerMainEditor'
+        sampler: 'HTTPSamplerEditor'
       },
       editElementTabActiveNo: '0',
       editElementTabActiveName: '0::动态',
@@ -246,6 +253,8 @@ export default {
       const elementNo = data.id
       const elementName = data.label
       this.activateSamplerCard(elementNo, elementName)
+      console.info(this.activeSamplerNo)
+      console.info(this.activeSamplerName)
     },
     getSamplerTreeData(samplerList) {
       const treeData = []
@@ -709,6 +718,23 @@ export default {
     flex: 1;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .sampler-tree-container {
+
+    /deep/.el-tree-node__content{
+      height: 100%;
+      /*border: 1px solid #EBEEF5;*/
+      /*border-radius: 4px;*/
+    }
+  }
+
+  .sampler-tree-node-container{
+    width:100%;
+    padding: 15px;
+    /*background-color: #FFF;*/
+    /*color: #303133;*/
+    /*transition: .3s;*/
   }
 
   .more-operation-container{

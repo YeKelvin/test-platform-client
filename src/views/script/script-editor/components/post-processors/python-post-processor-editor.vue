@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "AssertionMainEditor"
+        name: "PythonPostProcessorEditor"
     }
 </script>
 
