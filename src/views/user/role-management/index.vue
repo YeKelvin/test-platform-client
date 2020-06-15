@@ -8,8 +8,8 @@
         <div class="condition-items">
           <condition-input v-model="queryConditions.roleNo" label="角色编号" class="condition-item" />
           <condition-input v-model="queryConditions.roleName" label="角色名称" class="condition-item" />
+          <condition-input v-model="queryConditions.roleDesc" label="角色备注" class="condition-item" />
           <condition-select v-model="queryConditions.state" :options="RoleState" label="角色状态" class="condition-item" />
-          <condition-input v-model="queryConditions.description" label="角色备注" class="condition-item" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -35,7 +35,7 @@
         >
           <el-table-column prop="roleNo" label="角色编号" min-width="150" />
           <el-table-column prop="roleName" label="角色名称" min-width="150" />
-          <el-table-column prop="description" label="角色备注" min-width="150" />
+          <el-table-column prop="roleDesc" label="角色备注" min-width="150" />
           <el-table-column prop="state" label="状态" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
@@ -87,8 +87,8 @@ export default {
       queryConditions: {
         roleNo: '',
         roleName: '',
-        state: '',
-        description: ''
+        roleDesc: '',
+        state: ''
       },
       // 表格数据
       tableData: [],

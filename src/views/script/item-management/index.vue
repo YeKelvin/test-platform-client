@@ -8,7 +8,7 @@
         <div class="condition-items">
           <condition-input v-model="queryConditions.itemNo" label="项目编号" class="condition-item" />
           <condition-input v-model="queryConditions.itemName" label="项目名称" class="condition-item" />
-          <condition-input v-model="queryConditions.itemDescription" label="项目描述" class="condition-item" />
+          <condition-input v-model="queryConditions.itemDesc" label="项目描述" class="condition-item" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -34,7 +34,7 @@
         >
           <el-table-column prop="itemNo" label="项目编号" min-width="150" />
           <el-table-column prop="itemName" label="项目名称" min-width="150" />
-          <el-table-column prop="itemDescription" label="项目描述" min-width="150" />
+          <el-table-column prop="itemDesc" label="项目描述" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
               <el-button type="text" size="small" @click="openUserManagementDialog(row)">成员管理</el-button>
@@ -79,7 +79,7 @@ export default {
       queryConditions: {
         itemNo: '',
         itemName: '',
-        itemDescription: ''
+        itemDesc: ''
       },
       // 表格数据
       tableData: [],

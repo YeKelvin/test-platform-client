@@ -8,6 +8,7 @@
         <div class="condition-items">
           <condition-input v-model="queryConditions.permissionNo" label="权限编号" class="condition-item" />
           <condition-input v-model="queryConditions.permissionName" label="权限名称" class="condition-item" />
+          <condition-input v-model="queryConditions.permissionDesc" label="权限描述" class="condition-item" />
           <condition-input v-model="queryConditions.endpoint" label="请求路由" class="condition-item" />
           <condition-select v-model="queryConditions.method" :options="HttpMethods" label="请求方法" class="condition-item" />
           <condition-select v-model="queryConditions.state" :options="PermissionState" label="权限状态" class="condition-item" />
@@ -36,6 +37,7 @@
         >
           <el-table-column prop="permissionNo" label="权限编号" min-width="150" />
           <el-table-column prop="permissionName" label="权限名称" min-width="150" />
+          <el-table-column prop="permissionDesc" label="权限描述" min-width="150" />
           <el-table-column prop="endpoint" label="请求路由" min-width="150" />
           <el-table-column prop="method" label="请求方法" min-width="150" />
           <el-table-column prop="state" label="状态" min-width="150" />
@@ -90,6 +92,7 @@ export default {
       queryConditions: {
         permissionNo: '',
         permissionName: '',
+        permissionDesc: '',
         endpoint: '',
         method: '',
         state: ''

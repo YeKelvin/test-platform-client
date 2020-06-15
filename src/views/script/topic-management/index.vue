@@ -8,7 +8,7 @@
         <div class="condition-topics">
           <condition-input v-model="queryConditions.topicNo" label="主题编号" class="condition-topic" />
           <condition-input v-model="queryConditions.topicName" label="主题名称" class="condition-topic" />
-          <condition-input v-model="queryConditions.topicDescription" label="主题描述" class="condition-topic" />
+          <condition-input v-model="queryConditions.topicDesc" label="主题描述" class="condition-topic" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -34,7 +34,7 @@
         >
           <el-table-column prop="topicNo" label="主题编号" min-width="150" />
           <el-table-column prop="topicName" label="主题名称" min-width="150" />
-          <el-table-column prop="topicDescription" label="主题描述" min-width="150" />
+          <el-table-column prop="topicDesc" label="主题描述" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
               <el-button type="text" size="small" @click="openUserManagementDialog(row)">集合管理</el-button>
@@ -79,7 +79,7 @@ export default {
       queryConditions: {
         topicNo: '',
         topicName: '',
-        topicDescription: ''
+        topicDesc: ''
       },
       // 表格数据
       tableData: [],

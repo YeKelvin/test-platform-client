@@ -6,13 +6,13 @@
         <h3 class="title">Login Form</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="loginName">
         <span class="svg-container"><svg-icon icon-class="user" /></span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="loginName"
+          v-model="loginForm.loginName"
+          placeholder="LoginName"
+          name="loginName"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -54,7 +54,7 @@
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
+    const validateLoginName = (rule, value, callback) => {
       if (this.$_.isEmpty(value)) {
         callback(new Error('Please enter the correct user name'))
       } else {
@@ -70,11 +70,11 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
+        loginName: 'admin',
         password: 'admin'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        loginName: [{ required: true, trigger: 'blur', validator: validateLoginName }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,

@@ -11,6 +11,9 @@
       <el-form-item label="权限名称：" prop="permissionName">
         <el-input v-model="createForm.permissionName" clearable />
       </el-form-item>
+      <el-form-item label="权限描述：" prop="permissionDesc">
+        <el-input v-model="createForm.permissionDesc" clearable />
+      </el-form-item>
       <el-form-item label="请求路由：" prop="endpoint">
         <el-input v-model="createForm.endpoint" clearable />
       </el-form-item>
@@ -43,6 +46,7 @@ export default {
       HttpMethods: HttpMethods,
       createForm: {
         permissionName: '',
+        permissionDesc: '',
         endpoint: '',
         method: ''
       },

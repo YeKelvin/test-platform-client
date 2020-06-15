@@ -11,8 +11,8 @@
       <el-form-item label="主题名称：" prop="topicName">
         <el-input v-model="modifyForm.topicName" clearable />
       </el-form-item>
-      <el-form-item label="主题描述：" prop="topicDescription">
-        <el-input v-model="modifyForm.topicDescription" clearable />
+      <el-form-item label="主题描述：" prop="topicDesc">
+        <el-input v-model="modifyForm.topicDesc" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('modifyForm')">更新</el-button>
@@ -39,7 +39,7 @@ export default {
       modifyForm: {
         topicNo: '',
         topicName: '',
-        topicDescription: ''
+        topicDesc: ''
       },
       modifyFormRules: {
         topicName: [{ required: true, message: '主题名称不能为空', trigger: 'blur' }]

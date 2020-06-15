@@ -11,8 +11,8 @@
       <el-form-item label="主题名称：" prop="topicName">
         <el-input v-model="createForm.topicName" clearable />
       </el-form-item>
-      <el-form-item label="主题描述：" prop="topicDescription">
-        <el-input v-model="createForm.topicDescription" clearable />
+      <el-form-item label="主题描述：" prop="topicDesc">
+        <el-input v-model="createForm.topicDesc" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('createForm')">新增</el-button>
@@ -31,7 +31,7 @@ export default {
     return {
       createForm: {
         topicName: '',
-        topicDescription: ''
+        topicDesc: ''
       },
       createFormRules: {
         topicName: [{ required: true, message: '主题名称不能为空', trigger: 'blur' }]

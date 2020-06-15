@@ -11,6 +11,9 @@
       <el-form-item label="权限名称：" prop="permissionName">
         <el-input v-model="modifyForm.permissionName" clearable />
       </el-form-item>
+      <el-form-item label="权限描述：" prop="permissionDesc">
+        <el-input v-model="modifyForm.permissionDesc" clearable />
+      </el-form-item>
       <el-form-item label="请求路由：" prop="endpoint">
         <el-input v-model="modifyForm.endpoint" clearable />
       </el-form-item>
@@ -51,6 +54,7 @@ export default {
       modifyForm: {
         permissionNo: '',
         permissionName: '',
+        permissionDesc: '',
         endpoint: '',
         method: ''
       },

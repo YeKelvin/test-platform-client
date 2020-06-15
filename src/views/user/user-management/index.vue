@@ -7,8 +7,7 @@
         <el-divider />
         <div class="condition-items">
           <condition-input v-model="queryConditions.userNo" label="用户编号" class="condition-item" />
-          <condition-input v-model="queryConditions.username" label="用户名称" class="condition-item" />
-          <condition-input v-model="queryConditions.nickname" label="用户昵称" class="condition-item" />
+          <condition-input v-model="queryConditions.userName" label="用户名称" class="condition-item" />
           <condition-input v-model="queryConditions.mobileNo" label="手机号" class="condition-item" />
           <condition-input v-model="queryConditions.email" label="邮箱地址" class="condition-item" />
           <condition-select v-model="queryConditions.state" :options="UserState" label="用户状态" class="condition-item" />
@@ -36,8 +35,7 @@
           :highlight-current-row="true"
         >
           <el-table-column prop="userNo" label="用户编号" min-width="150" />
-          <el-table-column prop="username" label="用户名称" min-width="150" />
-          <el-table-column prop="nickname" label="用户昵称" min-width="150" />
+          <el-table-column prop="userName" label="用户名称" min-width="150" />
           <el-table-column prop="mobileNo" label="手机号" min-width="150" />
           <el-table-column prop="email" label="邮箱" min-width="150" />
           <el-table-column prop="state" label="状态" min-width="150" />
@@ -91,8 +89,7 @@ export default {
       UserState: UserState,
       queryConditions: {
         userNo: '',
-        username: '',
-        nickname: '',
+        userName: '',
         mobileNo: '',
         email: '',
         state: ''

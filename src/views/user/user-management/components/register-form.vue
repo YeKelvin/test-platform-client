@@ -8,11 +8,8 @@
       :rules="registerFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="登录账号：" prop="username">
-        <el-input v-model="registerForm.username" clearable />
-      </el-form-item>
-      <el-form-item label="用户昵称：" prop="nickname">
-        <el-input v-model="registerForm.nickname" clearable />
+      <el-form-item label="登录账号：" prop="userName">
+        <el-input v-model="registerForm.userName" clearable />
       </el-form-item>
       <el-form-item label="登录密码：" prop="password">
         <el-input v-model="registerForm.password" clearable />
@@ -39,15 +36,13 @@ export default {
   data() {
     return {
       registerForm: {
-        username: '',
-        nickname: '',
+        userName: '',
         password: '',
         mobileNo: '',
         email: ''
       },
       registerFormRules: {
-        username: [{ required: true, message: '用户名称不能为空', trigger: 'blur' }],
-        nickname: [{ required: true, message: '用户昵称不能为空', trigger: 'blur' }],
+        userName: [{ required: true, message: '用户名称不能为空', trigger: 'blur' }],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
           { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }

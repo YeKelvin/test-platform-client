@@ -8,7 +8,7 @@
         <div class="condition-items">
           <condition-input v-model="queryConditions.userNo" label="用户编号" class="condition-item" />
           <condition-input v-model="queryConditions.roleNo" label="角色编号" class="condition-item" />
-          <condition-input v-model="queryConditions.username" label="用户名称" class="condition-item" />
+          <condition-input v-model="queryConditions.userName" label="用户名称" class="condition-item" />
           <condition-input v-model="queryConditions.roleName" label="角色名称" class="condition-item" />
         </div>
         <div class="query-buttons-container">
@@ -35,7 +35,7 @@
         >
           <el-table-column prop="userNo" label="用户编号" min-width="150" />
           <el-table-column prop="roleNo" label="角色编号" min-width="150" />
-          <el-table-column prop="username" label="用户名称" min-width="150" />
+          <el-table-column prop="userName" label="用户名称" min-width="150" />
           <el-table-column prop="roleName" label="角色名称" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
@@ -77,7 +77,7 @@ export default {
       queryConditions: {
         userNo: '',
         roleNo: '',
-        username: '',
+        userName: '',
         roleName: ''
       },
       // 表格数据

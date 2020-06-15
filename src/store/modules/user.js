@@ -1,7 +1,7 @@
 import * as User from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
-import userAvatar from '@/assets/user_avatar.gif'
+import userDefaultAvatar from '@/assets/user_avatar.gif'
 
 const getDefaultState = () => {
   return {
@@ -34,9 +34,9 @@ const mutations = {
 
 const actions = {
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { loginName, password } = userInfo
     return new Promise((resolve, reject) => {
-      User.login({ username: username.trim(), password: password }).then(response => {
+      User.login({ loginName: loginName.trim(), password: password }).then(response => {
         const { result } = response
         commit('SET_TOKEN', result.accessToken)
         setToken(result.accessToken)
@@ -55,8 +55,8 @@ const actions = {
         }
 
         const { result } = response
-        commit('SET_NAME', result.nickname)
-        commit('SET_AVATAR', userAvatar)
+        commit('SET_NAME', result.userName)
+        commit('SET_AVATAR', userDefaultAvatar)
         commit('SET_ROLES', result.roles)
         resolve(result)
       }).catch(error => {
@@ -80,7 +80,7 @@ const actions = {
 
   resetToken({ commit }) {
     return new Promise(resolve => {
-      removeToken() // must remove  token  first
+      removeToken() // must remove token first
       commit('RESET_STATE')
       resolve()
     })

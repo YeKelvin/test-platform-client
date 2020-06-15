@@ -8,8 +8,8 @@
       :rules="modifyFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="用户昵称：" prop="nickname">
-        <el-input v-model="modifyForm.nickname" clearable />
+      <el-form-item label="用户名称：" prop="userName">
+        <el-input v-model="modifyForm.userName" clearable />
       </el-form-item>
       <el-form-item label="手机号：" prop="mobileNo">
         <el-input v-model="modifyForm.mobileNo" clearable />
@@ -41,14 +41,13 @@ export default {
     return {
       modifyForm: {
         userNo: '',
-        username: '',
-        nickname: '',
+        userName: '',
         password: '',
         mobileNo: '',
         email: ''
       },
       modifyFormRules: {
-        nickname: [{ required: true, message: '用户昵称不能为空', trigger: 'blur' }],
+        userName: [{ required: true, message: '用户昵称不能为空', trigger: 'blur' }],
         mobileNo: [{ required: false }],
         email: [{ required: false }]
       }

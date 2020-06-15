@@ -11,8 +11,8 @@
       <el-form-item label="项目名称：" prop="itemName">
         <el-input v-model="createForm.itemName" clearable />
       </el-form-item>
-      <el-form-item label="项目描述：" prop="itemDescription">
-        <el-input v-model="createForm.itemDescription" clearable />
+      <el-form-item label="项目描述：" prop="itemDesc">
+        <el-input v-model="createForm.itemDesc" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('createForm')">新增</el-button>
@@ -31,7 +31,7 @@ export default {
     return {
       createForm: {
         itemName: '',
-        itemDescription: ''
+        itemDesc: ''
       },
       createFormRules: {
         itemName: [{ required: true, message: '项目名称不能为空', trigger: 'blur' }]
