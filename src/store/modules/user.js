@@ -1,7 +1,8 @@
 import * as User from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, removeToken, setToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import userDefaultAvatar from '@/assets/user_avatar.gif'
+import JsEncrypt from 'jsencrypt'
 
 const getDefaultState = () => {
   return {
@@ -36,11 +37,23 @@ const actions = {
   login({ commit }, userInfo) {
     const { loginName, password } = userInfo
     return new Promise((resolve, reject) => {
-      User.login({ loginName: loginName.trim(), password: password }).then(response => {
+      // 获取加密公钥
+      User.encryptionFactor({ loginName: loginName.trim() }).then(response => {
         const { result } = response
-        commit('SET_TOKEN', result.accessToken)
-        setToken(result.accessToken)
-        resolve()
+        const rsaPublicKey = result['publicKey']
+        const jse = new JsEncrypt.JSEncrypt()
+        jse.setPublicKey(rsaPublicKey)
+        const pwdCiphertext = jse.encrypt(password)
+
+        // 登录
+        User.login({ loginName: loginName.trim(), password: pwdCiphertext }).then(response => {
+          const { result } = response
+          commit('SET_TOKEN', result.accessToken)
+          setToken(result.accessToken)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       }).catch(error => {
         reject(error)
       })

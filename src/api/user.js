@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function encryptionFactor(query) {
+  return request({
+    url: '/encryption/factor',
+    method: 'get',
+    params: query
+  })
+}
+
 export function login(data) {
   return request({
     url: '/user/login',
