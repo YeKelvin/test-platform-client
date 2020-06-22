@@ -141,9 +141,9 @@ export const constantRoutes = [
     meta: { title: '脚本管理', icon: 'example' },
     children: [
       {
-        path: 'item-list',
-        name: 'ItemList',
-        component: () => import('@/views/script/item-list/index'),
+        path: 'project-list',
+        name: 'ProjectList',
+        component: () => import('@/views/script/project-list/index'),
         meta: { title: '脚本编辑', icon: 'example' }
       },
       {
@@ -166,9 +166,9 @@ export const constantRoutes = [
         meta: { title: '元素封装', icon: 'example' }
       },
       {
-        path: 'item-management',
-        name: 'ItemManagement',
-        component: () => import('@/views/script/item-management/index'),
+        path: 'project-management',
+        name: 'ProjectManagement',
+        component: () => import('@/views/script/project-management/index'),
         meta: { title: '项目管理', icon: 'example' }
       },
       {

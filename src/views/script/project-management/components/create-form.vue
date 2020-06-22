@@ -8,11 +8,11 @@
       :rules="createFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="项目名称：" prop="itemName">
-        <el-input v-model="createForm.itemName" clearable />
+      <el-form-item label="项目名称：" prop="projectName">
+        <el-input v-model="createForm.projectName" clearable />
       </el-form-item>
-      <el-form-item label="项目描述：" prop="itemDesc">
-        <el-input v-model="createForm.itemDesc" clearable />
+      <el-form-item label="项目描述：" prop="projectDesc">
+        <el-input v-model="createForm.projectDesc" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('createForm')">新增</el-button>
@@ -23,18 +23,18 @@
 </template>
 
 <script>
-import * as Item from '@/api/script/item'
+import * as Item from '@/api/script/project'
 
 export default {
   name: 'CreateForm',
   data() {
     return {
       createForm: {
-        itemName: '',
-        itemDesc: ''
+        projectName: '',
+        projectDesc: ''
       },
       createFormRules: {
-        itemName: [{ required: true, message: '项目名称不能为空', trigger: 'blur' }]
+        projectName: [{ required: true, message: '项目名称不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -42,7 +42,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          Item.createItem(this.createForm).then(response => {
+          Item.createProject(this.createForm).then(response => {
             if (response.success) {
               this.$message({ message: '新增项目成功', type: 'info', duration: 2 * 1000 })
               // 关闭dialog

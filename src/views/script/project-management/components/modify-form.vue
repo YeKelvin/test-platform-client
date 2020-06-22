@@ -8,11 +8,11 @@
       :rules="modifyFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="项目名称：" prop="itemName">
-        <el-input v-model="modifyForm.itemName" clearable />
+      <el-form-item label="项目名称：" prop="projectName">
+        <el-input v-model="modifyForm.projectName" clearable />
       </el-form-item>
-      <el-form-item label="项目描述：" prop="itemDesc">
-        <el-input v-model="modifyForm.itemDesc" clearable />
+      <el-form-item label="项目描述：" prop="projectDesc">
+        <el-input v-model="modifyForm.projectDesc" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('modifyForm')">更新</el-button>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import * as Item from '@/api/script/item'
+import * as Item from '@/api/script/project'
 
 export default {
   name: 'ModifyForm',
@@ -38,11 +38,11 @@ export default {
     return {
       modifyForm: {
         itemNo: '',
-        itemName: '',
-        itemDesc: ''
+        projectName: '',
+        projectDesc: ''
       },
       modifyFormRules: {
-        itemName: [{ required: true, message: '项目名称不能为空', trigger: 'blur' }]
+        projectName: [{ required: true, message: '项目名称不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -60,7 +60,7 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            Item.modifyItem(this.modifyForm).then(response => {
+            Item.modifyProject(this.modifyForm).then(response => {
               if (response.success) {
                 this.$message({ message: '更新项目成功', type: 'info', duration: 2 * 1000 })
                 // 关闭dialog

@@ -1,14 +1,14 @@
 <template>
   <scrollbar class="app-main-container">
-    <div class="item-management-container">
+    <div class="project-management-container">
 
       <div class="query-conditions-container">
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <condition-input v-model="queryConditions.itemNo" label="项目编号" class="condition-item" />
-          <condition-input v-model="queryConditions.itemName" label="项目名称" class="condition-item" />
-          <condition-input v-model="queryConditions.itemDesc" label="项目描述" class="condition-item" />
+          <condition-input v-model="queryConditions.projectNo" label="项目编号" class="condition-item" />
+          <condition-input v-model="queryConditions.projectName" label="项目名称" class="condition-item" />
+          <condition-input v-model="queryConditions.projectDesc" label="项目描述" class="condition-item" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -32,9 +32,9 @@
           :fit="true"
           :highlight-current-row="true"
         >
-          <el-table-column prop="itemNo" label="项目编号" min-width="150" />
-          <el-table-column prop="itemName" label="项目名称" min-width="150" />
-          <el-table-column prop="itemDesc" label="项目描述" min-width="150" />
+          <el-table-column prop="projectNo" label="项目编号" min-width="150" />
+          <el-table-column prop="projectName" label="项目名称" min-width="150" />
+          <el-table-column prop="projectDesc" label="项目描述" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
               <el-button type="text" size="small" @click="openUserManagementDialog(row)">成员管理</el-button>
@@ -65,21 +65,21 @@
 </template>
 
 <script>
-import * as Item from '@/api/script/item'
+import * as Item from '@/api/script/project'
 import ConditionInput from '@/components/QueryCondition/condition-input'
 import CreateForm from './components/create-form'
 import ModifyForm from './components/modify-form'
 
 export default {
-  name: 'ItemManagement',
+  name: 'ProjectManagement',
   components: { ConditionInput, CreateForm, ModifyForm },
   data() {
     return {
       // 查询条件
       queryConditions: {
-        itemNo: '',
-        itemName: '',
-        itemDesc: ''
+        projectNo: '',
+        projectName: '',
+        projectDesc: ''
       },
       // 表格数据
       tableData: [],
@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     query() {
-      Item.queryItemList(
+      Item.queryProjectList(
         { ...this.queryConditions, page: this.page, pageSize: this.pageSize }
       ).then(response => {
         const { result } = response
@@ -121,7 +121,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        Item.deleteItem({ itemNo: row.itemNo }).then(response => {
+        Item.deleteProject({ projectNo: row.projectNo }).then(response => {
           if (response.success) {
             this.$message({ message: '删除项目成功', type: 'info', duration: 2 * 1000 })
             // 重新查询列表
@@ -142,7 +142,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .item-management-container {
+  .project-management-container {
     display: flex;
     flex: 1;
     flex-direction: column;

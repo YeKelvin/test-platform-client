@@ -1,7 +1,7 @@
 <template>
   <scrollbar class="app-main-container">
-    <div class="item-list-container">
-      <div class="item-list-sidebar-container">
+    <div class="project-list-container">
+      <div class="project-list-sidebar-container">
         <div><b>测试项目</b></div>
         <el-divider />
         <el-tabs v-model="itemType" :stretch="true">
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import * as Item from '@/api/script/item'
+import * as Item from '@/api/script/project'
 export default {
   name: 'ItemList',
 
@@ -90,7 +90,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .item-list-container {
+  .project-list-container {
     display: flex;
     flex: 1;
     flex-direction: row;
@@ -104,7 +104,7 @@ export default {
     }
   }
 
-  .item-list-sidebar-container {
+  .project-list-sidebar-container {
     display: flex;
     flex: 1;
     flex-direction: column;
