@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function encryptionFactor(query) {
   return request({
-    url: '/encryption/factor',
+    url: '/user/encryption/factor',
     method: 'get',
     params: query
   })
