@@ -2,7 +2,7 @@ import * as User from '@/api/user'
 import { getToken, removeToken, setToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import userDefaultAvatar from '@/assets/user_avatar.gif'
-import JsEncrypt from 'jsencrypt'
+import { JSEncrypt } from 'jsencrypt'
 
 const getDefaultState = () => {
   return {
@@ -41,19 +41,14 @@ const actions = {
       User.encryptionFactor({ loginName: loginName.trim() }).then(response => {
         const { result } = response
         const rsaPublicKey = result['publicKey']
-        const jse = new JsEncrypt.JSEncrypt()
+        const jse = new JSEncrypt()
         jse.setPublicKey(rsaPublicKey)
-        const pwdCiphertext = jse.encrypt(password)
-
-        // 登录
-        User.login({ loginName: loginName.trim(), password: pwdCiphertext }).then(response => {
-          const { result } = response
-          commit('SET_TOKEN', result.accessToken)
-          setToken(result.accessToken)
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+        return User.login({ loginName: loginName.trim(), password: jse.encrypt(password) })
+      }).then(response => {
+        const { result } = response
+        commit('SET_TOKEN', result.accessToken)
+        setToken(result.accessToken)
+        resolve()
       }).catch(error => {
         reject(error)
       })
