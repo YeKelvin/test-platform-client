@@ -1,15 +1,15 @@
 export const UserState = {
-  NORMAL: 'NORMAL',
+  NORMAL: 'ENABLE',
   DISABLE: 'DISABLE'
 }
 
 export const RoleState = {
-  NORMAL: 'NORMAL',
+  NORMAL: 'ENABLE',
   DISABLE: 'DISABLE'
 }
 
 export const PermissionState = {
-  NORMAL: 'NORMAL',
+  NORMAL: 'ENABLE',
   DISABLE: 'DISABLE'
 }
 

@@ -6,7 +6,7 @@
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <condition-input v-model="queryConditions.actionDetail" label="操作描述" class="condition-item" />
+          <condition-input v-model="queryConditions.actionDesc" label="操作描述" class="condition-item" />
           <condition-input v-model="queryConditions.actionMethod" label="操作方法" class="condition-item" />
           <condition-input v-model="queryConditions.actionEndpoint" label="操作路由" class="condition-item" />
           <condition-input v-model="queryConditions.createdBy" label="操作人" class="condition-item" />
@@ -37,7 +37,7 @@
           :fit="true"
           :highlight-current-row="true"
         >
-          <el-table-column prop="actionDetail" label="操作描述" min-width="150" />
+          <el-table-column prop="actionDesc" label="操作描述" min-width="150" />
           <el-table-column prop="actionMethod" label="请求方法" min-width="150" />
           <el-table-column prop="actionEndpoint" label="请求路由" min-width="150" />
           <el-table-column prop="oldValue" label="旧值" min-width="150" />
@@ -74,7 +74,7 @@ export default {
     return {
       // 查询条件
       queryConditions: {
-        actionDetail: '',
+        actionDesc: '',
         actionMethod: '',
         actionEndpoint: '',
         createdBy: '',
