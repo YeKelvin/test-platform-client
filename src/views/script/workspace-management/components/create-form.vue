@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增测试项目" width="50%" v-bind="$attrs" v-on="$listeners">
+  <el-dialog title="新增工作空间" width="50%" v-bind="$attrs" v-on="$listeners">
     <el-form
       ref="createForm"
       label-width="auto"
@@ -8,11 +8,14 @@
       :rules="createFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="项目名称：" prop="projectName">
-        <el-input v-model="createForm.projectName" clearable />
+      <el-form-item label="工作空间名称：" prop="workspaceName">
+        <el-input v-model="createForm.workspaceName" clearable />
       </el-form-item>
-      <el-form-item label="项目描述：" prop="projectDesc">
-        <el-input v-model="createForm.projectDesc" clearable />
+      <el-form-item label="工作空间类型：" prop="workspaceType">
+        <el-input v-model="createForm.workspaceType" clearable />
+      </el-form-item>
+      <el-form-item label="工作空间描述：" prop="workspaceDesc">
+        <el-input v-model="createForm.workspaceDesc" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('createForm')">新增</el-button>
@@ -23,18 +26,20 @@
 </template>
 
 <script>
-import * as Item from '@/api/script/project'
+import * as Workspace from '@/api/script/workspace'
 
 export default {
   name: 'CreateForm',
   data() {
     return {
       createForm: {
-        projectName: '',
-        projectDesc: ''
+        workspaceName: '',
+        workspaceType: '',
+        workspaceDesc: ''
       },
       createFormRules: {
-        projectName: [{ required: true, message: '项目名称不能为空', trigger: 'blur' }]
+        workspaceName: [{ required: true, message: '工作空间名称不能为空', trigger: 'blur' }],
+        workspaceType: [{ required: true, message: '工作空间类型不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -42,9 +47,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          Item.createProject(this.createForm).then(response => {
+          Workspace.createWorkspace(this.createForm).then(response => {
             if (response.success) {
-              this.$message({ message: '新增项目成功', type: 'info', duration: 2 * 1000 })
+              this.$message({ message: '新增工作空间成功', type: 'info', duration: 2 * 1000 })
               // 关闭dialog
               this.$emit('update:visible', false)
               // 重新查询列表

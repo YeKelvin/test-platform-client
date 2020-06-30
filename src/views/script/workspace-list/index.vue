@@ -1,32 +1,32 @@
 <template>
   <scrollbar class="app-main-container">
-    <div class="project-list-container">
-      <div class="project-list-sidebar-container">
-        <div><b>测试项目</b></div>
+    <div class="workspace-list-container">
+      <div class="workspace-list-sidebar-container">
+        <div><b>工作空间</b></div>
         <el-divider />
-        <el-tabs v-model="projectType" :stretch="true">
-          <el-tab-pane label="团队项目" name="team">
+        <el-tabs v-model="workspaceType" :stretch="true">
+          <el-tab-pane label="团队空间" name="team">
             <el-card
-              v-for="(project, index) in projectList"
+              v-for="(workspace, index) in workspaceList"
               :key="index"
-              class="project-card"
-              @click.native="queryActivityLogList(project.projectNo)"
-              @dblclick.native="gotoScriptEditor(project.projectNo)"
+              class="workspace-card"
+              @click.native="queryActivityLogList(workspace.workspaceNo)"
+              @dblclick.native="gotoScriptEditor(workspace.workspaceNo)"
             >
-              <div class="project-card-inner">
-                {{ project.projectName }}
+              <div class="workspace-card-inner">
+                {{ workspace.workspaceName }}
                 <div class="edit-button-container">
                   <el-divider direction="vertical" />
-                  <i class="el-icon-s-promotion" @click="gotoScriptEditor(project.projectNo)" />
+                  <i class="el-icon-s-promotion" @click="gotoScriptEditor(workspace.workspaceNo)" />
                 </div>
               </div>
             </el-card>
           </el-tab-pane>
-          <el-tab-pane label="个人项目" name="person" />
+          <el-tab-pane label="个人空间" name="person" />
         </el-tabs>
       </div>
-      <div class="project-action-log-container">
-        <div><b>项目动态</b></div>
+      <div class="workspace-action-log-container">
+        <div><b>脚本动态</b></div>
         <el-divider />
         <div class="block">
           <el-timeline>
@@ -47,14 +47,14 @@
 </template>
 
 <script>
-import * as Project from '@/api/script/project'
+import * as Workspace from '@/api/script/workspace'
 export default {
-  name: 'ProjectList',
+  name: 'WorkspaceList',
 
   data() {
     return {
-      projectType: 'team',
-      projectList: [],
+      workspaceType: 'team',
+      workspaceList: [],
       activities: [{
         content: '还没做好啊',
         timestamp: '2020-03-18'
@@ -69,28 +69,28 @@ export default {
   },
 
   mounted: function() {
-    this.queryProjectAll()
+    this.queryWorkspaceAll()
   },
 
   methods: {
-    queryProjectAll() {
-      Project.queryProjectAll().then(response => {
+    queryWorkspaceAll() {
+      Workspace.queryWorkspaceAll().then(response => {
         const { result } = response
-        this.projectList = result
+        this.workspaceList = result
       }).catch(() => {})
     },
     queryActivityLogList() {
       //
     },
-    gotoScriptEditor(projectNo) {
-      this.$router.push({ name: 'ScriptEditor', params: { projectNo: projectNo }})
+    gotoScriptEditor(workspaceNo) {
+      this.$router.push({ name: 'ScriptEditor', params: { workspaceNo: workspaceNo }})
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .project-list-container {
+  .workspace-list-container {
     display: flex;
     flex: 1;
     flex-direction: row;
@@ -104,7 +104,7 @@ export default {
     }
   }
 
-  .project-list-sidebar-container {
+  .workspace-list-sidebar-container {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -119,7 +119,7 @@ export default {
     }
   }
 
-  .project-card {
+  .workspace-card {
     margin: 8px 10px 8px 10px;
     user-select: none;
 
@@ -130,7 +130,7 @@ export default {
     }
   }
 
-  .project-card-inner {
+  .workspace-card-inner {
     display: flex;
     flex: 1;
     justify-content: space-between;
@@ -150,7 +150,7 @@ export default {
     }
   }
 
-  .project-action-log-container {
+  .workspace-action-log-container {
     display: flex;
     flex: 1;
     flex-direction: column;

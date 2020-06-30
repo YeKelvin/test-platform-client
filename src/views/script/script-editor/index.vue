@@ -161,7 +161,7 @@
               <!-- :element-no为当前测试元素的 elementNo -->
               <component
                 :is="elementViews[element.elementType]"
-                :project-no="projectNo"
+                :workspace-no="workspaceNo"
                 :collection-no="activeCollectionNo"
                 :group-no="activeGroupNo"
                 :sampler-no="activeSamplerNo"
@@ -195,7 +195,7 @@ export default {
 
   data() {
     return {
-      projectNo: '',
+      workspaceNo: '',
       searchKeyword: '',
       elementSidebarTabActiveName: 'collection',
       collectionList: [],
@@ -243,8 +243,8 @@ export default {
   },
 
   mounted: function() {
-    // 存储路由跳转时传递的projectNo
-    this.projectNo = this.$route.params.projectNo
+    // 存储路由跳转时传递的workspaceNo
+    this.workspaceNo = this.$route.params.workspaceNo
     this.queryCollections()
   },
 
@@ -373,7 +373,7 @@ export default {
       this.addTab(this.activeSamplerNo, this.activeSamplerName, 'sampler', 'QUERY')
     },
     queryCollections() {
-      Element.queryElementAll({ projectNo: this.projectNo, elementType: 'COLLECTION' }).then(response => {
+      Element.queryElementAll({ workspaceNo: this.workspaceNo, elementType: 'COLLECTION' }).then(response => {
         const { result } = response
         this.collectionList = result
       }).catch(() => {})

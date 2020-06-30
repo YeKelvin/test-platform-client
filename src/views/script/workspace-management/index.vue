@@ -1,14 +1,15 @@
 <template>
   <scrollbar class="app-main-container">
-    <div class="project-management-container">
+    <div class="workspace-management-container">
 
       <div class="query-conditions-container">
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <condition-input v-model="queryConditions.projectNo" label="项目编号" class="condition-item" />
-          <condition-input v-model="queryConditions.projectName" label="项目名称" class="condition-item" />
-          <condition-input v-model="queryConditions.projectDesc" label="项目描述" class="condition-item" />
+          <condition-input v-model="queryConditions.workspaceNo" label="工作空间编号" class="condition-item" />
+          <condition-input v-model="queryConditions.workspaceName" label="工作空间名称" class="condition-item" />
+          <condition-input v-model="queryConditions.workspaceType" label="工作空间类型" class="condition-item" />
+          <condition-input v-model="queryConditions.workspaceDesc" label="工作空间描述" class="condition-item" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -32,14 +33,15 @@
           :fit="true"
           :highlight-current-row="true"
         >
-          <el-table-column prop="projectNo" label="项目编号" min-width="150" />
-          <el-table-column prop="projectName" label="项目名称" min-width="150" />
-          <el-table-column prop="projectDesc" label="项目描述" min-width="150" />
+          <el-table-column prop="workspaceNo" label="工作空间编号" min-width="150" />
+          <el-table-column prop="workspaceName" label="工作空间名称" min-width="150" />
+          <el-table-column prop="workspaceType" label="工作空间类型" min-width="150" />
+          <el-table-column prop="workspaceDesc" label="工作空间描述" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
               <el-button type="text" size="small" @click="openUserManagementDialog(row)">成员管理</el-button>
               <el-button type="text" size="small" @click="openModifyDialog(row)">编辑</el-button>
-              <el-button type="text" size="small" @click="deleteItem(row)">删除</el-button>
+              <el-button type="text" size="small" @click="deleteWorkspace(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -65,21 +67,22 @@
 </template>
 
 <script>
-import * as Item from '@/api/script/project'
+import * as Workspace from '@/api/script/workspace'
 import ConditionInput from '@/components/QueryCondition/condition-input'
 import CreateForm from './components/create-form'
 import ModifyForm from './components/modify-form'
 
 export default {
-  name: 'ProjectManagement',
+  name: 'WorkspaceManagement',
   components: { ConditionInput, CreateForm, ModifyForm },
   data() {
     return {
       // 查询条件
       queryConditions: {
-        projectNo: '',
-        projectName: '',
-        projectDesc: ''
+        workspaceNo: '',
+        workspaceName: '',
+        workspaceType: '',
+        workspaceDesc: ''
       },
       // 表格数据
       tableData: [],
@@ -94,7 +97,7 @@ export default {
   },
   methods: {
     query() {
-      Item.queryProjectList(
+      Workspace.queryWorkspaceList(
         { ...this.queryConditions, page: this.page, pageSize: this.pageSize }
       ).then(response => {
         const { result } = response
@@ -115,15 +118,15 @@ export default {
       this.page = val
       this.query()
     },
-    deleteItem(row) {
-      this.$confirm('删除该项目, 是否继续?', '警告', {
+    deleteWorkspace(row) {
+      this.$confirm('删除该工作空间, 是否继续?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        Item.deleteProject({ projectNo: row.projectNo }).then(response => {
+        Workspace.deleteWorkspace({ workspaceNo: row.workspaceNo }).then(response => {
           if (response.success) {
-            this.$message({ message: '删除项目成功', type: 'info', duration: 2 * 1000 })
+            this.$message({ message: '删除工作空间成功', type: 'info', duration: 2 * 1000 })
             // 重新查询列表
             this.query()
           }
@@ -142,7 +145,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .project-management-container {
+  .workspace-management-container {
     display: flex;
     flex: 1;
     flex-direction: column;

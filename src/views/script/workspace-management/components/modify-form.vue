@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="编辑测试项目" width="50%" v-bind="$attrs" v-on="$listeners">
+  <el-dialog title="编辑工作空间" width="50%" v-bind="$attrs" v-on="$listeners">
     <el-form
       ref="modifyForm"
       label-width="auto"
@@ -8,11 +8,14 @@
       :rules="modifyFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="项目名称：" prop="projectName">
-        <el-input v-model="modifyForm.projectName" clearable />
+      <el-form-item label="工作空间名称：" prop="workspaceName">
+        <el-input v-model="modifyForm.workspaceName" clearable />
       </el-form-item>
-      <el-form-item label="项目描述：" prop="projectDesc">
-        <el-input v-model="modifyForm.projectDesc" clearable />
+      <el-form-item label="工作空间类型：" prop="workspaceType">
+        <el-input v-model="modifyForm.workspaceType" clearable />
+      </el-form-item>
+      <el-form-item label="工作空间描述：" prop="workspaceDesc">
+        <el-input v-model="modifyForm.workspaceDesc" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('modifyForm')">更新</el-button>
@@ -22,7 +25,7 @@
 </template>
 
 <script>
-import * as Item from '@/api/script/project'
+import * as Workspace from '@/api/script/workspace'
 
 export default {
   name: 'ModifyForm',
@@ -37,12 +40,14 @@ export default {
   data() {
     return {
       modifyForm: {
-        itemNo: '',
-        projectName: '',
-        projectDesc: ''
+        workspaceNo: '',
+        workspaceName: '',
+        workspaceType: '',
+        workspaceDesc: ''
       },
       modifyFormRules: {
-        projectName: [{ required: true, message: '项目名称不能为空', trigger: 'blur' }]
+        workspaceName: [{ required: true, message: '工作空间名称不能为空', trigger: 'blur' }],
+        workspaceType: [{ required: true, message: '工作空间类型不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -55,14 +60,14 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$confirm('修改该项目信息，是否继续?', '提示', {
+          this.$confirm('修改该工作空间信息，是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            Item.modifyProject(this.modifyForm).then(response => {
+            Workspace.modifyWorkspace(this.modifyForm).then(response => {
               if (response.success) {
-                this.$message({ message: '更新项目成功', type: 'info', duration: 2 * 1000 })
+                this.$message({ message: '更新工作空间成功', type: 'info', duration: 2 * 1000 })
                 // 关闭dialog
                 this.$emit('update:visible', false)
                 // 重新查询列表
