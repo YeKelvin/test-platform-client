@@ -5,7 +5,7 @@
         <div><b>工作空间</b></div>
         <el-divider />
         <el-tabs v-model="workspaceType" :stretch="true">
-          <el-tab-pane label="团队空间" name="team">
+          <el-tab-pane label="团队" name="team">
             <el-card
               v-for="(workspace, index) in workspaceList"
               :key="index"
@@ -22,7 +22,7 @@
               </div>
             </el-card>
           </el-tab-pane>
-          <el-tab-pane label="个人空间" name="person" />
+          <el-tab-pane label="个人" name="person" />
         </el-tabs>
       </div>
       <div class="workspace-action-log-container">

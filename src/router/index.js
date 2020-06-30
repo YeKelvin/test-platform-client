@@ -169,7 +169,7 @@ export const constantRoutes = [
         path: 'workspace-management',
         name: 'WorkspaceManagement',
         component: () => import('@/views/script/workspace-management/index'),
-        meta: { title: '项目管理', icon: 'example' }
+        meta: { title: '工作空间管理', icon: 'example' }
       },
       {
         path: 'topic-management',
