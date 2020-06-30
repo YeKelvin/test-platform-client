@@ -44,10 +44,10 @@
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
               <el-button type="text" size="small" @click="openModifyDialog(row)">编辑</el-button>
-              <el-button v-if="row.state==='NORMAL'" type="text" size="small" @click="modifyPermissionState(row,'DISABLE')">
+              <el-button v-if="row.state==='ENABLE'" type="text" size="small" @click="modifyPermissionState(row,'DISABLE')">
                 禁用
               </el-button>
-              <el-button v-else type="text" size="small" @click="modifyPermissionState(row,'NORMAL')">启用</el-button>
+              <el-button v-else type="text" size="small" @click="modifyPermissionState(row,'ENABLE')">启用</el-button>
               <el-button type="text" size="small" @click="disablePermission(row)">删除</el-button>
             </template>
           </el-table-column>

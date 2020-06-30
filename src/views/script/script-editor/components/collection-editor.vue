@@ -46,7 +46,7 @@ export default {
   name: 'CollectionEditor',
 
   props: {
-    itemNo: {
+    projectNo: {
       type: String,
       default: ''
     },
@@ -139,7 +139,7 @@ export default {
     createCollectionElement(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          Element.createElement({ itemNo: this.itemNo, ...this.elementForm }).then(response => {
+          Element.createElement({ projectNo: this.projectNo, ...this.elementForm }).then(response => {
             if (response['success']) {
               this.$message({ message: '新增测试元素成功', type: 'info', duration: 2 * 1000 })
               // 关闭tab

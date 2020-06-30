@@ -4,20 +4,20 @@
       <div class="project-list-sidebar-container">
         <div><b>测试项目</b></div>
         <el-divider />
-        <el-tabs v-model="itemType" :stretch="true">
+        <el-tabs v-model="projectType" :stretch="true">
           <el-tab-pane label="团队项目" name="team">
             <el-card
-              v-for="(item, index) in itemList"
+              v-for="(project, index) in projectList"
               :key="index"
-              class="item-card"
-              @click.native="queryActivityLogList(item.itemNo)"
-              @dblclick.native="gotoScriptEditor(item.itemNo)"
+              class="project-card"
+              @click.native="queryActivityLogList(project.projectNo)"
+              @dblclick.native="gotoScriptEditor(project.projectNo)"
             >
-              <div class="item-card-inner">
-                {{ item.itemName }}
+              <div class="project-card-inner">
+                {{ project.projectName }}
                 <div class="edit-button-container">
                   <el-divider direction="vertical" />
-                  <i class="el-icon-s-promotion" @click="gotoScriptEditor(item.itemNo)" />
+                  <i class="el-icon-s-promotion" @click="gotoScriptEditor(project.projectNo)" />
                 </div>
               </div>
             </el-card>
@@ -25,7 +25,7 @@
           <el-tab-pane label="个人项目" name="person" />
         </el-tabs>
       </div>
-      <div class="item-action-log-container">
+      <div class="project-action-log-container">
         <div><b>项目动态</b></div>
         <el-divider />
         <div class="block">
@@ -47,14 +47,14 @@
 </template>
 
 <script>
-import * as Item from '@/api/script/project'
+import * as Project from '@/api/script/project'
 export default {
-  name: 'ItemList',
+  name: 'ProjectList',
 
   data() {
     return {
-      itemType: 'team',
-      itemList: [],
+      projectType: 'team',
+      projectList: [],
       activities: [{
         content: '还没做好啊',
         timestamp: '2020-03-18'
@@ -69,21 +69,21 @@ export default {
   },
 
   mounted: function() {
-    this.queryItemAll()
+    this.queryProjectAll()
   },
 
   methods: {
-    queryItemAll() {
-      Item.queryItemAll().then(response => {
+    queryProjectAll() {
+      Project.queryProjectAll().then(response => {
         const { result } = response
-        this.itemList = result
+        this.projectList = result
       }).catch(() => {})
     },
     queryActivityLogList() {
       //
     },
-    gotoScriptEditor(itemNo) {
-      this.$router.push({ name: 'ScriptEditor', params: { itemNo: itemNo }})
+    gotoScriptEditor(projectNo) {
+      this.$router.push({ name: 'ScriptEditor', params: { projectNo: projectNo }})
     }
   }
 }
@@ -119,7 +119,7 @@ export default {
     }
   }
 
-  .item-card {
+  .project-card {
     margin: 8px 10px 8px 10px;
     user-select: none;
 
@@ -130,7 +130,7 @@ export default {
     }
   }
 
-  .item-card-inner {
+  .project-card-inner {
     display: flex;
     flex: 1;
     justify-content: space-between;
@@ -150,7 +150,7 @@ export default {
     }
   }
 
-  .item-action-log-container {
+  .project-action-log-container {
     display: flex;
     flex: 1;
     flex-direction: column;
