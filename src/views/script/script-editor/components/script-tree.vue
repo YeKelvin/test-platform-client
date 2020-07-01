@@ -10,31 +10,22 @@
       :props="defaultProps"
       :expand-on-click-node="false"
       @node-click="handleNodeClick"
-      @node-contextmenu="rihgtClick"
     >
       <span slot-scope="{ node, data }" class="">
         <span>{{ node.label }}</span>
+        <el-divider direction="vertical" />
+        <el-dropdown trigger="click" placement="bottom-start">
+          <i class="el-icon-more rotate-90" />
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-turn-off">禁用</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-turn-off">启用</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </span>
     </el-tree>
-
-    <div v-show="menuVisible">
-      <el-menu
-        id="rightClickMenu"
-        class="el-menu-vertical"
-        active-text-color="#fff"
-        text-color="#fff"
-      >
-        <el-menu-item index="1" class="menuItem">
-          <span slot="title">新增</span>
-        </el-menu-item>
-        <el-menu-item index="2" class="menuItem">
-          <span slot="title">禁用</span>
-        </el-menu-item>
-        <el-menu-item index="4" class="menuItem">
-          <span slot="title">删除</span>
-        </el-menu-item>
-      </el-menu>
-    </div>
 
   </div>
 </template>
@@ -98,30 +89,6 @@ export default {
   methods: {
     handleNodeClick(data) {
       console.log(data)
-    },
-    openMenu(event, object, node, element) {
-      this.menuVisible = true
-      this.selectedNode = node
-      document.addEventListener('click', this.closeMenu)
-      this.$refs.rightMenu.$el.style.left = event.clientX + 40 + 'px'
-      this.$refs.rightMenu.$el.style.top = event.clientY + 10 + 'px'
-    },
-    closeMenu() {
-      this.menuVisible = false
-      document.removeEventListener('click', this.closeMenu)
-    },
-    rihgtClick(event, object, value, element) {
-      this.menuVisible = true
-      document.addEventListener('click', (e) => {
-        this.menuVisible = false
-      })
-      const menu = document.querySelector('#rightClickMenu')
-      console.log(menu)
-      /* 菜单定位基于鼠标点击位置 */
-      menu.style.left = event.clientX + 20 + 'px'
-      menu.style.top = event.clientY - 30 + 'px'
-      menu.style.position = 'absolute'
-      menu.style.width = 160 + 'px'
     }
   }
 }
@@ -132,25 +99,5 @@ export default {
   /*  display: block;*/
   /*  position: relative;*/
   /*}*/
-  .menu-container {
-    position: absolute;
-    z-index: 9999;
-  }
 
-  .el-menu-vertical{
-    border: 3px solid rgb(84, 92, 100);
-    border-radius: 10px;
-    z-index: 100;
-  }
-  .el-menu-vertical i{
-    color: #777777;
-  }
-  .menuItem{
-    height: 40px;
-    line-height: 40px;
-    background-color: #545c64;
-  }
-  .menuItem:hover{
-    background-color: #409EFF;
-  }
 </style>
