@@ -1,16 +1,14 @@
 <template>
   <scrollbar class="app-main-container">
-    <div class="user-management-container">
+    <div class="topic-management-container">
 
       <div class="query-conditions-container">
         <div>查询条件</div>
         <el-divider />
-        <div class="condition-items">
-          <condition-input v-model="queryConditions.userNo" label="用户编号" class="condition-item" />
-          <condition-input v-model="queryConditions.userName" label="用户名称" class="condition-item" />
-          <condition-input v-model="queryConditions.mobileNo" label="手机号" class="condition-item" />
-          <condition-input v-model="queryConditions.email" label="邮箱地址" class="condition-item" />
-          <condition-select v-model="queryConditions.state" :options="UserState" label="用户状态" class="condition-item" />
+        <div class="condition-topics">
+          <condition-input v-model="queryConditions.topicNo" label="主题编号" class="condition-topic" />
+          <condition-input v-model="queryConditions.topicName" label="主题名称" class="condition-topic" />
+          <condition-input v-model="queryConditions.topicDesc" label="主题描述" class="condition-topic" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -18,7 +16,7 @@
             <el-button type="primary" @click="query">查询</el-button>
             <el-button @click="resetQueryConditions">重置</el-button>
           </div>
-          <el-button type="primary" @click="registerDialogVisible=true">新增</el-button>
+          <el-button type="primary" @click="createDialogVisible=true">新增</el-button>
         </div>
       </div>
 
@@ -34,20 +32,14 @@
           :fit="true"
           :highlight-current-row="true"
         >
-          <el-table-column prop="userNo" label="用户编号" min-width="150" />
-          <el-table-column prop="userName" label="用户名称" min-width="150" />
-          <el-table-column prop="mobileNo" label="手机号" min-width="150" />
-          <el-table-column prop="email" label="邮箱" min-width="150" />
-          <el-table-column prop="state" label="状态" min-width="150" />
+          <el-table-column prop="topicNo" label="主题编号" min-width="150" />
+          <el-table-column prop="topicName" label="主题名称" min-width="150" />
+          <el-table-column prop="topicDesc" label="主题描述" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
+              <el-button type="text" size="small" @click="openUserManagementDialog(row)">集合管理</el-button>
               <el-button type="text" size="small" @click="openModifyDialog(row)">编辑</el-button>
-              <el-button type="text" size="small" @click="resetPassword(row)">重置密码</el-button>
-              <el-button v-if="row.state==='ENABLE'" type="text" size="small" @click="modifyUserState(row,'DISABLE')">
-                禁用
-              </el-button>
-              <el-button v-else type="text" size="small" @click="modifyUserState(row,'ENABLE')">启用</el-button>
-              <el-button type="text" size="small" @click="deleteUser(row)">删除</el-button>
+              <el-button type="text" size="small" @click="deleteTopic(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -66,33 +58,28 @@
       </div>
     </div>
 
-    <register-form :visible.sync="registerDialogVisible" @re-query="query" />
+    <create-form :visible.sync="createDialogVisible" @re-query="query" />
     <modify-form :visible.sync="modifyDialogVisible" :current-row="currentRow" @re-query="query" />
 
   </scrollbar>
 </template>
 
 <script>
-import * as User from '@/api/user'
-import { UserState } from '@/api/enum'
+import * as Topic from '@/api/script/topic'
 import ConditionInput from '@/components/QueryCondition/condition-input'
-import ConditionSelect from '@/components/QueryCondition/condition-select'
-import RegisterForm from './components/register-form'
+import CreateForm from './components/create-form'
 import ModifyForm from './components/modify-form'
 
 export default {
-  name: 'UserManagement',
-  components: { ConditionInput, ConditionSelect, RegisterForm, ModifyForm },
+  name: 'Topic',
+  components: { ConditionInput, CreateForm, ModifyForm },
   data() {
     return {
       // 查询条件
-      UserState: UserState,
       queryConditions: {
-        userNo: '',
-        userName: '',
-        mobileNo: '',
-        email: '',
-        state: ''
+        topicNo: '',
+        topicName: '',
+        topicDesc: ''
       },
       // 表格数据
       tableData: [],
@@ -101,13 +88,13 @@ export default {
       pageSize: 10,
       totalSize: 0,
       currentRow: {},
-      registerDialogVisible: false,
+      createDialogVisible: false,
       modifyDialogVisible: false
     }
   },
   methods: {
     query() {
-      User.queryUserList(
+      Topic.queryTopicList(
         { ...this.queryConditions, page: this.page, pageSize: this.pageSize }
       ).then(response => {
         const { result } = response
@@ -128,43 +115,23 @@ export default {
       this.page = val
       this.query()
     },
-    modifyUserState(row, state) {
-      const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
-      this.$confirm(
-        `确认${stateMsg}？`, '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        User.modifyUserState({ userNo: row.userNo, state: state }).then(response => {
+    deleteTopic(row) {
+      this.$confirm('删除该主题, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        Topic.deleteTopic({ topicNo: row.topicNo }).then(response => {
           if (response.success) {
-            this.$message({ message: `${stateMsg}用户成功`, type: 'info', duration: 2 * 1000 })
+            this.$message({ message: '删除主题成功', type: 'info', duration: 2 * 1000 })
             // 重新查询列表
             this.query()
           }
         }).catch(() => {})
       }).catch(() => {})
     },
-    resetPassword(row) {
-      this.$confirm(
-        '确定重置密码？', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        User.resetPassword({ userNo: row.userNo }).then(response => {
-          if (response.success) {
-            this.$message({ message: '重置用户密码成功', type: 'info', duration: 2 * 1000 })
-          }
-        }).catch(() => {})
-      }).catch(() => {})
-    },
-    deleteUser(row) {
-      this.$confirm(
-        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        User.deleteUser({ userNo: row.userNo }).then(response => {
-          if (response.success) {
-            this.$message({ message: '删除用户成功', type: 'info', duration: 2 * 1000 })
-            // 重新查询列表
-            this.query()
-          }
-        }).catch(() => {})
-      }).catch(() => {})
+    openUserManagementDialog(row) {
+      //
     },
     openModifyDialog(row) {
       this.modifyDialogVisible = true
@@ -175,7 +142,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .user-management-container {
+  .topic-management-container {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -199,14 +166,14 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   }
 
-  .condition-items {
+  .condition-topics {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     flex: none;
   }
 
-  .condition-item {
+  .condition-topic {
     display: inline-flex;
     justify-content: flex-start;
     align-items: center;

@@ -83,33 +83,33 @@ export const constantRoutes = [
     meta: { title: '用户管理', icon: 'example' },
     children: [
       {
-        path: 'user-management',
-        name: 'UserManagement',
-        component: () => import('@/views/user/user-management/index'),
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/users/user/index'),
         meta: { title: '用户管理', icon: 'example' }
       },
       {
-        path: 'permission-management',
-        name: 'PermissionManagement',
-        component: () => import('@/views/user/permission-management/index'),
+        path: 'permission',
+        name: 'Permission',
+        component: () => import('@/views/users/permission/index'),
         meta: { title: '权限管理', icon: 'example' }
       },
       {
-        path: 'role-management',
-        name: 'RoleManagement',
-        component: () => import('@/views/user/role-management/index'),
+        path: 'role',
+        name: 'Role',
+        component: () => import('@/views/users/role/index'),
         meta: { title: '角色管理', icon: 'example' }
       },
       {
-        path: 'user-role-rel-management',
-        name: 'UserRoleRelManagement',
-        component: () => import('@/views/user/user-role-rel-management/index'),
+        path: 'user-role-rel',
+        name: 'UserRoleRel',
+        component: () => import('@/views/users/user-role-rel/index'),
         meta: { title: '用户角色关联管理', icon: 'example' }
       },
       {
-        path: 'role-permission-rel-management',
+        path: 'role-permission-rel',
         name: 'RolePermissionRelManagement',
-        component: () => import('@/views/user/role-permission-rel-management/index'),
+        component: () => import('@/views/users/role-permission-rel/index'),
         meta: { title: '角色权限关联管理', icon: 'example' }
       }
     ]
@@ -143,56 +143,56 @@ export const constantRoutes = [
       {
         path: 'workspace-list',
         name: 'WorkspaceList',
-        component: () => import('@/views/script/workspace-list/index'),
+        component: () => import('@/views/scripts/workspace-list/index'),
         meta: { title: '脚本编辑', icon: 'example' }
       },
       {
         path: 'script-editor',
         name: 'ScriptEditor',
-        component: () => import('@/views/script/script-editor/index'),
+        component: () => import('@/views/scripts/script-editor/index'),
         meta: { title: '脚本编辑' },
         hidden: true
       },
       {
         path: 'batch-execution',
         name: 'BatchExecution',
-        component: () => import('@/views/script/batch-execution/index'),
+        component: () => import('@/views/scripts/batch-execution/index'),
         meta: { title: '批量执行', icon: 'example' }
       },
       {
         path: 'element-package',
         name: 'ElementPackage',
-        component: () => import('@/views/script/element-package/index'),
+        component: () => import('@/views/scripts/element-package/index'),
         meta: { title: '元素封装', icon: 'example' }
       },
       {
         path: 'workspace-management',
         name: 'WorkspaceManagement',
-        component: () => import('@/views/script/workspace-management/index'),
+        component: () => import('@/views/scripts/workspace/index'),
         meta: { title: '工作空间管理', icon: 'example' }
       },
       {
         path: 'topic-management',
         name: 'TopicManagement',
-        component: () => import('@/views/script/topic-management/index'),
+        component: () => import('@/views/scripts/topic/index'),
         meta: { title: '主题管理', icon: 'example' }
       },
       {
         path: 'environment-variable-management',
         name: 'EnvironmentVariableManagement',
-        component: () => import('@/views/script/environment-variable-management/index'),
+        component: () => import('@/views/scripts/environment-variable/index'),
         meta: { title: '环境变量管理', icon: 'example' }
       },
       {
         path: 'http-header-management',
         name: 'HTTPHeaderManagement',
-        component: () => import('@/views/script/http-header-management/index'),
+        component: () => import('@/views/scripts/http-header/index'),
         meta: { title: 'HTTP头部管理', icon: 'example' }
       },
       {
         path: 'sql-configuration-management',
         name: 'SQLConfigurationManagement',
-        component: () => import('@/views/script/sql-configuration-management/index'),
+        component: () => import('@/views/scripts/sql-configuration/index'),
         meta: { title: 'SQL配置管理', icon: 'example' }
       }
     ]

@@ -69,7 +69,7 @@ import ConditionInput from '@/components/QueryCondition/condition-input'
 import CreateForm from './components/create-form'
 
 export default {
-  name: 'UserRoleRelManagement',
+  name: 'UserRoleRel',
   components: { ConditionInput, CreateForm },
   data() {
     return {

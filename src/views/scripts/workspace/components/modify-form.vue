@@ -8,13 +8,10 @@
       :rules="modifyFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="工作空间名称：" prop="workspaceName">
+      <el-form-item label="空间名称：" prop="workspaceName">
         <el-input v-model="modifyForm.workspaceName" clearable />
       </el-form-item>
-      <el-form-item label="工作空间类型：" prop="workspaceType">
-        <el-input v-model="modifyForm.workspaceType" clearable />
-      </el-form-item>
-      <el-form-item label="工作空间描述：" prop="workspaceDesc">
+      <el-form-item label="空间描述：" prop="workspaceDesc">
         <el-input v-model="modifyForm.workspaceDesc" clearable />
       </el-form-item>
       <el-form-item>
@@ -42,12 +39,11 @@ export default {
       modifyForm: {
         workspaceNo: '',
         workspaceName: '',
-        workspaceType: '',
+        workspaceType: 'TEST',
         workspaceDesc: ''
       },
       modifyFormRules: {
-        workspaceName: [{ required: true, message: '工作空间名称不能为空', trigger: 'blur' }],
-        workspaceType: [{ required: true, message: '工作空间类型不能为空', trigger: 'blur' }]
+        workspaceName: [{ required: true, message: '工作空间名称不能为空', trigger: 'blur' }]
       }
     }
   },

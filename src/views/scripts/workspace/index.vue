@@ -1,17 +1,14 @@
 <template>
   <scrollbar class="app-main-container">
-    <div class="permission-management-container">
+    <div class="workspace-management-container">
 
       <div class="query-conditions-container">
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <condition-input v-model="queryConditions.permissionNo" label="权限编号" class="condition-item" />
-          <condition-input v-model="queryConditions.permissionName" label="权限名称" class="condition-item" />
-          <condition-input v-model="queryConditions.permissionDesc" label="权限描述" class="condition-item" />
-          <condition-input v-model="queryConditions.endpoint" label="请求路由" class="condition-item" />
-          <condition-select v-model="queryConditions.method" :options="HttpMethods" label="请求方法" class="condition-item" />
-          <condition-select v-model="queryConditions.state" :options="PermissionState" label="权限状态" class="condition-item" />
+          <condition-input v-model="queryConditions.workspaceNo" label="空间编号" class="condition-item" />
+          <condition-input v-model="queryConditions.workspaceName" label="空间名称" class="condition-item" />
+          <condition-input v-model="queryConditions.workspaceDesc" label="空间描述" class="condition-item" />
         </div>
         <div class="query-buttons-container">
           <div />
@@ -35,20 +32,15 @@
           :fit="true"
           :highlight-current-row="true"
         >
-          <el-table-column prop="permissionNo" label="权限编号" min-width="150" />
-          <el-table-column prop="permissionName" label="权限名称" min-width="150" />
-          <el-table-column prop="permissionDesc" label="权限描述" min-width="150" />
-          <el-table-column prop="endpoint" label="请求路由" min-width="150" />
-          <el-table-column prop="method" label="请求方法" min-width="150" />
-          <el-table-column prop="state" label="状态" min-width="150" />
+          <el-table-column prop="workspaceNo" label="空间编号" min-width="150" />
+          <el-table-column prop="workspaceName" label="空间名称" min-width="150" />
+          <el-table-column prop="workspaceType" label="空间类型" min-width="150" />
+          <el-table-column prop="workspaceDesc" label="空间描述" min-width="150" />
           <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="{row}">
+              <el-button type="text" size="small" @click="openUserManagementDialog(row)">成员管理</el-button>
               <el-button type="text" size="small" @click="openModifyDialog(row)">编辑</el-button>
-              <el-button v-if="row.state==='ENABLE'" type="text" size="small" @click="modifyPermissionState(row,'DISABLE')">
-                禁用
-              </el-button>
-              <el-button v-else type="text" size="small" @click="modifyPermissionState(row,'ENABLE')">启用</el-button>
-              <el-button type="text" size="small" @click="disablePermission(row)">删除</el-button>
+              <el-button type="text" size="small" @click="deleteWorkspace(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -74,28 +66,22 @@
 </template>
 
 <script>
-import * as User from '@/api/user'
-import { PermissionState, HttpMethods } from '@/api/enum'
+import * as Workspace from '@/api/script/workspace'
 import ConditionInput from '@/components/QueryCondition/condition-input'
-import ConditionSelect from '@/components/QueryCondition/condition-select'
 import CreateForm from './components/create-form'
 import ModifyForm from './components/modify-form'
 
 export default {
-  name: 'PermissionManagement',
-  components: { ConditionInput, ConditionSelect, CreateForm, ModifyForm },
+  name: 'Workspace',
+  components: { ConditionInput, CreateForm, ModifyForm },
   data() {
     return {
       // 查询条件
-      PermissionState: PermissionState,
-      HttpMethods: HttpMethods,
       queryConditions: {
-        permissionNo: '',
-        permissionName: '',
-        permissionDesc: '',
-        endpoint: '',
-        method: '',
-        state: ''
+        workspaceNo: '',
+        workspaceName: '',
+        workspaceType: 'TEST',
+        workspaceDesc: ''
       },
       // 表格数据
       tableData: [],
@@ -110,7 +96,7 @@ export default {
   },
   methods: {
     query() {
-      User.queryPermissionList(
+      Workspace.queryWorkspaceList(
         { ...this.queryConditions, page: this.page, pageSize: this.pageSize }
       ).then(response => {
         const { result } = response
@@ -131,32 +117,23 @@ export default {
       this.page = val
       this.query()
     },
-    modifyPermissionState(row, state) {
-      const stateMsg = state === 'DISABLE' ? '禁用' : '启用'
-      this.$confirm(
-        `确认${stateMsg}？`, '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        User.modifyPermissionState({ permissionNo: row.permissionNo, state: state }).then(response => {
+    deleteWorkspace(row) {
+      this.$confirm('删除该工作空间, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        Workspace.deleteWorkspace({ workspaceNo: row.workspaceNo }).then(response => {
           if (response.success) {
-            this.$message({ message: `${stateMsg}权限成功`, type: 'info', duration: 2 * 1000 })
+            this.$message({ message: '删除工作空间成功', type: 'info', duration: 2 * 1000 })
             // 重新查询列表
             this.query()
           }
         }).catch(() => {})
       }).catch(() => {})
     },
-    disablePermission(row) {
-      this.$confirm(
-        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        User.deletePermission({ permissionNo: row.permissionNo }).then(response => {
-          if (response.success) {
-            this.$message({ message: '删除权限成功', type: 'info', duration: 2 * 1000 })
-            // 重新查询列表
-            this.query()
-          }
-        }).catch(() => {})
-      }).catch(() => {})
+    openUserManagementDialog(row) {
+      //
     },
     openModifyDialog(row) {
       this.modifyDialogVisible = true
@@ -167,7 +144,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .permission-management-container {
+  .workspace-management-container {
     display: flex;
     flex: 1;
     flex-direction: column;

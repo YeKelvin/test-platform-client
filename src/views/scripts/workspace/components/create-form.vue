@@ -8,13 +8,10 @@
       :rules="createFormRules"
       @close="$emit('update:visible', false)"
     >
-      <el-form-item label="工作空间名称：" prop="workspaceName">
+      <el-form-item label="空间名称：" prop="workspaceName">
         <el-input v-model="createForm.workspaceName" clearable />
       </el-form-item>
-      <el-form-item label="工作空间类型：" prop="workspaceType">
-        <el-input v-model="createForm.workspaceType" clearable />
-      </el-form-item>
-      <el-form-item label="工作空间描述：" prop="workspaceDesc">
+      <el-form-item label="空间描述：" prop="workspaceDesc">
         <el-input v-model="createForm.workspaceDesc" clearable />
       </el-form-item>
       <el-form-item>
@@ -34,12 +31,11 @@ export default {
     return {
       createForm: {
         workspaceName: '',
-        workspaceType: '',
+        workspaceType: 'TEST',
         workspaceDesc: ''
       },
       createFormRules: {
-        workspaceName: [{ required: true, message: '工作空间名称不能为空', trigger: 'blur' }],
-        workspaceType: [{ required: true, message: '工作空间类型不能为空', trigger: 'blur' }]
+        workspaceName: [{ required: true, message: '工作空间名称不能为空', trigger: 'blur' }]
       }
     }
   },
