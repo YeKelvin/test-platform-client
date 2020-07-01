@@ -4,12 +4,11 @@
       <div class="element-sidebar-container">
         <el-input
           v-model="searchKeyword"
-          placeholder="测试集合 | 测试案例 | 取样器"
+          placeholder="search"
           prefix-icon="el-icon-search"
-          @keyup.enter.native="handleEnterSearch"
         />
-        <el-tabs v-model="elementSidebarTabActiveName" :stretch="true" @tab-click="handleElementSidebarTabClick">
-          <el-tab-pane label="测试集合" name="collection">
+        <el-tabs v-model="elementSidebarTabActiveName" :stretch="true">
+          <el-tab-pane label="测试脚本" name="collection">
             <div class="collection-operation-button-container">
               <el-button type="text" icon="el-icon-plus" @click="addCreateCollectionTab">新增</el-button>
               <el-divider direction="vertical" />
@@ -58,50 +57,7 @@
               <el-button type="text" icon="el-icon-sort-down" @click="moveDownGroup">下移</el-button>
             </div>
             <el-divider />
-            <div class="group-list-container">
-              <el-card
-                v-for="group in groupList"
-                :key="group.elementNo"
-                class="group-card"
-                :class="{'active-card':activeGroupNo===group.elementNo && activeGroupName===group.elementName}"
-                @click.native="activateGroupCard(group.elementNo, group.elementName)"
-                @dblclick.native="changeToSamplerSidebarTab"
-              >
-                <div class="group-card-inner">
-                  {{ group.elementName }}
-                  <span v-if="!group.enabled" style="margin-left: 10px">
-                    <el-tag type="danger" size="mini">已禁用</el-tag>
-                  </span>
-                  <div class="more-operation-container">
-                    <el-divider direction="vertical" />
-                    <el-dropdown trigger="click" placement="bottom-start">
-                      <i class="el-icon-more rotate-90" />
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
-                        <el-dropdown-item v-if="group.enabled" icon="el-icon-turn-off" @click.native="disableElement(group.elementNo, group.elementType)">禁用</el-dropdown-item>
-                        <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(group.elementNo, group.elementType)">启用</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-copy-document" @click.native="duplicateGroup(group.elementNo)">复制</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-delete" @click.native="deleteGroup(group.elementNo)">删除</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </el-dropdown>
-                  </div>
-                </div>
-              </el-card>
-            </div>
-          </el-tab-pane>
-
-          <el-tab-pane label="取样器" name="sampler">
-            <div class="sampler-operation-button-container">
-              <el-button type="text" icon="el-icon-plus" @click="addCreateSamplerTab">新增</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-view" @click="addSamplerDetailTab">详情</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-sort-up" @click="moveUpSampler">上移</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-sort-down" @click="moveDownSampler">下移</el-button>
-            </div>
-            <el-divider />
-            <script-tree></script-tree>
+            <script-tree />
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -195,13 +151,6 @@ export default {
     }
   },
 
-  computed: {
-    samplerTreeData: function() {
-      const samplerList = this.samplerList
-      return this.getSamplerTreeData(samplerList)
-    }
-  },
-
   mounted: function() {
     // 存储路由跳转时传递的workspaceNo
     this.workspaceNo = this.$route.params.workspaceNo
@@ -235,10 +184,6 @@ export default {
       this.activeCollectionNo = elementNo
       this.activeCollectionName = elementName
     },
-    activateGroupCard(elementNo, elementName) {
-      this.activeGroupNo = elementNo
-      this.activeGroupName = elementName
-    },
     activateSamplerCard(elementNo, elementName) {
       this.activeSamplerNo = elementNo
       this.activeSamplerName = elementName
@@ -246,15 +191,6 @@ export default {
     changeToGroupSidebarTab() {
       this.elementSidebarTabActiveName = 'group'
       this.queryGroupsByCollection()
-    },
-    changeToSamplerSidebarTab() {
-      this.elementSidebarTabActiveName = 'sampler'
-    },
-    handleEnterSearch(event, keyword) {
-      //
-    },
-    handleElementSidebarTabClick(tab, event) {
-      //
     },
     addTab(elementNo, elementName, elementType, action) {
       const tabs = this.editElementTabs
@@ -296,7 +232,6 @@ export default {
           }
         })
       }
-
       this.editElementTabActiveNo = activeNo
       this.editElementTabActiveName = `${activeNo}::${activeName}`
       this.editElementTabs = tabs.filter(tab => `${tab.elementNo}::${tab.elementName}` !== removeTabName)
@@ -311,9 +246,6 @@ export default {
     addCreateGroupTab() {
       this.addTab('0', '新增案例', 'group', 'CREATE')
     },
-    addCreateSamplerTab() {
-      this.addTab('0', '新增取样器', 'sampler', 'CREATE')
-    },
     addCollectionDetailTab() {
       if (!this.activeCollectionNo && !this.activeCollectionName) {
         return
@@ -325,12 +257,6 @@ export default {
         return
       }
       this.addTab(this.activeGroupNo, this.activeGroupName, 'group', 'QUERY')
-    },
-    addSamplerDetailTab() {
-      if (!this.activeSamplerNo && !this.activeSamplerName) {
-        return
-      }
-      this.addTab(this.activeSamplerNo, this.activeSamplerName, 'sampler', 'QUERY')
     },
     queryCollections() {
       Element.queryElementAll({ workspaceNo: this.workspaceNo, elementType: 'COLLECTION' }).then(response => {
@@ -400,28 +326,6 @@ export default {
       }).catch(() => {
       })
     },
-    moveUpSampler() {
-      if (!this.activeGroupNo && !this.activeSamplerNo) {
-        return
-      }
-      Element.moveUpElementChildOrder(
-        { parentNo: this.activeGroupNo, childNo: this.activeSamplerNo }
-      ).then(response => {
-        this.querySamplersByGroup()
-      }).catch(() => {
-      })
-    },
-    moveDownSampler() {
-      if (!this.activeGroupNo && !this.activeSamplerNo) {
-        return
-      }
-      Element.moveDownElementChildOrder(
-        { parentNo: this.activeGroupNo, childNo: this.activeSamplerNo }
-      ).then(response => {
-        this.querySamplersByGroup()
-      }).catch(() => {
-      })
-    },
     deleteCollection(elementNo) {
       this.$confirm(
         '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
@@ -444,61 +348,6 @@ export default {
         }).catch(() => {})
       }).catch(() => {})
     },
-    deleteGroup(elementNo) {
-      this.$confirm(
-        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        Element.deleteElement({ elementNo: elementNo }).then(response => {
-          const { result } = response
-          result.forEach((deletedElement) => {
-            const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
-            this.removeTab(tabName)
-          })
-          this.queryGroupsByCollection()
-          this.activeGroupNo = ''
-          this.activeGroupName = ''
-          this.samplerList = []
-          this.activeSamplerNo = ''
-          this.activeSamplerName = ''
-        }).catch(() => {})
-      }).catch(() => {})
-    },
-    deleteSampler(elementNo) {
-      this.$confirm(
-        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        Element.deleteElement({ elementNo: elementNo }).then(response => {
-          const { result } = response
-          result.forEach((deletedElement) => {
-            const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
-            this.removeTab(tabName)
-          })
-          this.querySamplersByGroup()
-          this.activeSamplerNo = ''
-          this.activeSamplerName = ''
-        }).catch(() => {})
-      }).catch(() => {})
-    },
-    duplicateGroup(elementNo) {
-      this.$confirm(
-        '确认复制？', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        // Element.duplicateElement({ elementNo: elementNo }).then(response => {
-        // }).catch(() => {})
-
-        this.queryGroupsByCollection()
-      }).catch(() => {})
-    },
-    duplicateSampler(elementNo) {
-      this.$confirm(
-        '确认复制？', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        // Element.duplicateElement({ elementNo: elementNo }).then(response => {
-        // }).catch(() => {})
-
-        this.querySamplersByGroup()
-      }).catch(() => {})
-    }
   }
 }
 </script>
@@ -637,64 +486,6 @@ export default {
     flex: 1;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .sampler-operation-button-container{
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-
-    .el-button--text {
-      padding-top: 6px;
-      padding-bottom: 6px;
-    }
-  }
-
-  .sampler-list-container{
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    height: 100%;
-
-    /deep/.el-card__body {
-      padding: 15px;
-    }
-  }
-
-  .sampler-card{
-    margin-bottom: 6px;
-    user-select: none;
-
-    &:hover {
-      border-color: #DCDCDC;
-      border-radius: 12px;
-    }
-  }
-
-  .sampler-card-inner {
-    display: flex;
-    flex: 1;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .sampler-tree-container {
-
-    /deep/.el-tree-node__content{
-      height: 100%;
-      /*border: 1px solid #EBEEF5;*/
-      /*border-radius: 4px;*/
-    }
-  }
-
-  .sampler-tree-node-container{
-    width:100%;
-    padding: 15px;
-    /*background-color: #FFF;*/
-    /*color: #303133;*/
-    /*transition: .3s;*/
   }
 
   .more-operation-container{
