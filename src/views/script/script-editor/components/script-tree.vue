@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="tree-container">
     <el-tree
-      ref="scripttree"
+      ref="scriptTree"
       node-key="elementNo"
       empty-text="空脚本"
       highlight-current
@@ -10,21 +10,32 @@
       :props="defaultProps"
       :expand-on-click-node="false"
       @node-click="handleNodeClick"
-      @node-contextmenu="openMenu"
+      @node-contextmenu="rihgtClick"
     >
       <span slot-scope="{ node, data }" class="">
         <span>{{ node.label }}</span>
       </span>
     </el-tree>
 
-    <el-card v-show="menuVisible" ref="menu" class="menu-container">
-      <span>
-        <i class="el-icon-circle-plus-outline" />同级增加
-      </span>
-      <span class="delete">
-        <i class="el-icon-remove-outline" />删除节点
-      </span>
-    </el-card>
+    <div v-show="menuVisible">
+      <el-menu
+        id="rightClickMenu"
+        class="el-menu-vertical"
+        active-text-color="#fff"
+        text-color="#fff"
+      >
+        <el-menu-item index="1" class="menuItem">
+          <span slot="title">新增</span>
+        </el-menu-item>
+        <el-menu-item index="2" class="menuItem">
+          <span slot="title">禁用</span>
+        </el-menu-item>
+        <el-menu-item index="4" class="menuItem">
+          <span slot="title">删除</span>
+        </el-menu-item>
+      </el-menu>
+    </div>
+
   </div>
 </template>
 
@@ -38,9 +49,10 @@ export default {
       treeProps: {
         label: 'elementName',
         children: 'children',
-        disabled: ''
+        disabled: 'enabled'
       },
       menuVisible: false,
+      selectedNode: null,
       data: [{
         label: '一级 1',
         children: [{
@@ -76,6 +88,7 @@ export default {
           }]
         }]
       }],
+      // data: JSON.parse(JSON.stringify(data))
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -88,22 +101,56 @@ export default {
     },
     openMenu(event, object, node, element) {
       this.menuVisible = true
+      this.selectedNode = node
       document.addEventListener('click', this.closeMenu)
-      this.$refs.menu.$el.style.left = event.clientX + 40 + 'px'
-      this.$refs.menu.$el.style.top = event.clientY + 10 + 'px'
+      this.$refs.rightMenu.$el.style.left = event.clientX + 40 + 'px'
+      this.$refs.rightMenu.$el.style.top = event.clientY + 10 + 'px'
     },
     closeMenu() {
       this.menuVisible = false
       document.removeEventListener('click', this.closeMenu)
+    },
+    rihgtClick(event, object, value, element) {
+      this.menuVisible = true
+      document.addEventListener('click', (e) => {
+        this.menuVisible = false
+      })
+      const menu = document.querySelector('#rightClickMenu')
+      console.log(menu)
+      /* 菜单定位基于鼠标点击位置 */
+      menu.style.left = event.clientX + 20 + 'px'
+      menu.style.top = event.clientY - 30 + 'px'
+      menu.style.position = 'absolute'
+      menu.style.width = 160 + 'px'
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  /*.tree-container {*/
+  /*  display: block;*/
+  /*  position: relative;*/
+  /*}*/
   .menu-container {
-    width:120px;
-    position:absolute;
-    z-index:1000;
+    position: absolute;
+    z-index: 9999;
+  }
+
+  .el-menu-vertical{
+    border: 3px solid rgb(84, 92, 100);
+    border-radius: 10px;
+    z-index: 100;
+  }
+  .el-menu-vertical i{
+    color: #777777;
+  }
+  .menuItem{
+    height: 40px;
+    line-height: 40px;
+    background-color: #545c64;
+  }
+  .menuItem:hover{
+    background-color: #409EFF;
   }
 </style>

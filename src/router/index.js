@@ -132,56 +132,56 @@ export const constantRoutes = [
       {
         path: 'workspace-list',
         name: 'WorkspaceList',
-        component: () => import('@/views/scripts/workspace-list/index'),
+        component: () => import('@/views/script/workspace-list/index'),
         meta: { title: '脚本编辑', icon: 'example' }
       },
       {
         path: 'script-editor',
         name: 'ScriptEditor',
-        component: () => import('@/views/scripts/script-editor/index'),
+        component: () => import('@/views/script/script-editor/index'),
         meta: { title: '脚本编辑' },
         hidden: true
       },
       {
         path: 'batch-execution',
         name: 'BatchExecution',
-        component: () => import('@/views/scripts/batch-execution/index'),
+        component: () => import('@/views/script/batch-execution/index'),
         meta: { title: '批量执行', icon: 'example' }
       },
       {
         path: 'element-package',
         name: 'ElementPackage',
-        component: () => import('@/views/scripts/element-package/index'),
+        component: () => import('@/views/script/element-package/index'),
         meta: { title: '元素封装', icon: 'example' }
       },
       {
         path: 'workspace',
         name: 'Workspace',
-        component: () => import('@/views/scripts/workspace/index'),
+        component: () => import('@/views/script/workspace/index'),
         meta: { title: '工作空间管理', icon: 'example' }
       },
       {
         path: 'topic',
         name: 'Topic',
-        component: () => import('@/views/scripts/topic/index'),
+        component: () => import('@/views/script/topic/index'),
         meta: { title: '主题管理', icon: 'example' }
       },
       {
         path: 'environment-variable',
         name: 'EnvironmentVariable',
-        component: () => import('@/views/scripts/environment-variable/index'),
+        component: () => import('@/views/script/environment-variable/index'),
         meta: { title: '环境变量管理', icon: 'example' }
       },
       {
         path: 'http-header',
         name: 'HTTPHeader',
-        component: () => import('@/views/scripts/http-header/index'),
+        component: () => import('@/views/script/http-header/index'),
         meta: { title: 'HTTP头部管理', icon: 'example' }
       },
       {
         path: 'sql-configuration',
         name: 'SQLConfiguration',
-        component: () => import('@/views/scripts/sql-configuration/index'),
+        component: () => import('@/views/script/sql-configuration/index'),
         meta: { title: 'SQL配置管理', icon: 'example' }
       }
     ]
