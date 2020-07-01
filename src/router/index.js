@@ -75,47 +75,6 @@ export const constantRoutes = [
   },
 
   {
-    path: '/user',
-    name: 'User',
-    alwaysShow: true,
-    component: Layout,
-    redirect: 'noRedirect',
-    meta: { title: '用户管理', icon: 'example' },
-    children: [
-      {
-        path: 'user',
-        name: 'User',
-        component: () => import('@/views/users/user/index'),
-        meta: { title: '用户管理', icon: 'example' }
-      },
-      {
-        path: 'permission',
-        name: 'Permission',
-        component: () => import('@/views/users/permission/index'),
-        meta: { title: '权限管理', icon: 'example' }
-      },
-      {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/users/role/index'),
-        meta: { title: '角色管理', icon: 'example' }
-      },
-      {
-        path: 'user-role-rel',
-        name: 'UserRoleRel',
-        component: () => import('@/views/users/user-role-rel/index'),
-        meta: { title: '用户角色关联管理', icon: 'example' }
-      },
-      {
-        path: 'role-permission-rel',
-        name: 'RolePermissionRelManagement',
-        component: () => import('@/views/users/role-permission-rel/index'),
-        meta: { title: '角色权限关联管理', icon: 'example' }
-      }
-    ]
-  },
-
-  {
     path: '/system',
     name: 'System',
     alwaysShow: true,
@@ -123,6 +82,36 @@ export const constantRoutes = [
     redirect: 'noRedirect',
     meta: { title: '系统管理', icon: 'example' },
     children: [
+      {
+        path: '/user',
+        name: 'User',
+        component: () => import('@/views/system/user/index'),
+        meta: { title: '用户管理', icon: 'example' }
+      },
+      {
+        path: 'permission',
+        name: 'Permission',
+        component: () => import('@/views/system/permission/index'),
+        meta: { title: '权限管理', icon: 'example' }
+      },
+      {
+        path: 'role',
+        name: 'Role',
+        component: () => import('@/views/system/role/index'),
+        meta: { title: '角色管理', icon: 'example' }
+      },
+      {
+        path: 'user-role-rel',
+        name: 'UserRoleRel',
+        component: () => import('@/views/system/user-role-rel/index'),
+        meta: { title: '用户角色关联管理', icon: 'example' }
+      },
+      {
+        path: 'role-permission-rel',
+        name: 'RolePermissionRelManagement',
+        component: () => import('@/views/system/role-permission-rel/index'),
+        meta: { title: '角色权限关联管理', icon: 'example' }
+      },
       {
         path: 'action-log',
         name: 'ActionLog',
@@ -166,32 +155,32 @@ export const constantRoutes = [
         meta: { title: '元素封装', icon: 'example' }
       },
       {
-        path: 'workspace-management',
-        name: 'WorkspaceManagement',
+        path: 'workspace',
+        name: 'Workspace',
         component: () => import('@/views/scripts/workspace/index'),
         meta: { title: '工作空间管理', icon: 'example' }
       },
       {
-        path: 'topic-management',
-        name: 'TopicManagement',
+        path: 'topic',
+        name: 'Topic',
         component: () => import('@/views/scripts/topic/index'),
         meta: { title: '主题管理', icon: 'example' }
       },
       {
-        path: 'environment-variable-management',
-        name: 'EnvironmentVariableManagement',
+        path: 'environment-variable',
+        name: 'EnvironmentVariable',
         component: () => import('@/views/scripts/environment-variable/index'),
         meta: { title: '环境变量管理', icon: 'example' }
       },
       {
-        path: 'http-header-management',
-        name: 'HTTPHeaderManagement',
+        path: 'http-header',
+        name: 'HTTPHeader',
         component: () => import('@/views/scripts/http-header/index'),
         meta: { title: 'HTTP头部管理', icon: 'example' }
       },
       {
-        path: 'sql-configuration-management',
-        name: 'SQLConfigurationManagement',
+        path: 'sql-configuration',
+        name: 'SQLConfiguration',
         component: () => import('@/views/scripts/sql-configuration/index'),
         meta: { title: 'SQL配置管理', icon: 'example' }
       }

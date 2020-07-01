@@ -91,6 +91,16 @@
           </el-tab-pane>
 
           <el-tab-pane label="取样器" name="sampler">
+            <div class="sampler-operation-button-container">
+              <el-button type="text" icon="el-icon-plus" @click="addCreateSamplerTab">新增</el-button>
+              <el-divider direction="vertical" />
+              <el-button type="text" icon="el-icon-view" @click="addSamplerDetailTab">详情</el-button>
+              <el-divider direction="vertical" />
+              <el-button type="text" icon="el-icon-sort-up" @click="moveUpSampler">上移</el-button>
+              <el-divider direction="vertical" />
+              <el-button type="text" icon="el-icon-sort-down" @click="moveDownSampler">下移</el-button>
+            </div>
+            <el-divider />
             <script-tree></script-tree>
           </el-tab-pane>
         </el-tabs>
@@ -710,6 +720,5 @@ export default {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     margin-left: 6px;
-
   }
 </style>
