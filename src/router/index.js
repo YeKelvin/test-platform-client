@@ -132,7 +132,7 @@ export const constantRoutes = [
       {
         path: 'workspace-list',
         name: 'WorkspaceList',
-        component: () => import('@/views/script/workspace-list/index'),
+        component: () => import('@/views/script/workspace-entrance/index'),
         meta: { title: '脚本编辑', icon: 'example' }
       },
       {

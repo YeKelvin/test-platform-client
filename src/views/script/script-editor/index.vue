@@ -2,14 +2,9 @@
   <scrollbar class="app-main-container">
     <div class="script-editor-container">
       <div class="element-sidebar-container">
-        <el-input
-          v-model="searchKeyword"
-          placeholder="search"
-          prefix-icon="el-icon-search"
-        />
-        <el-tabs v-model="elementSidebarTabActiveName" :stretch="true">
+        <el-tabs v-model="sidebarTabActiveName" :stretch="true">
           <el-tab-pane label="测试脚本" name="collection">
-            <div class="collection-operation-button-container">
+            <div class="collection-operation-container">
               <el-button type="text" icon="el-icon-plus" @click="addCreateCollectionTab">新增</el-button>
               <el-divider direction="vertical" />
               <el-button type="text" icon="el-icon-view" @click="addCollectionDetailTab">详情</el-button>
@@ -24,7 +19,7 @@
                 @click.native="activateCollectionCard(collection.elementNo, collection.elementName)"
                 @dblclick.native="changeToGroupSidebarTab"
               >
-                <div class="collection-card-inner">
+                <div class="collection-item">
                   {{ collection.elementName }}
                   <span v-if="!collection.enabled" style="margin-left: 10px">
                     <el-tag type="danger" size="mini">已禁用</el-tag>
@@ -47,10 +42,10 @@
           </el-tab-pane>
 
           <el-tab-pane label="测试案例" name="group" :disabled="!activeCollectionNo&&!activeCollectionName">
-            <div class="group-operation-button-container">
-              <el-button type="text" icon="el-icon-plus" @click="addCreateGroupTab">新增</el-button>
+            <div class="group-operation-container">
+              <el-button type="text" icon="el-icon-plus" @click="openNewGroupTab">新增</el-button>
               <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-view" @click="addGroupDetailTab">详情</el-button>
+              <el-button type="text" icon="el-icon-view" @click="openGroupDetailTab">详情</el-button>
               <el-divider direction="vertical" />
               <el-button type="text" icon="el-icon-sort-up" @click="moveUpGroup">上移</el-button>
               <el-divider direction="vertical" />
@@ -66,10 +61,10 @@
         <el-tabs v-model="editElementTabActiveName" type="card" @tab-remove="removeTab">
           <el-tab-pane
             v-for="element in editElementTabs"
-            :key="`${element.elementNo}::${element.elementName}::${element.elementType}}`"
+            :key="`${element.elementNo}::${element.elementName}::${element.elementType}`"
             :label="element.elementName"
             :name="`${element.elementNo}::${element.elementName}`"
-            :closable="element.elementType !=='activity'"
+            :closable="true"
             style="height: 100%; overflow: auto;"
           >
             <keep-alive>
@@ -79,12 +74,10 @@
                 :workspace-no="workspaceNo"
                 :collection-no="activeCollectionNo"
                 :group-no="activeGroupNo"
-                :sampler-no="activeSamplerNo"
                 :element-no="element.elementNo"
                 :action="element.action"
                 @re-query-collection="queryCollections"
                 @re-query-group="queryGroupsByCollection"
-                @re-query-sampler="querySamplersByGroup"
                 @rename-tab="renameTab(arguments, element)"
                 @close-tab="removeTab(`${element.elementNo}::${element.elementName}`)"
               />
@@ -99,7 +92,6 @@
 <script>
 import * as Element from '@/api/script/element'
 import ScriptTree from './components/script-tree'
-import ActivityView from './components/activity-view'
 import CollectionEditor from './components/collection-editor'
 import GroupEditor from './components/group-editor'
 import HTTPSamplerEditor from './components/samplers/http-sampler-editor'
@@ -107,47 +99,28 @@ import HTTPSamplerEditor from './components/samplers/http-sampler-editor'
 export default {
   name: 'ScriptEditor',
 
-  components: { ScriptTree, ActivityView, CollectionEditor, GroupEditor, HTTPSamplerEditor },
+  components: { ScriptTree, CollectionEditor, GroupEditor, HTTPSamplerEditor },
 
   data() {
     return {
       workspaceNo: '',
       searchKeyword: '',
-      elementSidebarTabActiveName: 'collection',
+      sidebarTabActiveName: 'collection',
       collectionList: [],
       activeCollectionNo: '',
       activeCollectionName: '',
       groupList: [],
       activeGroupNo: '',
       activeGroupName: '',
-      samplerList: [{
-        elementNo: '1111',
-        elementName: '取样器111',
-        enabled: true,
-        childList: [{
-          elementNo: '222',
-          elementName: '取样器222',
-          enabled: true
-        }]
-      }],
-      activeSamplerNo: '',
-      activeSamplerName: '',
       elementViews: {
         activity: 'ActivityView',
         collection: 'CollectionEditor',
         group: 'GroupEditor',
         sampler: 'HTTPSamplerEditor'
       },
-      editElementTabActiveNo: '0',
-      editElementTabActiveName: '0::动态',
-      editElementTabs: [
-        {
-          elementNo: '0',
-          elementName: '动态',
-          elementType: 'activity',
-          action: 'QUERY'
-        }
-      ]
+      editElementTabActiveNo: '',
+      editElementTabActiveName: '',
+      editElementTabs: []
     }
   },
 
@@ -158,38 +131,12 @@ export default {
   },
 
   methods: {
-    handleNodeClick(data) {
-      const elementNo = data.id
-      const elementName = data.label
-      this.activateSamplerCard(elementNo, elementName)
-      console.info(this.activeSamplerNo)
-      console.info(this.activeSamplerName)
-    },
-    getSamplerTreeData(samplerList) {
-      const treeData = []
-      samplerList.forEach(sampler => {
-        const item = {}
-        const { childList } = sampler
-        item.id = sampler['elementNo']
-        item.label = sampler['elementName']
-        item.disabled = !sampler['enabled']
-        if (childList) {
-          item.children = this.getSamplerTreeData(childList)
-        }
-        treeData.push(item)
-      })
-      return treeData
-    },
     activateCollectionCard(elementNo, elementName) {
       this.activeCollectionNo = elementNo
       this.activeCollectionName = elementName
     },
-    activateSamplerCard(elementNo, elementName) {
-      this.activeSamplerNo = elementNo
-      this.activeSamplerName = elementName
-    },
     changeToGroupSidebarTab() {
-      this.elementSidebarTabActiveName = 'group'
+      this.sidebarTabActiveName = 'group'
       this.queryGroupsByCollection()
     },
     addTab(elementNo, elementName, elementType, action) {
@@ -243,7 +190,7 @@ export default {
     addCreateCollectionTab() {
       this.addTab('0', '新增集合', 'collection', 'CREATE')
     },
-    addCreateGroupTab() {
+    openNewGroupTab() {
       this.addTab('0', '新增案例', 'group', 'CREATE')
     },
     addCollectionDetailTab() {
@@ -252,7 +199,7 @@ export default {
       }
       this.addTab(this.activeCollectionNo, this.activeCollectionName, 'collection', 'QUERY')
     },
-    addGroupDetailTab() {
+    openGroupDetailTab() {
       if (!this.activeGroupNo && !this.activeGroupName) {
         return
       }
@@ -265,15 +212,9 @@ export default {
       }).catch(() => {})
     },
     queryGroupsByCollection() {
-      Element.queryElementChild({ elementNo: this.activeCollectionNo, elementType: 'GROUP' }).then(response => {
+      Element.queryElementChildren({ elementNo: this.activeCollectionNo, elementType: 'GROUP' }).then(response => {
         const { result } = response
         this.groupList = result
-      }).catch(() => {})
-    },
-    querySamplersByGroup() {
-      Element.queryElementChild({ elementNo: this.activeSamplerNo, elementType: 'SAMPLER' }).then(response => {
-        const { result } = response
-        this.samplerList = result
       }).catch(() => {})
     },
     enableElement(elementNo, elementType) {
@@ -285,8 +226,6 @@ export default {
           this.queryCollections()
         } else if (elementType === 'GROUP') {
           this.queryGroupsByCollection()
-        } else if (elementType === 'SAMPLER') {
-          this.querySamplersByGroup()
         }
       }).catch(() => {})
     },
@@ -299,8 +238,6 @@ export default {
           this.queryCollections()
         } else if (elementType === 'GROUP') {
           this.queryGroupsByCollection()
-        } else if (elementType === 'SAMPLER') {
-          this.querySamplersByGroup()
         }
       }).catch(() => {})
     },
@@ -342,12 +279,9 @@ export default {
           this.groupList = []
           this.activeGroupNo = ''
           this.activeGroupName = ''
-          this.samplerList = []
-          this.activeSamplerNo = ''
-          this.activeSamplerName = ''
         }).catch(() => {})
       }).catch(() => {})
-    },
+    }
   }
 }
 </script>
@@ -394,7 +328,7 @@ export default {
 
   }
 
-  .collection-operation-button-container{
+  .collection-operation-container{
     display: flex;
     flex: 1;
     flex-direction: row;
@@ -440,14 +374,14 @@ export default {
     }
   }
 
-  .collection-card-inner {
+  .collection-item {
     display: flex;
     flex: 1;
     justify-content: space-between;
     align-items: center;
   }
 
-  .group-operation-button-container{
+  .group-operation-container{
     display: flex;
     flex: 1;
     flex-direction: row;

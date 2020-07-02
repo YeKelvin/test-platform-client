@@ -26,7 +26,7 @@
         </el-tabs>
       </div>
       <div class="workspace-action-log-container">
-        <div><b>脚本动态</b></div>
+        <div><b>空间动态</b></div>
         <el-divider />
         <div class="block">
           <el-timeline>
@@ -49,7 +49,7 @@
 <script>
 import * as Workspace from '@/api/script/workspace'
 export default {
-  name: 'WorkspaceList',
+  name: 'WorkspaceEntrance',
 
   data() {
     return {

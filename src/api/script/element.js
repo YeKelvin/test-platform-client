@@ -24,9 +24,9 @@ export function queryElementInfo(query) {
   })
 }
 
-export function queryElementChild(query) {
+export function queryElementChildren(query) {
   return request({
-    url: '/script/element/child',
+    url: '/script/element/children',
     method: 'get',
     params: query
   })
@@ -88,17 +88,17 @@ export function modifyElementProperty(data) {
   })
 }
 
-export function addElementChild(data) {
+export function addElementChildren(data) {
   return request({
-    url: '/script/element/child',
+    url: '/script/element/children',
     method: 'post',
     data
   })
 }
 
-export function modifyElementChild(data) {
+export function modifyElementChildren(data) {
   return request({
-    url: '/script/element/child',
+    url: '/script/element/children',
     method: 'put',
     data
   })

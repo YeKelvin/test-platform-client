@@ -255,7 +255,7 @@ export default {
     createSamplerElement(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          Element.addElementChild(
+          Element.addElementChildren(
             { parentNo: this.collectionNo, childList: [this.elementForm] }
           ).then(response => {
             if (response['success']) {

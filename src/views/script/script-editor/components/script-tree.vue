@@ -6,8 +6,8 @@
       empty-text="空脚本"
       highlight-current
       :indent="32"
-      :data="data"
-      :props="defaultProps"
+      :data="scriptList"
+      :props="treeProps"
       :expand-on-click-node="false"
       @node-click="handleNodeClick"
     >
@@ -33,61 +33,73 @@
 </template>
 
 <script>
+import * as Element from '@/api/script/element'
+
 export default {
   name: 'ScriptTree',
 
+  props: {
+    scriptNo: {
+      type: String,
+      default: ''
+    }
+  },
+
   data() {
     return {
-      scriptList: [],
+      scriptList: [{
+        elementName: '一级 1',
+        children: [{
+          elementName: '二级 1-1',
+          children: [{
+            elementName: '三级 1-1-1'
+          }]
+        }]
+      }, {
+        elementName: '一级 2',
+        children: [{
+          elementName: '二级 2-1',
+          children: [{
+            elementName: '三级 2-1-1'
+          }]
+        }, {
+          elementName: '二级 2-2',
+          children: [{
+            elementName: '三级 2-2-1'
+          }]
+        }]
+      }, {
+        elementName: '一级 3',
+        children: [{
+          elementName: '二级 3-1',
+          children: [{
+            elementName: '三级 3-1-1'
+          }]
+        }, {
+          elementName: '二级 3-2',
+          children: [{
+            elementName: '三级 3-2-1'
+          }]
+        }]
+      }],
       treeProps: {
         label: 'elementName',
         children: 'children',
         disabled: 'enabled'
       },
-      menuVisible: false,
-      selectedNode: null,
-      data: [{
-        label: '一级 1',
-        children: [{
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }]
-      }, {
-        label: '一级 2',
-        children: [{
-          label: '二级 2-1',
-          children: [{
-            label: '三级 2-1-1'
-          }]
-        }, {
-          label: '二级 2-2',
-          children: [{
-            label: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        label: '一级 3',
-        children: [{
-          label: '二级 3-1',
-          children: [{
-            label: '三级 3-1-1'
-          }]
-        }, {
-          label: '二级 3-2',
-          children: [{
-            label: '三级 3-2-1'
-          }]
-        }]
-      }],
-      // data: JSON.parse(JSON.stringify(data))
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      }
+      selectedNode: null
     }
   },
+
+  watch: {
+    scriptNo(value) {
+      Element.queryElementChildren({ elementNo: value }).then(response => {
+        const { result } = response
+        this.scriptList = result
+      }).catch(() => {})
+    }
+  },
+
   methods: {
     handleNodeClick(data) {
       console.log(data)
