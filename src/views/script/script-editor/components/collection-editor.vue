@@ -136,6 +136,9 @@ export default {
     resetModifyForm() {
       this.elementForm = { ...this.elementInfo }
     },
+    /**
+     * todo workspaceNo非空判断，为空时弹出workspace选择列表
+     */
     createCollectionElement(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {

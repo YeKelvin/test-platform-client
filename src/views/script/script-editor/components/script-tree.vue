@@ -93,16 +93,19 @@ export default {
 
   watch: {
     scriptNo(value) {
-      Element.queryElementChildren({ elementNo: value }).then(response => {
-        const { result } = response
-        this.scriptList = result
-      }).catch(() => {})
+      this.queryScriptTree(value)
     }
   },
 
   methods: {
     handleNodeClick(data) {
       console.log(data)
+    },
+    queryScriptTree(elementNo) {
+      Element.queryElementChildren({ elementNo: elementNo }).then(response => {
+        const { result } = response
+        this.scriptList = result
+      }).catch(() => {})
     }
   }
 }

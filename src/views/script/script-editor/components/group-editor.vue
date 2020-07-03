@@ -160,7 +160,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           Element.addElementChildren(
-            { parentNo: this.collectionNo, childList: [this.elementForm] }
+            { parentNo: this.collectionNo, children: [this.elementForm] }
           ).then(response => {
             if (response['success']) {
               this.$message({ message: '新增测试元素成功', type: 'info', duration: 2 * 1000 })

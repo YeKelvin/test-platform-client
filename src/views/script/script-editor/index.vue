@@ -5,9 +5,7 @@
         <el-tabs v-model="sidebarTabActiveName" :stretch="true">
           <el-tab-pane label="测试脚本" name="collection">
             <div class="collection-operation-container">
-              <el-button type="text" icon="el-icon-plus" @click="addCreateCollectionTab">新增</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-view" @click="addCollectionDetailTab">详情</el-button>
+              <el-button type="text" icon="el-icon-plus" @click="openNewCollectionTab">新增脚本</el-button>
             </div>
             <el-divider />
             <div class="collection-list-container">
@@ -15,9 +13,9 @@
                 v-for="collection in collectionList"
                 :key="collection.elementNo"
                 class="collection-card"
-                :class="{'active-card':activeCollectionNo===collection.elementNo && activeCollectionName===collection.elementName}"
-                @click.native="activateCollectionCard(collection.elementNo, collection.elementName)"
-                @dblclick.native="changeToGroupSidebarTab"
+                :class="{'active-card':activeCollectionNo===collection.elementNo}"
+                @click.native="clickCollectionCard(collection.elementNo, collection.elementName)"
+                @dblclick.native="moveToGroupList"
               >
                 <div class="collection-item">
                   {{ collection.elementName }}
@@ -29,6 +27,7 @@
                     <el-dropdown trigger="click" placement="bottom-start">
                       <i class="el-icon-more rotate-90" />
                       <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item icon="el-icon-view" @click.native="openCollectionDetailTab">详情</el-dropdown-item>
                         <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
                         <el-dropdown-item v-if="collection.enabled" icon="el-icon-turn-off" @click.native="disableElement(collection.elementNo, collection.elementType)">禁用</el-dropdown-item>
                         <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(collection.elementNo, collection.elementType)">启用</el-dropdown-item>
@@ -52,34 +51,34 @@
               <el-button type="text" icon="el-icon-sort-down" @click="moveDownGroup">下移</el-button>
             </div>
             <el-divider />
-            <script-tree />
+            <script-tree ref="scriptTree" :script-no="activeCollectionNo" />
           </el-tab-pane>
         </el-tabs>
       </div>
 
       <div class="editor-main-container">
-        <el-tabs v-model="editElementTabActiveName" type="card" @tab-remove="removeTab">
+        <el-tabs v-model="editTabActiveName" type="card" @tab-remove="removeTab">
           <el-tab-pane
-            v-for="element in editElementTabs"
-            :key="`${element.elementNo}::${element.elementName}::${element.elementType}`"
-            :label="element.elementName"
-            :name="`${element.elementNo}::${element.elementName}`"
+            v-for="tab in editTabs"
+            :key="`${tab.elementNo}::${tab.elementName}::${tab.elementType}`"
+            :label="tab.elementName"
+            :name="`${tab.elementNo}::${tab.elementName}`"
             :closable="true"
             style="height: 100%; overflow: auto;"
           >
             <keep-alive>
               <!-- :element-no为当前测试元素的 elementNo -->
               <component
-                :is="elementViews[element.elementType]"
+                :is="elementViews[tab.elementType]"
                 :workspace-no="workspaceNo"
                 :collection-no="activeCollectionNo"
                 :group-no="activeGroupNo"
-                :element-no="element.elementNo"
-                :action="element.action"
+                :element-no="tab.elementNo"
+                :action="tab.action"
                 @re-query-collection="queryCollections"
-                @re-query-group="queryGroupsByCollection"
-                @rename-tab="renameTab(arguments, element)"
-                @close-tab="removeTab(`${element.elementNo}::${element.elementName}`)"
+                @re-query-group="queryGroups"
+                @rename-tab="renameTab(arguments, tab)"
+                @close-tab="removeTab(`${tab.elementNo}::${tab.elementName}`)"
               />
             </keep-alive>
           </el-tab-pane>
@@ -104,7 +103,6 @@ export default {
   data() {
     return {
       workspaceNo: '',
-      searchKeyword: '',
       sidebarTabActiveName: 'collection',
       collectionList: [],
       activeCollectionNo: '',
@@ -118,9 +116,9 @@ export default {
         group: 'GroupEditor',
         sampler: 'HTTPSamplerEditor'
       },
-      editElementTabActiveNo: '',
-      editElementTabActiveName: '',
-      editElementTabs: []
+      editTabActiveNo: '',
+      editTabActiveName: '',
+      editTabs: []
     }
   },
 
@@ -131,42 +129,41 @@ export default {
   },
 
   methods: {
-    activateCollectionCard(elementNo, elementName) {
+    clickCollectionCard(elementNo, elementName) {
       this.activeCollectionNo = elementNo
       this.activeCollectionName = elementName
     },
-    changeToGroupSidebarTab() {
+    moveToGroupList() {
       this.sidebarTabActiveName = 'group'
-      this.queryGroupsByCollection()
     },
     addTab(elementNo, elementName, elementType, action) {
-      const tabs = this.editElementTabs
+      const tabs = this.editTabs
       const newTabName = `${elementNo}::${elementName}`
       let isAllowAdd = true
       tabs.forEach(tab => {
         const tabName = `${tab.elementNo}::${tab.elementName}`
         if (tabName === newTabName) {
           isAllowAdd = false
-          this.editElementTabActiveNo = tab.elementNo
-          this.editElementTabActiveName = `${tab.elementNo}::${tab.elementName}`
+          this.editTabActiveNo = tab.elementNo
+          this.editTabActiveName = `${tab.elementNo}::${tab.elementName}`
         }
       })
       if (isAllowAdd) {
-        this.editElementTabs.push({
+        this.editTabs.push({
           elementNo: elementNo,
           elementName: elementName,
           elementType: elementType,
           action: action
         })
-        this.editElementTabActiveNo = elementNo
-        this.editElementTabActiveName = `${elementNo}::${elementName}`
+        this.editTabActiveNo = elementNo
+        this.editTabActiveName = `${elementNo}::${elementName}`
       }
     },
     removeTab(removeTabName) {
-      const tabs = this.editElementTabs
+      const tabs = this.editTabs
       let activeNo = ''
       let activeName = ''
-      const activeTabName = this.editElementTabActiveName
+      const activeTabName = this.editTabActiveName
       if (activeTabName === removeTabName) {
         tabs.forEach((tab, index) => {
           const tabName = `${tab.elementNo}::${tab.elementName}`
@@ -179,21 +176,21 @@ export default {
           }
         })
       }
-      this.editElementTabActiveNo = activeNo
-      this.editElementTabActiveName = `${activeNo}::${activeName}`
-      this.editElementTabs = tabs.filter(tab => `${tab.elementNo}::${tab.elementName}` !== removeTabName)
+      this.editTabActiveNo = activeNo
+      this.editTabActiveName = `${activeNo}::${activeName}`
+      this.editTabs = tabs.filter(tab => `${tab.elementNo}::${tab.elementName}` !== removeTabName)
     },
     renameTab(args, element) {
       element.elementName = args[0]
-      this.editElementTabActiveName = `${element.elementNo}::${element.elementName}`
+      this.editTabActiveName = `${element.elementNo}::${element.elementName}`
     },
-    addCreateCollectionTab() {
-      this.addTab('0', '新增集合', 'collection', 'CREATE')
+    openNewCollectionTab() {
+      this.addTab('0', '新增脚本', 'collection', 'CREATE')
     },
     openNewGroupTab() {
       this.addTab('0', '新增案例', 'group', 'CREATE')
     },
-    addCollectionDetailTab() {
+    openCollectionDetailTab() {
       if (!this.activeCollectionNo && !this.activeCollectionName) {
         return
       }
@@ -211,11 +208,8 @@ export default {
         this.collectionList = result
       }).catch(() => {})
     },
-    queryGroupsByCollection() {
-      Element.queryElementChildren({ elementNo: this.activeCollectionNo, elementType: 'GROUP' }).then(response => {
-        const { result } = response
-        this.groupList = result
-      }).catch(() => {})
+    queryGroups() {
+      this.$refs.scriptTree.queryScriptTree(this.activeCollectionNo)
     },
     enableElement(elementNo, elementType) {
       if (!elementNo && !elementType) {
@@ -224,8 +218,6 @@ export default {
       Element.enableElement({ elementNo: elementNo }).then(response => {
         if (elementType === 'COLLECTION') {
           this.queryCollections()
-        } else if (elementType === 'GROUP') {
-          this.queryGroupsByCollection()
         }
       }).catch(() => {})
     },
@@ -236,8 +228,6 @@ export default {
       Element.disableElement({ elementNo: elementNo }).then(response => {
         if (elementType === 'COLLECTION') {
           this.queryCollections()
-        } else if (elementType === 'GROUP') {
-          this.queryGroupsByCollection()
         }
       }).catch(() => {})
     },
@@ -245,23 +235,17 @@ export default {
       if (!this.activeCollectionNo && !this.activeGroupNo) {
         return
       }
-      Element.moveUpElementChildOrder(
-        { parentNo: this.activeCollectionNo, childNo: this.activeGroupNo }
-      ).then(response => {
-        this.queryGroupsByCollection()
-      }).catch(() => {
-      })
+      Element.moveUpElementChildOrder({ parentNo: this.activeCollectionNo, childNo: this.activeGroupNo }).then(response => {
+        this.queryGroups()
+      }).catch(() => {})
     },
     moveDownGroup() {
       if (!this.activeCollectionNo && !this.activeGroupNo) {
         return
       }
-      Element.moveDownElementChildOrder(
-        { parentNo: this.activeCollectionNo, childNo: this.activeGroupNo }
-      ).then(response => {
-        this.queryGroupsByCollection()
-      }).catch(() => {
-      })
+      Element.moveDownElementChildOrder({ parentNo: this.activeCollectionNo, childNo: this.activeGroupNo }).then(response => {
+        this.queryGroups()
+      }).catch(() => {})
     },
     deleteCollection(elementNo) {
       this.$confirm(
@@ -274,11 +258,13 @@ export default {
             this.removeTab(tabName)
           })
           this.queryCollections()
-          this.activeCollectionNo = ''
-          this.activeCollectionName = ''
-          this.groupList = []
-          this.activeGroupNo = ''
-          this.activeGroupName = ''
+          if (this.activeCollectionNo === elementNo) {
+            this.activeCollectionNo = ''
+            this.activeCollectionName = ''
+            this.groupList = []
+            this.activeGroupNo = ''
+            this.activeGroupName = ''
+          }
         }).catch(() => {})
       }).catch(() => {})
     }
