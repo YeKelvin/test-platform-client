@@ -3,7 +3,7 @@
     <div class="script-editor-container">
       <div class="element-sidebar-container">
         <el-tabs v-model="sidebarTabActiveName" :stretch="true">
-          <el-tab-pane label="测试脚本" name="collection">
+          <el-tab-pane label="Collections" name="collection">
             <div class="collection-operation-container">
               <el-button type="text" icon="el-icon-plus" @click="openNewCollectionTab">新增脚本</el-button>
             </div>
@@ -40,11 +40,19 @@
             </div>
           </el-tab-pane>
 
-          <el-tab-pane label="测试案例" name="group" :disabled="!activeCollectionNo&&!activeCollectionName">
+          <el-tab-pane label="TestCases" name="group" :disabled="!activeCollectionNo&&!activeCollectionName">
             <div class="group-operation-container">
-              <el-button type="text" icon="el-icon-plus" @click="openNewGroupTab">新增</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" icon="el-icon-view" @click="openGroupDetailTab">详情</el-button>
+              <el-dropdown trigger="click" placement="bottom-start">
+                <span class="el-dropdown-link">
+                  <el-button type="text" icon="el-icon-plus">新增</el-button>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="openNewGroupTab">测试案例</el-dropdown-item>
+                  <el-dropdown-item divided @click.native="openNewHttpSamplerTab">HTTP请求</el-dropdown-item>
+                  <el-dropdown-item>SQL请求</el-dropdown-item>
+                  <el-dropdown-item divided>配置器</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
               <el-divider direction="vertical" />
               <el-button type="text" icon="el-icon-sort-up" @click="moveUpGroup">上移</el-button>
               <el-divider direction="vertical" />
@@ -114,7 +122,7 @@ export default {
         activity: 'ActivityView',
         collection: 'CollectionEditor',
         group: 'GroupEditor',
-        sampler: 'HTTPSamplerEditor'
+        httpSampler: 'HTTPSamplerEditor'
       },
       editTabActiveNo: '',
       editTabActiveName: '',
@@ -189,6 +197,9 @@ export default {
     },
     openNewGroupTab() {
       this.addTab('0', '新增案例', 'group', 'CREATE')
+    },
+    openNewHttpSamplerTab() {
+      this.addTab('0', '新增HTTP请求', 'httpSampler', 'CREATE')
     },
     openCollectionDetailTab() {
       if (!this.activeCollectionNo && !this.activeCollectionName) {
