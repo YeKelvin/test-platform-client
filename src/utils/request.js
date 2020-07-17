@@ -8,7 +8,8 @@ const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 请求的 base url
   timeout: 5000, // 超时时长
   headers: {
-    'Content-Type': 'application/json; charset=utf-8'
+    'Content-Type': 'application/json; charset=utf-8',
+    'Access-Control-Allow-Origin': process.env.VUE_APP_BASE_API
   }
 })
 
