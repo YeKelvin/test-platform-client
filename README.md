@@ -1,24 +1,29 @@
 # test-platform-client-dev
 
 ## 构建
+
 ```npm
 npm install --registry=https://registry.npm.taobao.org
 ```
 
 ## 本地运行
+
 ```npm
 npm run dev --registry=https://registry.npm.taobao.org
 ```
 
 ## WebStrom配置 vue-cli3 webpack别名
+
 File-Settings-Languages & Frameworks-JavaScript-Webpack选项中配置 webpack.config.js文件的绝对路径
-```
+
+```bash
 项目根目录/node_modules/@vue/cli-service/webpack.config.js
 ```
 
 ## 目录结构
-```
-├── build                      // 构建相关
+
+```bash
+┌── build                      // 构建相关
 ├── config                     // 配置相关
 ├── mock                       // 项目mock 模拟数据
 ├── public                     // 公共相关
