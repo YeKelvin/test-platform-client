@@ -308,14 +308,14 @@ export default {
 
   .http-header-table{
 
-    /deep/.el-form-item{
+    ::v-deep.el-form-item{
       margin-bottom: 0;
     }
   }
 
   .http-body{
 
-    /deep/.el-form-item__content{
+    ::v-deep.el-form-item__content{
       margin-left: 0 !important;
     }
   }

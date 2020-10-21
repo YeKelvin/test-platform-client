@@ -301,7 +301,7 @@ export default {
       height: 100%;
     }
 
-    /*/deep/.el-tabs__content {*/
+    /*::v-deep.el-tabs__content {*/
     /*  flex: 1;*/
     /*  overflow: auto !important;*/
 
@@ -344,7 +344,7 @@ export default {
     flex-direction: column;
     height: 100%;
 
-    /deep/.el-card__body {
+    ::v-deep.el-card__body {
       padding: 15px;
     }
   }
@@ -397,7 +397,7 @@ export default {
     flex-direction: column;
     height: 100%;
 
-    /deep/.el-card__body {
+    ::v-deep.el-card__body {
       padding: 15px;
     }
   }
