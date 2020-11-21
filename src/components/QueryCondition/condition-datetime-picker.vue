@@ -1,7 +1,7 @@
 <template>
   <div>
     <label class="condition-label">{{ label }}</label>
-    <el-date-picker v-model="model" type="datetime" v-bind="$props" v-on="$listeners" />
+    <el-date-picker v-model="model" type="datetime" v-bind="$attrs" v-on="$listeners" />
   </div>
 </template>
 

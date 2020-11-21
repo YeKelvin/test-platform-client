@@ -1,7 +1,8 @@
 <template>
   <div>
     <label class="condition-label">{{ label }}</label>
-    <el-select v-model="model" v-bind="$props" clearable v-on="$listeners">
+    <!--<el-select v-model="model" v-bind="$props" clearable v-on="$listeners">-->
+    <el-select v-model="model" v-bind="$attrs" clearable v-on="$listeners">
       <el-option
         v-for="(value, key) in options"
         :key="key"
