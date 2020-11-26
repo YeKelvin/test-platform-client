@@ -1,8 +1,7 @@
 <template>
   <div>
     <label class="condition-label">{{ label }}</label>
-    <!--<el-input v-model="model" v-bind="$props" clearable v-on="$listeners" />-->
-    <el-input v-model="model" v-bind="$attrs" clearable v-on="$listeners" />
+    <el-input v-model="model" v-bind="$attrs" clearable size="small" v-on="$listeners" />
   </div>
 </template>
 

@@ -1,20 +1,19 @@
 <template>
-  <scrollbar class="app-main-container">
+  <div class="mian-container">
     <div class="user-management-container">
       <div class="query-conditions-container">
         <div>查询条件</div>
         <el-divider />
         <div class="condition-items">
-          <condition-input v-model="queryConditions.userNo" size="small" label="用户编号" class="condition-item" />
-          <condition-input v-model="queryConditions.userName" size="small" label="用户名称" class="condition-item" />
-          <condition-input v-model="queryConditions.mobileNo" size="small" label="手机号" class="condition-item" />
-          <condition-input v-model="queryConditions.email" size="small" label="邮箱地址" class="condition-item" />
+          <condition-input v-model="queryConditions.userNo" label="用户编号" class="condition-item" />
+          <condition-input v-model="queryConditions.userName" label="用户名称" class="condition-item" />
+          <condition-input v-model="queryConditions.mobileNo" label="手机号" class="condition-item" />
+          <condition-input v-model="queryConditions.email" label="邮箱地址" class="condition-item" />
           <condition-select
             v-model="queryConditions.state"
             :options="UserState"
             label="用户状态"
             class="condition-item"
-            size="small"
           />
         </div>
         <div class="query-buttons-container">
@@ -74,7 +73,7 @@
     <register-form :visible.sync="registerDialogVisible" @re-query="query" />
     <modify-form :visible.sync="modifyDialogVisible" :current-row="currentRow" @re-query="query" />
 
-  </scrollbar>
+  </div>
 </template>
 
 <script>
@@ -87,7 +86,12 @@ import ModifyForm from './components/modify-form'
 
 export default {
   name: 'User',
-  components: { ConditionInput, ConditionSelect, RegisterForm, ModifyForm },
+  components: {
+    ConditionInput,
+    ConditionSelect,
+    RegisterForm,
+    ModifyForm
+  },
   data() {
     return {
       // 查询条件
@@ -187,70 +191,75 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-management-container {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
+  .user-management-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
 
-  height: 100%;
-  padding: 20px;
+    height: 100%;
+    padding: 20px;
 
-  .el-divider--horizontal {
-    margin: 10px 0
+    .el-divider--horizontal {
+      margin: 10px 0
+    }
   }
-}
 
-.query-conditions-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  .query-conditions-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 
-  padding: 12px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-}
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  }
 
-.condition-items {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  flex: none;
-}
+  .condition-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    flex: none;
+  }
 
-.condition-item {
-  display: inline-flex;
-  justify-content: flex-start;
-  align-items: center;
-  color: #909399;
-  font-size: 14px;
-  width: 20rem;
-  padding-right: 24px;
-  padding-bottom: 12px;
-}
+  .condition-item {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #909399;
+    font-size: 14px;
+    width: 20rem;
+    padding-right: 24px;
+    padding-bottom: 12px;
+  }
 
-.query-buttons-container {
-  display: flex;
-  justify-content: space-between;
-}
+  .query-buttons-container {
+    display: flex;
+    justify-content: space-between;
+  }
 
-.query-buttons {
-  display: flex;
-  justify-content: center;
-}
+  .query-buttons {
+    display: flex;
+    justify-content: center;
+  }
 
-.table-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
-  padding: 12px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-}
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  }
 
-.pagination-container {
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
+  .pagination-container {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .mian-container {
+    height: 100vh;
+    overflow: auto;
+  }
 </style>

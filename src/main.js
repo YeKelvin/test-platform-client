@@ -14,7 +14,7 @@ import '@/icons'
 import '@/styles/index.scss'
 import '@/permission'
 
-import _ from 'lodash'
+import Lodash from 'lodash'
 
 import Scrollbar from '@/components/Scrollbar/index'
 
@@ -24,8 +24,8 @@ Vue.use(ElementUI)
 // 全局注册组件
 Vue.component('Scrollbar', Scrollbar)
 
-// 绑定到 Vue原型上
-Vue.prototype.$_ = _
+// 绑定到Vue原型上
+Vue.prototype.$_ = Lodash
 
 // 在生产环境不提示
 Vue.config.productionTip = false

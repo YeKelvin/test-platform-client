@@ -1,5 +1,6 @@
 <template>
   <scrollbar class="app-main-container">
+<!--  <div class="app-main-container">-->
     <div class="permission-management-container">
 
       <div class="query-conditions-container">
@@ -232,5 +233,10 @@ export default {
   .pagination-container {
     padding-top: 12px;
     padding-bottom: 12px;
+  }
+
+  .mian-container {
+    height: 100vh;
+    overflow: auto;
   }
 </style>
