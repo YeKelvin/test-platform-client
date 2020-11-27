@@ -1,63 +1,60 @@
 <template>
-  <div class="scrollbar">
-    <div class="user-role-manager-container">
-
-      <div class="query-conditions-container">
-        <div>查询条件</div>
-        <el-divider />
-        <div class="condition-items">
-          <condition-input v-model="queryConditions.actionDesc" label="操作描述" class="condition-item" />
-          <condition-input v-model="queryConditions.actionMethod" label="操作方法" class="condition-item" />
-          <condition-input v-model="queryConditions.actionEndpoint" label="操作路由" class="condition-item" />
-          <condition-input v-model="queryConditions.createdBy" label="操作人" class="condition-item" />
-          <div class="condition-item">
-            <label class="condition-label">开始时间</label>
-            <el-date-picker v-model="queryConditions.startTime" type="datetime" />
-          </div>
-          <div class="condition-item">
-            <label class="condition-label">结束时间</label>
-            <el-date-picker v-model="queryConditions.endTime" type="datetime" />
-          </div>
+  <div class="scrollbar view-container">
+    <div class="query-conditions-container">
+      <div>查询条件</div>
+      <el-divider />
+      <div class="condition-items">
+        <condition-input v-model="queryConditions.actionDesc" label="操作描述" class="condition-item" />
+        <condition-input v-model="queryConditions.actionMethod" label="操作方法" class="condition-item" />
+        <condition-input v-model="queryConditions.actionEndpoint" label="操作路由" class="condition-item" />
+        <condition-input v-model="queryConditions.createdBy" label="操作人" class="condition-item" />
+        <div class="condition-item">
+          <label class="condition-label">开始时间</label>
+          <el-date-picker v-model="queryConditions.startTime" type="datetime" />
         </div>
-        <div class="query-buttons">
-          <el-button type="primary" @click="query">查询</el-button>
-          <el-button @click="resetQueryConditions">重置</el-button>
+        <div class="condition-item">
+          <label class="condition-label">结束时间</label>
+          <el-date-picker v-model="queryConditions.endTime" type="datetime" />
         </div>
       </div>
-
-      <div class="table-container">
-        <div>查询结果</div>
-        <el-divider />
-        <el-table
-          style="width: 100%"
-          height="150"
-          :data="tableData"
-          :border="true"
-          :stripe="true"
-          :fit="true"
-          :highlight-current-row="true"
-        >
-          <el-table-column prop="actionDesc" label="操作描述" min-width="150" />
-          <el-table-column prop="actionMethod" label="请求方法" min-width="150" />
-          <el-table-column prop="actionEndpoint" label="请求路由" min-width="150" />
-          <el-table-column prop="oldValue" label="旧值" min-width="150" />
-          <el-table-column prop="newValue" label="新值" min-width="150" />
-          <el-table-column prop="createdBy" label="操作人" min-width="150" />
-          <el-table-column prop="createdTime" label="操作时间" min-width="150" />
-        </el-table>
+      <div class="query-buttons">
+        <el-button type="primary" size="small" @click="query">查询</el-button>
+        <el-button size="small" @click="resetQueryConditions">重置</el-button>
       </div>
+    </div>
 
-      <div class="pagination-container">
-        <el-pagination
-          layout="total, sizes, prev, pager, next, jumper"
-          :current-page="page"
-          :page-sizes="[10, 25, 50, 100]"
-          :page-size="pageSize"
-          :total="totalSize"
-          @size-change="handlePageSizeChange"
-          @current-change="handleCurrentPageChange"
-        />
-      </div>
+    <div class="table-container">
+      <div>查询结果</div>
+      <el-divider />
+      <el-table
+        style="width: 100%; height: 100px;"
+        height="150"
+        :data="tableData"
+        :border="true"
+        :stripe="true"
+        :fit="true"
+        :highlight-current-row="true"
+      >
+        <el-table-column prop="actionDesc" label="操作描述" min-width="150" />
+        <el-table-column prop="actionMethod" label="请求方法" min-width="150" />
+        <el-table-column prop="actionEndpoint" label="请求路由" min-width="150" />
+        <el-table-column prop="oldValue" label="旧值" min-width="150" />
+        <el-table-column prop="newValue" label="新值" min-width="150" />
+        <el-table-column prop="createdBy" label="操作人" min-width="150" />
+        <el-table-column prop="createdTime" label="操作时间" min-width="150" />
+      </el-table>
+    </div>
+
+    <div class="pagination-container">
+      <el-pagination
+        layout="total, sizes, prev, pager, next, jumper"
+        :current-page="page"
+        :page-sizes="[10, 25, 50, 100]"
+        :page-size="pageSize"
+        :total="totalSize"
+        @size-change="handlePageSizeChange"
+        @current-change="handleCurrentPageChange"
+      />
     </div>
 
   </div>
@@ -118,71 +115,70 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .user-role-manager-container {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-between;
+.view-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
-    height: 100%;
-    padding: 20px;
-
-    .el-divider--horizontal {
-      margin: 10px 0
-    }
+  .el-divider--horizontal {
+    margin: 10px 0
   }
+}
 
-  .query-conditions-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+.query-conditions-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 
-    padding: 12px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  }
+  padding: 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+}
 
-  .condition-items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    flex: none;
-  }
+.condition-items {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
 
-  .condition-label{
-    margin-right: 6px;
-    width: fit-content;
-    white-space: nowrap;
-  }
+.condition-item {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
 
-  .condition-item {
-    display: inline-flex;
-    justify-content: flex-start;
-    align-items: center;
-    color: #909399;
-    font-size: 14px;
-    width: 20rem;
-    padding-right: 24px;
-    padding-bottom: 12px;
-  }
+  color: #909399;
+  font-size: 14px;
+  width: 20rem;
+  padding-right: 24px;
+  padding-bottom: 12px;
+}
 
-  .query-buttons {
-    display: flex;
-    justify-content: center;
-  }
+.query-buttons-container {
+  display: flex;
+  justify-content: space-between;
+}
 
-  .table-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+.query-buttons {
+  display: flex;
+  justify-content: center;
+}
 
-    padding: 12px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  }
+.table-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 
-  .pagination-container {
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
+  height: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+}
+
+.pagination-container {
+  flex-shrink: 0;
+
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
 </style>

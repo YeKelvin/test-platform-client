@@ -21,33 +21,33 @@
     </div>
 
     <div class="table-container">
-      <!--      <div>查询结果</div>-->
-      <!--      <el-divider />-->
-      <!--      <el-table-->
-      <!--        style="width: 100%; height: 100px;flex: auto;"-->
-      <!--        :data="tableData"-->
-      <!--        :border="true"-->
-      <!--        :stripe="true"-->
-      <!--        :fit="true"-->
-      <!--        :highlight-current-row="true"-->
-      <!--      >-->
-      <!--        <el-table-column prop="userNo" label="用户编号" min-width="150" />-->
-      <!--        <el-table-column prop="userName" label="用户名称" min-width="150" />-->
-      <!--        <el-table-column prop="mobileNo" label="手机号" min-width="150" />-->
-      <!--        <el-table-column prop="email" label="邮箱" min-width="150" />-->
-      <!--        <el-table-column prop="state" label="状态" min-width="150" />-->
-      <!--        <el-table-column fixed="right" label="操作" min-width="150">-->
-      <!--          <template slot-scope="{row}">-->
-      <!--            <el-button type="text" size="small" @click="openModifyDialog(row)">编辑</el-button>-->
-      <!--            <el-button type="text" size="small" @click="resetPassword(row)">重置密码</el-button>-->
-      <!--            <el-button v-if="row.state==='ENABLE'" type="text" size="small" @click="modifyUserState(row,'DISABLE')">-->
-      <!--              禁用-->
-      <!--            </el-button>-->
-      <!--            <el-button v-else type="text" size="small" @click="modifyUserState(row,'ENABLE')">启用</el-button>-->
-      <!--            <el-button type="text" size="small" @click="deleteUser(row)">删除</el-button>-->
-      <!--          </template>-->
-      <!--        </el-table-column>-->
-      <!--      </el-table>-->
+      <div>查询结果</div>
+      <el-divider />
+      <el-table
+        style="width: 100%; height: 100px;"
+        :data="tableData"
+        :border="true"
+        :stripe="true"
+        :fit="true"
+        :highlight-current-row="true"
+      >
+        <el-table-column prop="userNo" label="用户编号" min-width="150" />
+        <el-table-column prop="userName" label="用户名称" min-width="150" />
+        <el-table-column prop="mobileNo" label="手机号" min-width="150" />
+        <el-table-column prop="email" label="邮箱" min-width="150" />
+        <el-table-column prop="state" label="状态" min-width="150" />
+        <el-table-column fixed="right" label="操作" min-width="150">
+          <template slot-scope="{row}">
+            <el-button type="text" size="small" @click="openModifyDialog(row)">编辑</el-button>
+            <el-button type="text" size="small" @click="resetPassword(row)">重置密码</el-button>
+            <el-button v-if="row.state==='ENABLE'" type="text" size="small" @click="modifyUserState(row,'DISABLE')">
+              禁用
+            </el-button>
+            <el-button v-else type="text" size="small" @click="modifyUserState(row,'ENABLE')">启用</el-button>
+            <el-button type="text" size="small" @click="deleteUser(row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
 
     <div class="pagination-container">
@@ -233,12 +233,11 @@ export default {
 }
 
 .table-container {
-  //display: flex;
+  display: flex;
   flex: 1;
-  //flex-direction: column;
-  background-color: #1f2d3d;
-  height: 100%;
+  flex-direction: column;
 
+  height: 100%;
   padding: 12px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
