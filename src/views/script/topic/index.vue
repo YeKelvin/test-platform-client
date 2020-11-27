@@ -1,5 +1,5 @@
 <template>
-  <scrollbar class="app-main-container">
+  <div class="scrollbar">
     <div class="topic-management-container">
 
       <div class="query-conditions-container">
@@ -61,7 +61,7 @@
     <create-form :visible.sync="createDialogVisible" @re-query="query" />
     <modify-form :visible.sync="modifyDialogVisible" :current-row="currentRow" @re-query="query" />
 
-  </scrollbar>
+  </div>
 </template>
 
 <script>

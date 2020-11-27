@@ -1,5 +1,5 @@
 <template>
-  <scrollbar class="app-main-container">
+  <div class="scrollbar">
     <div class="workspace-list-container">
       <div class="workspace-list-sidebar-container">
         <div><b>工作空间</b></div>
@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-  </scrollbar>
+  </div>
 </template>
 
 <script>

@@ -16,13 +16,8 @@ import '@/permission'
 
 import Lodash from 'lodash'
 
-import Scrollbar from '@/components/Scrollbar/index'
-
 // 全局注册插件
 Vue.use(ElementUI)
-
-// 全局注册组件
-Vue.component('Scrollbar', Scrollbar)
 
 // 绑定到Vue原型上
 Vue.prototype.$_ = Lodash

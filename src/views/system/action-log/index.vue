@@ -1,5 +1,5 @@
 <template>
-  <scrollbar class="app-main-container">
+  <div class="scrollbar">
     <div class="user-role-manager-container">
 
       <div class="query-conditions-container">
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-  </scrollbar>
+  </div>
 </template>
 
 <script>

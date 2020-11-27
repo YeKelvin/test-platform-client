@@ -1,5 +1,5 @@
 <template>
-  <scrollbar class="app-main-container">
+  <div class="scrollbar">
     <div class="role-permission-rel-management-container">
 
       <div class="query-conditions-container">
@@ -64,7 +64,7 @@
 
     <create-form :visible.sync="createDialogVisible" @re-query="query" />
 
-  </scrollbar>
+  </div>
 </template>
 
 <script>

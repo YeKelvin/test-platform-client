@@ -1,6 +1,5 @@
 <template>
-  <scrollbar class="app-main-container">
-<!--  <div class="app-main-container">-->
+  <div class="scrollbar">
     <div class="permission-management-container">
 
       <div class="query-conditions-container">
@@ -71,7 +70,7 @@
     <create-form :visible.sync="createDialogVisible" @re-query="query" />
     <modify-form :visible.sync="modifyDialogVisible" :current-row="currentRow" @re-query="query" />
 
-  </scrollbar>
+  </div>
 </template>
 
 <script>
@@ -235,7 +234,7 @@ export default {
     padding-bottom: 12px;
   }
 
-  .mian-container {
+  .scrollbar {
     height: 100vh;
     overflow: auto;
   }

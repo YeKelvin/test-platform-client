@@ -1,5 +1,5 @@
 <template>
-  <scrollbar class="app-main-container">
+  <div class="scrollbar">
     <div class="script-editor-container">
       <div class="element-sidebar-container">
         <el-tabs v-model="sidebarTabActiveName" :stretch="true">
@@ -93,7 +93,7 @@
         </el-tabs>
       </div>
     </div>
-  </scrollbar>
+  </div>
 </template>
 
 <script>
