@@ -130,17 +130,10 @@ export const constantRoutes = [
     meta: { title: '脚本管理', icon: 'example' },
     children: [
       {
-        path: 'workspace-list',
-        name: 'WorkspaceList',
-        component: () => import('@/views/script/workspace-entrance/index'),
-        meta: { title: '脚本编辑', icon: 'example' }
-      },
-      {
         path: 'script-editor',
         name: 'ScriptEditor',
         component: () => import('@/views/script/script-editor/index'),
-        meta: { title: '脚本编辑' },
-        hidden: true
+        meta: { title: '脚本编辑', icon: 'example' }
       },
       {
         path: 'batch-execution',
