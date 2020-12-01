@@ -6,12 +6,10 @@
 </template>
 
 <script>
-import { Input } from 'element-ui'
-
 export default {
   name: 'ConditionInput',
+  inheritAttrs: false,
   props: {
-    ...Input.props,
     label: {
       type: String,
       default: ''

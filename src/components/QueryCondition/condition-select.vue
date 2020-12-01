@@ -13,12 +13,10 @@
 </template>
 
 <script>
-import { Select } from 'element-ui'
-
 export default {
   name: 'ConditionSelect',
+  inheritAttrs: false,
   props: {
-    ...Select.props,
     label: {
       type: String,
       default: ''

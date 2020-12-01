@@ -7,12 +7,10 @@
 
 <script>
 // todo 有bug，无法触发 change事件
-import { DatePicker } from 'element-ui'
-
 export default {
   name: 'ConditionDatetimePicker',
+  inheritAttrs: false,
   props: {
-    ...DatePicker.props,
     label: {
       type: String,
       default: ''

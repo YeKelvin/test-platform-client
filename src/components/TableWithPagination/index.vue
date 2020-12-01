@@ -30,15 +30,10 @@
 </template>
 
 <script>
-import { Table } from 'element-ui'
-import { Pagination } from 'element-ui'
-
 export default {
   name: 'TableWithPagination',
-  props: {
-    ...Table.props,
-    ...Pagination.props
-  }
+  inheritAttrs: false,
+  props: {}
 }
 </script>
 
