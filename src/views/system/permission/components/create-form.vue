@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增权限" width="50%" v-bind="$attrs" v-on="$listeners">
+  <el-dialog title="新增权限" width="50%" center v-bind="$attrs" v-on="$listeners">
     <el-form
       ref="createForm"
       label-width="auto"
@@ -28,8 +28,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('createForm')">新增</el-button>
-        <el-button @click="resetForm('createForm')">重置</el-button>
+        <el-button type="primary" size="small" @click="submitForm('createForm')">新增</el-button>
+        <el-button size="small" @click="resetForm('createForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>

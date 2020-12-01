@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="编辑工作空间" width="50%" v-bind="$attrs" v-on="$listeners">
+  <el-dialog title="编辑工作空间" width="50%" center v-bind="$attrs" v-on="$listeners">
     <el-form
       ref="modifyForm"
       label-width="auto"
@@ -15,7 +15,7 @@
         <el-input v-model="modifyForm.workspaceDesc" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('modifyForm')">更新</el-button>
+        <el-button type="primary" size="small" @click="submitForm('modifyForm')">更新</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>

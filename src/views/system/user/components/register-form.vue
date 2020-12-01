@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="用户注册" width="50%" v-bind="$attrs" v-on="$listeners">
+  <el-dialog title="用户注册" width="50%" center v-bind="$attrs" v-on="$listeners">
     <el-form
       ref="registerForm"
       label-width="auto"
@@ -24,8 +24,8 @@
         <el-input v-model="registerForm.email" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('registerForm')">注册</el-button>
-        <el-button @click="resetForm('registerForm')">重置</el-button>
+        <el-button type="primary" size="small" @click="submitForm('registerForm')">注册</el-button>
+        <el-button size="small" @click="resetForm('registerForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
