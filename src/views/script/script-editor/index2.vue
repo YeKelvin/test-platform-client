@@ -6,7 +6,6 @@
 </template>
 
 <script>
-// import * as Element from '@/api/script/element'
 import Manager from './components/manager'
 import MainEditor from './components/mian-editor'
 
