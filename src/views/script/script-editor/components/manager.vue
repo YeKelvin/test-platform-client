@@ -54,74 +54,64 @@
 
     <el-divider />
 
-    <el-tabs v-model="sidebarTabActiveName" :stretch="true">
-      <el-tab-pane label="脚本" name="collection">
-        <div class="collection-operation-container">
-          <el-button type="text" icon="el-icon-plus" @click="openNewTCollectionab">新增脚本</el-button>
-        </div>
-        <el-divider />
-        <div class="collection-list-container">
-          <el-card
-            v-for="collection in collectionList"
-            :key="collection.elementNo"
-            class="collection-card"
-            :class="{'active-card':activeCollectionNo===collection.elementNo}"
-            @click.native="clickCollectionCard(collection.elementNo, collection.elementName)"
-            @dblclick.native="moveToGroupList"
-          >
-            <div class="collection-item">
-              {{ collection.elementName }}
-              <span v-if="!collection.enabled" style="margin-left: 10px">
-                <el-tag type="danger" size="mini">已禁用</el-tag>
-              </span>
-              <div class="more-operation-container">
-                <el-divider direction="vertical" />
-                <el-dropdown trigger="click" placement="bottom-start">
-                  <i class="el-icon-more rotate-90" />
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item icon="el-icon-view" @click.native="openCollectionDetailTab">详情</el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
-                    <el-dropdown-item
-                      v-if="collection.enabled"
-                      icon="el-icon-turn-off"
-                      @click.native="disableElement(collection.elementNo, collection.elementType)"
-                    >禁用
-                    </el-dropdown-item>
-                    <el-dropdown-item
-                      v-else
-                      icon="el-icon-turn-off"
-                      @click.native="enableElement(collection.elementNo, collection.elementType)"
-                    >启用
-                    </el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-delete" @click.native="deleteCollection(collection.elementNo)">删除
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-            </div>
-          </el-card>
-        </div>
-      </el-tab-pane>
-
-      <div class="group-operation-container">
-        <el-dropdown trigger="click" placement="bottom-start">
-          <span class="el-dropdown-link">
-            <el-button type="text" icon="el-icon-plus">新增</el-button>
+    <div class="collection-list-container">
+      <el-card
+        v-for="collection in collections"
+        :key="collection.elementNo"
+        class="collection-card"
+      >
+        <div class="collection-item">
+          {{ collection.elementName }}
+          <span v-if="!collection.enabled" style="margin-left: 10px">
+            <el-tag type="danger" size="mini">已禁用</el-tag>
           </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="openNewGroupTab">测试案例</el-dropdown-item>
-            <el-dropdown-item divided @click.native="openNewHttpSamplerTab">HTTP请求</el-dropdown-item>
-            <el-dropdown-item>SQL请求</el-dropdown-item>
-            <el-dropdown-item divided>配置器</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <el-divider direction="vertical" />
-        <el-button type="text" icon="el-icon-sort-up" @click="moveUp">上移</el-button>
-        <el-divider direction="vertical" />
-        <el-button type="text" icon="el-icon-sort-down" @click="moveDown">下移</el-button>
-      </div>
-      <el-divider />
-    </el-tabs>
+          <div class="more-operation-container">
+            <el-divider direction="vertical" />
+            <el-dropdown trigger="click" placement="bottom-start">
+              <i class="el-icon-more rotate-90" />
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-view" @click.native="openCollectionDetailTab">详情</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
+                <el-dropdown-item
+                  v-if="collection.enabled"
+                  icon="el-icon-turn-off"
+                  @click.native="disableElement(collection.elementNo, collection.elementType)"
+                >禁用
+                </el-dropdown-item>
+                <el-dropdown-item
+                  v-else
+                  icon="el-icon-turn-off"
+                  @click.native="enableElement(collection.elementNo, collection.elementType)"
+                >启用
+                </el-dropdown-item>
+                <el-dropdown-item icon="el-icon-delete" @click.native="deleteCollection(collection.elementNo)">删除
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </div>
+      </el-card>
+    </div>
+
+    <div class="group-operation-container">
+      <el-dropdown trigger="click" placement="bottom-start">
+        <span class="el-dropdown-link">
+          <el-button type="text" icon="el-icon-plus">新增</el-button>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="openNewCollectionTab">新增脚本</el-dropdown-item>
+          <el-dropdown-item divided @click.native="openNewGroupTab">测试案例</el-dropdown-item>
+          <el-dropdown-item divided @click.native="openNewHttpSamplerTab">HTTP请求</el-dropdown-item>
+          <el-dropdown-item>SQL请求</el-dropdown-item>
+          <el-dropdown-item divided>配置器</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-divider direction="vertical" />
+      <el-button type="text" icon="el-icon-sort-up" @click="moveUp">上移</el-button>
+      <el-divider direction="vertical" />
+      <el-button type="text" icon="el-icon-sort-down" @click="moveDown">下移</el-button>
+    </div>
+    <el-divider />
   </div>
 </template>
 
@@ -131,6 +121,7 @@ import * as Workspace from '@/api/script/workspace'
 
 export default {
   name: 'Manager',
+  inject: ['editorInfo'],
   data() {
     return {
       workspaces: [],
@@ -160,7 +151,7 @@ export default {
       }).catch(() => {
       })
     },
-    moveUpGroup() {
+    moveUp() {
       if (!this.activeCollectionNo && !this.activeGroupNo) {
         return
       }
@@ -172,7 +163,7 @@ export default {
       }).catch(() => {
       })
     },
-    moveDownGroup() {
+    moveDown() {
       if (!this.activeCollectionNo && !this.activeGroupNo) {
         return
       }
@@ -238,13 +229,6 @@ export default {
       }
       this.addTab(this.activeCollectionNo, this.activeCollectionName, 'collection', 'QUERY')
     },
-    moveToGroupList() {
-      this.sidebarTabActiveName = 'group'
-    },
-    clickCollectionCard(elementNo, elementName) {
-      this.activeCollectionNo = elementNo
-      this.activeCollectionName = elementName
-    },
     openNewCollectionTab() {
       this.addTab('0', '新增脚本', 'collection', 'CREATE')
     }
@@ -264,6 +248,19 @@ export default {
 
   .el-divider--horizontal {
     margin: 5px 0
+  }
+}
+
+.operation-container{
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  .el-button--text {
+    padding-top: 6px;
+    padding-bottom: 6px;
   }
 }
 </style>

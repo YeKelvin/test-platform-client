@@ -12,9 +12,17 @@ import MainEditor from './components/mian-editor'
 export default {
   name: 'ScriptEditor2',
   components: { Manager, MainEditor },
+  provide() {
+    return {
+      editorInfo: this.editorInfo
+    }
+  },
   data() {
     return {
-
+      editorInfo: {
+        elementNo: '',
+        elementType: ''
+      }
     }
   },
   mounted: function() {},
