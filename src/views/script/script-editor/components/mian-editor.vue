@@ -52,6 +52,29 @@ export default {
   },
   mounted: function() {},
   methods: {
+    addTab(elementNo, elementName, elementType, action) {
+      const tabs = this.editTabs
+      const newTabName = `${elementNo}::${elementName}`
+      let isAllowAdd = true
+      tabs.forEach(tab => {
+        const tabName = `${tab.elementNo}::${tab.elementName}`
+        if (tabName === newTabName) {
+          isAllowAdd = false
+          this.editTabActiveNo = tab.elementNo
+          this.editTabActiveName = `${tab.elementNo}::${tab.elementName}`
+        }
+      })
+      if (isAllowAdd) {
+        this.editTabs.push({
+          elementNo: elementNo,
+          elementName: elementName,
+          elementType: elementType,
+          action: action
+        })
+        this.editTabActiveNo = elementNo
+        this.editTabActiveName = `${elementNo}::${elementName}`
+      }
+    },
     removeTab(removeTabName) {
       const tabs = this.editTabs
       let activeNo = ''

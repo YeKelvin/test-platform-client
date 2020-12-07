@@ -1,7 +1,7 @@
 <template>
   <div class="scrollbar script-editor-container">
-    <manager />
-    <main-editor />
+    <manager @add-tab="addTab" />
+    <main-editor ref="editor" />
   </div>
 </template>
 
@@ -27,7 +27,11 @@ export default {
     }
   },
   mounted: function() {},
-  methods: {}
+  methods: {
+    addTab() {
+      this.$refs.editor.addTab()
+    }
+  }
 }
 </script>
 

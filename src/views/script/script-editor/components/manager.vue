@@ -18,34 +18,11 @@
         :label="collection.elementName"
         :value="collection.elementNo"
       >
-        <span style="float: left">
-          {{ collection.elementName }}
+        <span style="float: left">{{ collection.elementName }}</span>
+        <span style="float: right">
           <span v-if="!collection.enabled" style="margin-left: 10px">
             <el-tag type="danger" size="mini">已禁用</el-tag>
-          </span></span>
-        <span style="float: right" class="more-operation-container">
-          <el-divider direction="vertical" />
-          <el-dropdown placement="bottom-start">
-            <i class="el-icon-more rotate-90" />
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-view" @click.native="openCollectionDetailTab">详情</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
-              <el-dropdown-item
-                v-if="collection.enabled"
-                icon="el-icon-turn-off"
-                @click.native="disableElement(collection.elementNo, collection.elementType)"
-              >禁用
-              </el-dropdown-item>
-              <el-dropdown-item
-                v-else
-                icon="el-icon-turn-off"
-                @click.native="enableElement(collection.elementNo, collection.elementType)"
-              >启用
-              </el-dropdown-item>
-              <el-dropdown-item icon="el-icon-delete" @click.native="deleteCollection(collection.elementNo)">删除
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+          </span>
         </span>
       </el-option>
     </el-select>
@@ -71,7 +48,7 @@
       <el-button type="text" icon="el-icon-sort-down" @click="moveDown">下移</el-button>
     </div>
     <el-divider />
-<!--    {{ editorInfo.elementNo }}-->
+    <!--    {{ editorInfo.elementNo }}-->
   </div>
 </template>
 
@@ -143,8 +120,20 @@ export default {
       }).catch(() => {
       })
     },
+    addTab() {
+      this.$emit('add-tab', '子向父组件传值')
+    },
     openNewGroupTab() {
       this.addTab('0', '新增案例', 'group', 'CREATE')
+    },
+    openCollectionDetailTab() {
+      if (!this.activeCollectionNo && !this.activeCollectionName) {
+        return
+      }
+      this.addTab(this.activeCollectionNo, this.activeCollectionName, 'collection', 'QUERY')
+    },
+    openNewCollectionTab() {
+      this.addTab('0', '新增脚本', 'collection', 'CREATE')
     },
     deleteCollection(elementNo) {
       this.$confirm(
@@ -190,15 +179,6 @@ export default {
         }
       }).catch(() => {
       })
-    },
-    openCollectionDetailTab() {
-      if (!this.activeCollectionNo && !this.activeCollectionName) {
-        return
-      }
-      this.addTab(this.activeCollectionNo, this.activeCollectionName, 'collection', 'QUERY')
-    },
-    openNewCollectionTab() {
-      this.addTab('0', '新增脚本', 'collection', 'CREATE')
     }
   }
 }
