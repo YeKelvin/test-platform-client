@@ -122,12 +122,12 @@
         <el-button @click="closeTab">关闭</el-button>
       </el-form-item>
       <el-form-item v-else-if="isModify">
-        <el-button type="primary" @click="modifyGroupElement('elementForm')">保存</el-button>
+        <el-button type="primary" @click="modifySamplerElement('elementForm')">保存</el-button>
         <el-button @click="resetModifyForm('elementForm')">重置</el-button>
         <el-button @click="closeTab">关闭</el-button>
       </el-form-item>
       <el-form-item v-else-if="isCreate">
-        <el-button type="primary" @click="createGroupElement('elementForm')">保存</el-button>
+        <el-button type="primary" @click="createSamplerElement('elementForm')">保存</el-button>
         <el-button @click="resetCreateForm('elementForm')">重置</el-button>
         <el-button @click="closeTab">关闭</el-button>
       </el-form-item>
