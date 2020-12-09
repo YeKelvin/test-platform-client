@@ -3,7 +3,7 @@
     <el-tree
       ref="scriptTree"
       node-key="elementNo"
-      empty-text="空脚本"
+      empty-text="暂无脚本"
       highlight-current
       :indent="32"
       :data="scriptList"
@@ -37,14 +37,7 @@ import * as Element from '@/api/script/element'
 
 export default {
   name: 'ScriptTree',
-
-  props: {
-    scriptNo: {
-      type: String,
-      default: ''
-    }
-  },
-
+  inject: ['editorInfo'],
   data() {
     return {
       scriptList: [{
@@ -90,13 +83,11 @@ export default {
       selectedNode: null
     }
   },
-
   watch: {
-    scriptNo(value) {
+    'editorInfo.collectionNo'(value) {
       this.queryScriptTree(value)
     }
   },
-
   methods: {
     handleNodeClick(data) {
       console.log(data)

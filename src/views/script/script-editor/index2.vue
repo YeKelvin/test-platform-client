@@ -1,7 +1,11 @@
 <template>
   <div class="scrollbar script-editor-container">
-    <manager @add-tab="addTab" />
-    <main-editor ref="editor" />
+    <manager ref="manager" @add-tab="addTab(arguments)" />
+    <main-editor
+      ref="editor"
+      @re-query-collection="queryCollections"
+      @re-query-group="queryGroups"
+    />
   </div>
 </template>
 
@@ -21,6 +25,7 @@ export default {
     return {
       editorInfo: {
         workspaceNo: '',
+        collectionNo: '',
         elementNo: '',
         elementType: ''
       }
@@ -28,8 +33,14 @@ export default {
   },
   mounted: function() {},
   methods: {
-    addTab() {
-      this.$refs.editor.addTab()
+    addTab(args) {
+      this.$refs.editor.addTab(...args)
+    },
+    queryCollections() {
+      this.$refs.manager.queryCollections()
+    },
+    queryGroups() {
+      // this.$refs.manager.queryGroups()
     }
   }
 }

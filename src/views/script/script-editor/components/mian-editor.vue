@@ -13,29 +13,26 @@
           <!-- :element-no为当前测试元素的 elementNo -->
           <component
             :is="elementViews[tab.elementType]"
-            :workspace-no="editorInfo.workspaceNo"
-            :collection-no="editorInfo.CollectionNo"
-            :group-no="activeGroupNo"
             :element-no="tab.elementNo"
             :action="tab.action"
-            @re-query-collection="queryCollections"
-            @re-query-group="queryGroups"
             @rename-tab="renameTab(arguments, tab)"
             @close-tab="removeTab(`${tab.elementNo}::${tab.elementName}`)"
+            v-on="$listeners"
           />
         </keep-alive>
       </el-tab-pane>
     </el-tabs>
-    <!--    {{ editorInfo.elementNo }}-->
-    <!--    <input v-model="editorInfo.elementNo" type="text">-->
   </div>
 </template>
 
 <script>
+import CollectionEditor from '@/views/script/script-editor/components/collection-editor'
+import GroupEditor from '@/views/script/script-editor/components/group-editor'
+import HTTPSamplerEditor from '@/views/script/script-editor/components/samplers/http-sampler-editor'
 
 export default {
   name: 'MianEditor',
-  components: {},
+  components: { CollectionEditor, GroupEditor, HTTPSamplerEditor },
   inject: ['editorInfo'],
   data() {
     return {

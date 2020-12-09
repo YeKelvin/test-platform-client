@@ -8,7 +8,6 @@
         :value="workspace.workspaceNo"
       />
     </el-select>
-
     <el-divider />
 
     <el-select v-model="collectionNo" size="small" clearable filterable placeholder="请选择脚本">
@@ -26,10 +25,9 @@
         </span>
       </el-option>
     </el-select>
-
     <el-divider />
 
-    <div class="group-operation-container">
+    <div class="operation-container">
       <el-dropdown trigger="click" placement="bottom-start">
         <span class="el-dropdown-link">
           <el-button type="text" icon="el-icon-plus">新增</el-button>
@@ -48,7 +46,8 @@
       <el-button type="text" icon="el-icon-sort-down" @click="moveDown">下移</el-button>
     </div>
     <el-divider />
-    <!--    {{ editorInfo.elementNo }}-->
+
+    <script-tree ref="scriptTree" />
   </div>
 </template>
 
@@ -56,21 +55,25 @@
 import * as Element from '@/api/script/element'
 import * as Workspace from '@/api/script/workspace'
 
+import ScriptTree from './script-tree'
+
 export default {
   name: 'Manager',
+  components: { ScriptTree },
   inject: ['editorInfo'],
   data() {
     return {
       workspaces: [],
       workspaceNo: '',
-      collections: [{
-        elementNo: '123',
-        elementName: 'testName'
-      }],
+      collections: [],
       collectionNo: ''
     }
   },
   watch: {
+    workspaceNo(value) {
+      this.editorInfo.workspaceNo = value
+      this.queryCollections()
+    },
     collectionNo(value) {
       this.editorInfo.elementNo = value
     }
@@ -120,8 +123,8 @@ export default {
       }).catch(() => {
       })
     },
-    addTab() {
-      this.$emit('add-tab', '子向父组件传值')
+    addTab(elementNo, elementName, elementType, action) {
+      this.$emit('add-tab', elementNo, elementName, elementType, action)
     },
     openNewGroupTab() {
       this.addTab('0', '新增案例', 'group', 'CREATE')
@@ -134,6 +137,9 @@ export default {
     },
     openNewCollectionTab() {
       this.addTab('0', '新增脚本', 'collection', 'CREATE')
+    },
+    openNewHttpSamplerTab() {
+      this.addTab('0', '新增HTTP请求', 'httpSampler', 'CREATE')
     },
     deleteCollection(elementNo) {
       this.$confirm(
@@ -201,7 +207,6 @@ export default {
 
 .operation-container {
   display: flex;
-  flex: 1;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
@@ -211,4 +216,5 @@ export default {
     padding-bottom: 6px;
   }
 }
+
 </style>
