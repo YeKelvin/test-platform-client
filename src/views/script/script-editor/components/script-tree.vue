@@ -3,7 +3,7 @@
     <el-tree
       ref="scriptTree"
       node-key="elementNo"
-      empty-text="暂无脚本"
+      empty-text="空脚本"
       highlight-current
       :indent="32"
       :data="scriptList"
