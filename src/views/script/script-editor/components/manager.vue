@@ -71,11 +71,13 @@ export default {
   },
   watch: {
     workspaceNo(value) {
+      // todo 非空判断
       this.editorInfo.workspaceNo = value
       this.queryCollections()
     },
     collectionNo(value) {
-      this.editorInfo.elementNo = value
+      // todo 非空判断
+      this.editorInfo.collectionNo = value
     }
   },
   mounted: function() {
@@ -129,40 +131,17 @@ export default {
     openNewGroupTab() {
       this.addTab('0', '新增案例', 'group', 'CREATE')
     },
-    openCollectionDetailTab() {
-      if (!this.activeCollectionNo && !this.activeCollectionName) {
-        return
-      }
-      this.addTab(this.activeCollectionNo, this.activeCollectionName, 'collection', 'QUERY')
-    },
     openNewCollectionTab() {
       this.addTab('0', '新增脚本', 'collection', 'CREATE')
     },
     openNewHttpSamplerTab() {
       this.addTab('0', '新增HTTP请求', 'httpSampler', 'CREATE')
     },
-    deleteCollection(elementNo) {
-      this.$confirm(
-        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
-        Element.deleteElement({ elementNo: elementNo }).then(response => {
-          const { result } = response
-          result.forEach((deletedElement) => {
-            const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
-            this.removeTab(tabName)
-          })
-          this.queryCollections()
-          if (this.activeCollectionNo === elementNo) {
-            this.activeCollectionNo = ''
-            this.activeCollectionName = ''
-            this.groupList = []
-            this.activeGroupNo = ''
-            this.activeGroupName = ''
-          }
-        }).catch(() => {
-        })
-      }).catch(() => {
-      })
+    openCollectionDetailTab() {
+      this.addTab(this.editorInfo.elementNo, this.editorInfo.elementName, 'collection', 'QUERY')
+    },
+    openGroupDetailTab() {
+      this.addTab(this.editorInfo.elementNo, this.editorInfo.elementName, 'group', 'QUERY')
     },
     enableElement(elementNo, elementType) {
       if (!elementNo && !elementType) {
