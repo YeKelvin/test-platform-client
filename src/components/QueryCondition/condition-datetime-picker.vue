@@ -6,7 +6,6 @@
 </template>
 
 <script>
-// todo 有bug，无法触发 change事件
 export default {
   name: 'ConditionDatetimePicker',
   inheritAttrs: false,
