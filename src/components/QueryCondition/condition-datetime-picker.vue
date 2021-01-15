@@ -1,7 +1,7 @@
 <template>
   <div>
     <label class="condition-label">{{ label }}</label>
-    <el-date-picker v-model="model" type="datetime" v-bind="$attrs" v-on="$listeners" />
+    <el-date-picker v-model="modelData" type="datetime" size="small" v-bind="$attrs" v-on="$listeners" />
   </div>
 </template>
 
@@ -17,9 +17,9 @@ export default {
     }
   },
   computed: {
-    model: {
+    modelData: {
       get() {
-        return this.value
+        return this.$attrs.value
       },
       set(val) {
         this.$emit('input', val)

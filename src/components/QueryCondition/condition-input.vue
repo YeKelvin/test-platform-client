@@ -1,7 +1,7 @@
 <template>
   <div>
     <label class="condition-label">{{ label }}</label>
-    <el-input v-model="model" v-bind="$attrs" clearable size="small" v-on="$listeners" />
+    <el-input v-model="modelData" v-bind="$attrs" clearable size="small" v-on="$listeners" />
   </div>
 </template>
 
@@ -16,9 +16,9 @@ export default {
     }
   },
   computed: {
-    model: {
+    modelData: {
       get() {
-        return this.value
+        return this.$attrs.value
       },
       set(newVal) {
         this.$emit('input', newVal)

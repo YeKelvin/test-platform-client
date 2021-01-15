@@ -8,14 +8,8 @@
         <condition-input v-model="queryConditions.actionMethod" label="操作方法" class="condition-item" />
         <condition-input v-model="queryConditions.actionEndpoint" label="操作路由" class="condition-item" />
         <condition-input v-model="queryConditions.createdBy" label="操作人" class="condition-item" />
-        <div class="condition-item">
-          <label class="condition-label">开始时间</label>
-          <el-date-picker v-model="queryConditions.startTime" type="datetime" />
-        </div>
-        <div class="condition-item">
-          <label class="condition-label">结束时间</label>
-          <el-date-picker v-model="queryConditions.endTime" type="datetime" />
-        </div>
+        <condition-datetime-picker v-model="queryConditions.startTime" label="开始时间" class="condition-item" />
+        <condition-datetime-picker v-model="queryConditions.endTime" label="结束时间" class="condition-item" />
       </div>
       <div class="query-buttons">
         <el-button type="primary" size="small" @click="query">查询</el-button>
@@ -63,10 +57,11 @@
 <script>
 import * as System from '@/api/system'
 import ConditionInput from '@/components/QueryCondition/condition-input'
+import ConditionDatetimePicker from '@/components/QueryCondition/condition-datetime-picker'
 
 export default {
   name: 'ActionLog',
-  components: { ConditionInput },
+  components: { ConditionInput, ConditionDatetimePicker },
   data() {
     return {
       // 查询条件
