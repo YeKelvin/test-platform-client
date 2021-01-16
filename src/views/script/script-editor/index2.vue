@@ -40,7 +40,7 @@ export default {
       this.$refs.manager.queryCollections()
     },
     queryGroups() {
-      // this.$refs.manager.queryGroups()
+      this.$refs.manager.queryGroups()
     }
   }
 }

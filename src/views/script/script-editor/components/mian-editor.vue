@@ -37,7 +37,6 @@ export default {
   data() {
     return {
       elementViews: {
-        activity: 'ActivityView',
         collection: 'CollectionEditor',
         group: 'GroupEditor',
         httpSampler: 'HTTPSamplerEditor'

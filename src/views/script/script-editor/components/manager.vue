@@ -10,7 +10,7 @@
     </el-select>
     <el-divider />
 
-    <el-select v-model="collectionNo" size="small" clearable filterable placeholder="请选择脚本">
+    <el-select v-model="collectionNo" size="small" filterable placeholder="请选择脚本">
       <el-option
         v-for="collection in collections"
         :key="collection.elementNo"
@@ -100,6 +100,9 @@ export default {
         this.collections = result
       }).catch(() => {
       })
+    },
+    queryGroups() {
+      this.$refs.scriptTree.queryScriptTree(this.activeCollectionNo)
     },
     moveUp() {
       if (!this.activeCollectionNo && !this.activeGroupNo) {
