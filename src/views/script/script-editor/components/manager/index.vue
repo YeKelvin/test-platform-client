@@ -104,30 +104,6 @@ export default {
     queryGroups() {
       this.$refs.scriptTree.queryScriptTree(this.collectionNo)
     },
-    moveUp() {
-      if (!this.activeCollectionNo && !this.activeGroupNo) {
-        return
-      }
-      Element.moveUpElementChildOrder({
-        parentNo: this.activeCollectionNo,
-        childNo: this.activeGroupNo
-      }).then(response => {
-        this.queryGroups()
-      }).catch(() => {
-      })
-    },
-    moveDown() {
-      if (!this.activeCollectionNo && !this.activeGroupNo) {
-        return
-      }
-      Element.moveDownElementChildOrder({
-        parentNo: this.activeCollectionNo,
-        childNo: this.activeGroupNo
-      }).then(response => {
-        this.queryGroups()
-      }).catch(() => {
-      })
-    },
     addTab(elementNo, elementName, elementType, action) {
       this.$emit('add-tab', elementNo, elementName, elementType, action)
     },
@@ -146,25 +122,27 @@ export default {
     openGroupDetailTab() {
       this.addTab(this.editorInfo.elementNo, this.editorInfo.elementName, 'group', 'QUERY')
     },
-    enableElement(elementNo, elementType) {
-      if (!elementNo && !elementType) {
+    moveUp() {
+      if (!this.editorInfo.collectionNo && !this.editorInfo.elementNo) {
         return
       }
-      Element.enableElement({ elementNo: elementNo }).then(response => {
-        if (elementType === 'COLLECTION') {
-          this.queryCollections()
-        }
+      Element.moveUpElementChildOrder({
+        parentNo: this.editorInfo.collectionNo,
+        childNo: this.editorInfo.elementNo
+      }).then(response => {
+        this.queryGroups()
       }).catch(() => {
       })
     },
-    disableElement(elementNo, elementType) {
-      if (!elementNo && !elementType) {
+    moveDown() {
+      if (!this.editorInfo.collectionNo && !this.editorInfo.elementNo) {
         return
       }
-      Element.disableElement({ elementNo: elementNo }).then(response => {
-        if (elementType === 'COLLECTION') {
-          this.queryCollections()
-        }
+      Element.moveDownElementChildOrder({
+        parentNo: this.editorInfo.collectionNo,
+        childNo: this.editorInfo.elementNo
+      }).then(response => {
+        this.queryGroups()
       }).catch(() => {
       })
     }

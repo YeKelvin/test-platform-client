@@ -11,7 +11,7 @@
       :expand-on-click-node="false"
       @node-click="handleNodeClick"
     >
-      <div slot-scope="{ node }" class="tree-item-container">
+      <div slot-scope="{ node, data }" class="tree-item-container">
         <span>{{ node.label }}</span>
         <div class="more-operation-container">
           <el-divider direction="vertical" />
@@ -19,8 +19,8 @@
             <i class="el-icon-more rotate-90" />
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-turn-off">禁用</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-turn-off">启用</el-dropdown-item>
+              <el-dropdown-item v-if="data.enabled" icon="el-icon-turn-off" @click.native="disableElement(data.elementNo)">禁用</el-dropdown-item>
+              <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(data.elementNo)">启用</el-dropdown-item>
               <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
               <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
             </el-dropdown-menu>
@@ -40,41 +40,7 @@ export default {
   inject: ['editorInfo'],
   data() {
     return {
-      scriptList: [{
-        elementName: '一级 1',
-        children: [{
-          elementName: '二级 1-1',
-          children: [{
-            elementName: '三级 1-1-1'
-          }]
-        }]
-      }, {
-        elementName: '一级 2',
-        children: [{
-          elementName: '二级 2-1',
-          children: [{
-            elementName: '三级 2-1-1'
-          }]
-        }, {
-          elementName: '二级 2-2',
-          children: [{
-            elementName: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        elementName: '一级 3',
-        children: [{
-          elementName: '二级 3-1',
-          children: [{
-            elementName: '三级 3-1-1'
-          }]
-        }, {
-          elementName: '二级 3-2',
-          children: [{
-            elementName: '三级 3-2-1'
-          }]
-        }]
-      }],
+      scriptList: [],
       treeProps: {
         label: 'elementName',
         children: 'children',
@@ -89,13 +55,51 @@ export default {
     }
   },
   methods: {
-    handleNodeClick(data) {
-      console.log(data)
+    handleNodeClick(node) {
+      console.log(node)
+      this.editorInfo.elementNo = node.elementNo
+      this.editorInfo.elementType = node.elementType
     },
     queryScriptTree(elementNo) {
       Element.queryElementChildren({ elementNo: elementNo }).then(response => {
         const { result } = response
         this.scriptList = result
+      }).catch(() => {})
+    },
+    enableElement(elementNo) {
+      console.log('enableElement')
+      console.log(elementNo)
+      if (!elementNo) {
+        return
+      }
+      Element.enableElement({ elementNo: elementNo }).then(response => {
+        this.queryScriptTree(this.editorInfo.collectionNo)
+      }).catch(() => {
+      })
+    },
+    disableElement(elementNo) {
+      console.log('disableElement')
+      console.log(elementNo)
+      if (!elementNo) {
+        return
+      }
+      Element.disableElement({ elementNo: elementNo }).then(response => {
+        this.queryScriptTree(this.editorInfo.collectionNo)
+      }).catch(() => {
+      })
+    },
+    deleteElement(elementNo) {
+      this.$confirm(
+        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
+        Element.deleteElement({ elementNo: elementNo }).then(response => {
+          const { result } = response
+          result.forEach((deletedElement) => {
+            const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
+            this.removeTab(tabName)
+          })
+          this.queryScriptTree(this.editorInfo.collectionNo)
+        }).catch(() => {})
       }).catch(() => {})
     }
   }
