@@ -102,7 +102,7 @@ export default {
       })
     },
     queryGroups() {
-      this.$refs.scriptTree.queryScriptTree(this.activeCollectionNo)
+      this.$refs.scriptTree.queryScriptTree(this.collectionNo)
     },
     moveUp() {
       if (!this.activeCollectionNo && !this.activeGroupNo) {

@@ -136,12 +136,6 @@ export const constantRoutes = [
         meta: { title: '脚本编辑', icon: 'example' }
       },
       {
-        path: 'script-editor2',
-        name: 'ScriptEditor2',
-        component: () => import('@/views/script/script-editor/index2'),
-        meta: { title: '脚本编辑2', icon: 'example' }
-      },
-      {
         path: 'batch-execution',
         name: 'BatchExecution',
         component: () => import('@/views/script/batch-execution/index'),

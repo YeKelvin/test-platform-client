@@ -11,7 +11,7 @@
       :expand-on-click-node="false"
       @node-click="handleNodeClick"
     >
-      <div slot-scope="{ node, data }" class="tree-item-container">
+      <div slot-scope="{ node }" class="tree-item-container">
         <span>{{ node.label }}</span>
         <div class="more-operation-container">
           <el-divider direction="vertical" />

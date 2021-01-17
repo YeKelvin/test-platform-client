@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import CollectionEditor from '@/views/script/script-editor/components/collection-editor'
-import GroupEditor from '@/views/script/script-editor/components/group-editor'
-import HTTPSamplerEditor from '@/views/script/script-editor/components/samplers/http-sampler-editor'
+import CollectionEditor from './collection-editor'
+import GroupEditor from './group-editor'
+import HTTPSamplerEditor from './samplers/http-sampler-editor'
 
 export default {
   name: 'MianEditor',
