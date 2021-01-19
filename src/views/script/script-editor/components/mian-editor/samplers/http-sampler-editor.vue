@@ -140,16 +140,8 @@ import * as Element from '@/api/script/element'
 
 export default {
   name: 'HTTPSamplerEditor',
-
+  inject: ['editorInfo'],
   props: {
-    collectionNo: {
-      type: String,
-      default: ''
-    },
-    elementNo: {
-      type: String,
-      default: ''
-    },
     action: {
       type: String,
       default: 'QUERY'
@@ -210,7 +202,7 @@ export default {
 
   mounted: function() {
     if (this.action === 'QUERY') {
-      Element.queryElementInfo({ elementNo: this.elementNo }).then(response => {
+      Element.queryElementInfo({ elementNo: this.editorInfo.elementNo }).then(response => {
         this.elementInfo = response['result']
         this.elementForm = { ...this.elementInfo }
       }).catch(() => {})
@@ -232,7 +224,7 @@ export default {
     modifySamplerElement(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          Element.modifyElement({ elementNo: this.elementNo, ...this.elementForm }).then(response => {
+          Element.modifyElement({ elementNo: this.editorInfo.elementNo, ...this.elementForm }).then(response => {
             if (response['success']) {
               this.$message({ message: '修改测试元素成功', type: 'info', duration: 2 * 1000 })
               // 修改 tab标题
@@ -256,7 +248,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           Element.addElementChildren(
-            { parentNo: this.collectionNo, children: [this.elementForm] }
+            { parentNo: this.editorInfo.elementNo, children: [this.elementForm] }
           ).then(response => {
             if (response['success']) {
               this.$message({ message: '新增测试元素成功', type: 'info', duration: 2 * 1000 })
@@ -307,14 +299,12 @@ export default {
   }
 
   .http-header-table{
-
     ::v-deep.el-form-item{
       margin-bottom: 0;
     }
   }
 
   .http-body{
-
     ::v-deep.el-form-item__content{
       margin-left: 0 !important;
     }

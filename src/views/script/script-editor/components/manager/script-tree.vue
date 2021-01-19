@@ -8,8 +8,8 @@
       :indent="32"
       :data="scriptList"
       :props="treeProps"
-      :expand-on-click-node="false"
       @node-click="handleNodeClick"
+      @node-contextmenu="handleNodeContextmenu"
     >
       <div slot-scope="{ node, data }" class="tree-item-container">
         <span>{{ node.label }}</span>
@@ -22,7 +22,7 @@
               <el-dropdown-item v-if="data.enabled" icon="el-icon-turn-off" @click.native="disableElement(data.elementNo)">禁用</el-dropdown-item>
               <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(data.elementNo)">启用</el-dropdown-item>
               <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-delete">删除</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-delete" @click.native="deleteElement(data.elementNo)">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -56,9 +56,16 @@ export default {
   },
   methods: {
     handleNodeClick(node) {
-      console.log(node)
       this.editorInfo.elementNo = node.elementNo
       this.editorInfo.elementType = node.elementType
+      // todo 打开详情页
+      // this.$emit('add-tab')
+    },
+    handleNodeContextmenu(mouseEvent, data, node) {
+      // todo 右键菜单
+      console.log(mouseEvent)
+      console.log(data)
+      console.log(node)
     },
     queryScriptTree(elementNo) {
       Element.queryElementChildren({ elementNo: elementNo }).then(response => {
@@ -67,6 +74,7 @@ export default {
       }).catch(() => {})
     },
     enableElement(elementNo) {
+      // todo 禁用启用元素还是有问题
       console.log('enableElement')
       console.log(elementNo)
       if (!elementNo) {
@@ -78,6 +86,7 @@ export default {
       })
     },
     disableElement(elementNo) {
+      // todo 禁用启用元素还是有问题
       console.log('disableElement')
       console.log(elementNo)
       if (!elementNo) {
@@ -89,15 +98,18 @@ export default {
       })
     },
     deleteElement(elementNo) {
-      this.$confirm(
-        '确认删除？', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-      ).then(() => {
+      this.$confirm('确认删除？', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
         Element.deleteElement({ elementNo: elementNo }).then(response => {
-          const { result } = response
-          result.forEach((deletedElement) => {
-            const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
-            this.removeTab(tabName)
-          })
+          // todo 删除元素后需要关闭已经打开的tab
+          // const { result } = response
+          // result.forEach((deletedElement) => {
+          //   const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
+          //   this.removeTab(tabName)
+          // })
           this.queryScriptTree(this.editorInfo.collectionNo)
         }).catch(() => {})
       }).catch(() => {})
