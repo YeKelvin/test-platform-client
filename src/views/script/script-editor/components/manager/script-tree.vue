@@ -9,7 +9,7 @@
       :data="scriptList"
       :props="treeProps"
       @node-click="handleNodeClick"
-      @node-contextmenu="handleNodeContextmenu"
+      @node-contextmenu="handleRightClick"
     >
       <div slot-scope="{ node, data }" class="tree-item-container">
         <span>{{ node.label }}</span>
@@ -29,6 +29,11 @@
       </div>
     </el-tree>
 
+    <div v-show="showMenu" ref="rightMenu" class="right-menu">
+      <div><i class="el-icon-circle-plus-outline" />添加</div>
+      <div><i class="el-icon-edit" />修改</div>
+      <div><i class="el-icon-remove-outline" />删除</div>
+    </div>
   </div>
 </template>
 
@@ -46,7 +51,7 @@ export default {
         children: 'children',
         disabled: 'enabled'
       },
-      selectedNode: null
+      showMenu: false
     }
   },
   watch: {
@@ -58,14 +63,22 @@ export default {
     handleNodeClick(node) {
       this.editorInfo.elementNo = node.elementNo
       this.editorInfo.elementType = node.elementType
-      // todo 打开详情页
+      // TODO: 打开详情页
       // this.$emit('add-tab')
     },
-    handleNodeContextmenu(mouseEvent, data, node) {
-      // todo 右键菜单
-      console.log(mouseEvent)
-      console.log(data)
-      console.log(node)
+    handleRightClick(mouseEvent, data, node, element) {
+      // TODO: 右键菜单
+      this.showMenu = false // 先把菜单关死，目的是：第二次或者第n次右键鼠标的时候 它默认的是true
+      this.showMenu = true
+      this.$refs.rightMenu.style.left = mouseEvent.clientX + 'px'
+      this.$refs.rightMenu.style.top = mouseEvent.clientY + 'px'
+      // 给整个document添加监听鼠标事件，点击任何位置执行closeRightMenu方法，及时将菜单关闭
+      document.addEventListener('click', this.closeRightMenu)
+    },
+    closeRightMenu() {
+      this.showMenu = false
+      // 及时关掉鼠标监听事件
+      document.removeEventListener('click', this.closeRightMenu)
     },
     queryScriptTree(elementNo) {
       Element.queryElementChildren({ elementNo: elementNo }).then(response => {
@@ -74,7 +87,7 @@ export default {
       }).catch(() => {})
     },
     enableElement(elementNo) {
-      // todo 禁用启用元素还是有问题
+      // FIXME: 禁用启用元素还是有问题
       console.log('enableElement')
       console.log(elementNo)
       if (!elementNo) {
@@ -86,7 +99,7 @@ export default {
       })
     },
     disableElement(elementNo) {
-      // todo 禁用启用元素还是有问题
+      // FIXME: 禁用启用元素还是有问题
       console.log('disableElement')
       console.log(elementNo)
       if (!elementNo) {
@@ -104,7 +117,7 @@ export default {
         type: 'warning'
       }).then(() => {
         Element.deleteElement({ elementNo: elementNo }).then(response => {
-          // todo 删除元素后需要关闭已经打开的tab
+          // TODO: 删除元素后需要关闭已经打开的tab
           // const { result } = response
           // result.forEach((deletedElement) => {
           //   const tabName = `${deletedElement.elementNo}::${deletedElement.elementName}`
@@ -119,24 +132,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .tree-item-container {
-    display: flex;
-    flex: 1;
-    justify-content: space-between;
-    align-items: center;
+.tree-item-container {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+}
+.more-operation-container {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10px;
+  i {
+    font-size: 20px;
+    cursor: pointer;
   }
+}
 
-  .more-operation-container {
-    display: flex;
-    flex: 1;
-    justify-content: flex-end;
-    align-items: center;
-    padding-right: 10px;
-
-    i {
-      font-size: 20px;
-      cursor: pointer;
-    }
-  }
-
+.right-menu {
+  position: fixed;
+  background: #fff;
+  border: solid 1px rgba(0, 0, 0, .2);
+  border-radius: 4px;
+  box-shadow: 0 0.5em 1em 0 rgba(0,0,0,.1);
+  z-index: 999;
+}
 </style>

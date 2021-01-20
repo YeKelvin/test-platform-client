@@ -1,5 +1,6 @@
 <template>
   <div class="manager-container">
+    <!-- TODO: 工作空间的下拉菜单和脚本的下拉菜单合并，减少占用空间 -->
     <el-select v-model="workspaceNo" size="small" filterable placeholder="请选择工作空间">
       <el-option
         v-for="workspace in workspaces"
@@ -10,6 +11,7 @@
     </el-select>
     <el-divider />
 
+    <!-- TODO: 脚本下拉菜单右侧添加编辑或查看按钮 -->
     <el-select v-model="collectionNo" size="small" filterable placeholder="请选择脚本">
       <el-option
         v-for="collection in collections"
@@ -44,6 +46,7 @@
       <el-button type="text" icon="el-icon-sort-up" @click="moveUp">上移</el-button>
       <el-divider direction="vertical" />
       <el-button type="text" icon="el-icon-sort-down" @click="moveDown">下移</el-button>
+      <!-- TODO: 还需要展开，收缩，更多按钮 -->
     </div>
     <el-divider />
 
@@ -71,12 +74,12 @@ export default {
   },
   watch: {
     workspaceNo(value) {
-      // todo 非空判断
+      // TODO: 非空判断
       this.editorInfo.workspaceNo = value
       this.queryCollections()
     },
     collectionNo(value) {
-      // todo 非空判断
+      // TODO: 非空判断
       this.editorInfo.collectionNo = value
     }
   },

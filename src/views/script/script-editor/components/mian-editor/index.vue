@@ -26,7 +26,7 @@
 </template>
 
 <script>
-// todo 重构页面，增加页尾（回收站，信息输出，设置等）
+// TODO: 重构页面，增加页尾（回收站，信息输出，设置等）
 import CollectionEditor from './collection-editor'
 import GroupEditor from './group-editor'
 import HTTPSamplerEditor from './samplers/http-sampler-editor'
