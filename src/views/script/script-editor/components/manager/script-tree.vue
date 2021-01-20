@@ -61,6 +61,7 @@ export default {
   },
   methods: {
     handleNodeClick(node) {
+      this.showMenu = false
       this.editorInfo.elementNo = node.elementNo
       this.editorInfo.elementType = node.elementType
       // TODO: 打开详情页
@@ -70,8 +71,8 @@ export default {
       // TODO: 右键菜单
       this.showMenu = false // 先把菜单关死，目的是：第二次或者第n次右键鼠标的时候 它默认的是true
       this.showMenu = true
-      this.$refs.rightMenu.style.left = mouseEvent.clientX + 'px'
-      this.$refs.rightMenu.style.top = mouseEvent.clientY + 'px'
+      this.$refs.rightMenu.style.left = mouseEvent.clientX + 15 + 'px'
+      this.$refs.rightMenu.style.top = mouseEvent.clientY + 15 + 'px'
       // 给整个document添加监听鼠标事件，点击任何位置执行closeRightMenu方法，及时将菜单关闭
       document.addEventListener('click', this.closeRightMenu)
     },
@@ -138,6 +139,7 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
 .more-operation-container {
   display: flex;
   flex: 1;
@@ -151,11 +153,12 @@ export default {
 }
 
 .right-menu {
+  padding: 10px;
   position: fixed;
   background: #fff;
-  border: solid 1px rgba(0, 0, 0, .2);
+  border: 1px solid #EBEEF5;
   border-radius: 4px;
-  box-shadow: 0 0.5em 1em 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
   z-index: 999;
 }
 </style>
