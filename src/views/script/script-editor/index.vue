@@ -14,7 +14,7 @@ import Manager from './components/manager/index'
 import MainEditor from './components/mian-editor/index'
 
 export default {
-  name: 'ScriptEditor2',
+  name: 'ScriptEditor',
   components: { Manager, MainEditor },
   provide() {
     return {
