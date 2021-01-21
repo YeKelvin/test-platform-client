@@ -29,11 +29,14 @@
       </div>
     </el-tree>
 
-    <div v-show="showMenu" ref="rightMenu" class="right-menu">
-      <div><i class="el-icon-circle-plus-outline" />添加</div>
-      <div><i class="el-icon-edit" />修改</div>
-      <div><i class="el-icon-remove-outline" />删除</div>
-    </div>
+    <transition name="el-zoom-in-top">
+      <div v-show="showMenu" ref="rightMenu" class="right-menu">
+        <div class="menu-item">添加</div>
+        <div class="menu-item">修改</div>
+        <div class="menu-item">删除</div>
+      </div>
+    </transition>
+
   </div>
 </template>
 
@@ -42,7 +45,9 @@ import * as Element from '@/api/script/element'
 
 export default {
   name: 'ScriptTree',
+
   inject: ['editorInfo'],
+
   data() {
     return {
       scriptList: [],
@@ -51,14 +56,17 @@ export default {
         children: 'children',
         disabled: 'enabled'
       },
-      showMenu: false
+      showMenu: false,
+      currentRightClickNodeData: null
     }
   },
+
   watch: {
     'editorInfo.collectionNo'(value) {
       this.queryScriptTree(value)
     }
   },
+
   methods: {
     handleNodeClick(node) {
       this.showMenu = false
@@ -67,26 +75,28 @@ export default {
       // TODO: 打开详情页
       // this.$emit('add-tab')
     },
+
     handleRightClick(mouseEvent, data, node, element) {
       // TODO: 右键菜单
-      this.showMenu = false // 先把菜单关死，目的是：第二次或者第n次右键鼠标的时候 它默认的是true
+      this.showMenu = false // 再次右键时，先确保菜单是关闭状态后，再重新唤起
       this.showMenu = true
       this.$refs.rightMenu.style.left = mouseEvent.clientX + 15 + 'px'
       this.$refs.rightMenu.style.top = mouseEvent.clientY + 15 + 'px'
-      // 给整个document添加监听鼠标事件，点击任何位置执行closeRightMenu方法，及时将菜单关闭
-      document.addEventListener('click', this.closeRightMenu)
+      document.addEventListener('click', this.closeRightMenu) // 添加鼠标监听事件，点击任意位置关闭菜单
     },
+
     closeRightMenu() {
       this.showMenu = false
-      // 及时关掉鼠标监听事件
-      document.removeEventListener('click', this.closeRightMenu)
+      document.removeEventListener('click', this.closeRightMenu) // 移除鼠标监听事件
     },
+
     queryScriptTree(elementNo) {
       Element.queryElementChildren({ elementNo: elementNo }).then(response => {
         const { result } = response
         this.scriptList = result
       }).catch(() => {})
     },
+
     enableElement(elementNo) {
       // FIXME: 禁用启用元素还是有问题
       console.log('enableElement')
@@ -99,6 +109,7 @@ export default {
       }).catch(() => {
       })
     },
+
     disableElement(elementNo) {
       // FIXME: 禁用启用元素还是有问题
       console.log('disableElement')
@@ -111,6 +122,7 @@ export default {
       }).catch(() => {
       })
     },
+
     deleteElement(elementNo) {
       this.$confirm('确认删除？', '警告', {
         confirmButtonText: '确定',
@@ -155,10 +167,23 @@ export default {
 .right-menu {
   padding: 10px;
   position: fixed;
+  color: #606266;
   background: #fff;
   border: 1px solid #EBEEF5;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
   z-index: 999;
+}
+
+.menu-item {
+  line-height: 30px;
+  padding: 0 17px;
+  font-size: 14px;
+  margin-top: 6px;
+
+  &:before {
+    height: 6px;
+    margin: 0 -17px;
+  }
 }
 </style>
