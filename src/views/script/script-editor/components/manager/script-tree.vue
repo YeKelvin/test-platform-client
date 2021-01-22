@@ -30,11 +30,11 @@
     </el-tree>
 
     <transition name="el-zoom-in-top">
-      <div v-show="showMenu" ref="rightMenu" class="right-menu">
-        <div class="menu-item">添加</div>
-        <div class="menu-item">修改</div>
-        <div class="menu-item">删除</div>
-      </div>
+      <ul v-show="showMenu" ref="rightMenu" class="right-menu">
+        <li class="menu-item">添加</li>
+        <li class="menu-item">修改</li>
+        <li class="menu-item">删除</li>
+      </ul>
     </transition>
 
   </div>
@@ -83,6 +83,7 @@ export default {
       this.$refs.rightMenu.style.left = mouseEvent.clientX + 15 + 'px'
       this.$refs.rightMenu.style.top = mouseEvent.clientY + 15 + 'px'
       document.addEventListener('click', this.closeRightMenu) // 添加鼠标监听事件，点击任意位置关闭菜单
+      this.currentRightClickNodeData = data
     },
 
     closeRightMenu() {
@@ -165,7 +166,9 @@ export default {
 }
 
 .right-menu {
-  padding: 10px;
+  padding-inline-start: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
   position: fixed;
   color: #606266;
   background: #fff;
@@ -173,6 +176,17 @@ export default {
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
   z-index: 999;
+  list-style: none;
+
+  li {
+    cursor: pointer;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  li:hover {
+    background-color: #f0f7ff;
+  }
 }
 
 .menu-item {
