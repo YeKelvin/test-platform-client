@@ -158,8 +158,12 @@ export default {
   display: flex;
   flex: 1;
   flex-direction: column;
+
+  height: 100%;
   max-width: 400px;
-  padding: 12px;
+  overflow: auto;
+
+  padding: 10px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 
