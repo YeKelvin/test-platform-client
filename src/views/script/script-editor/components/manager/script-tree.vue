@@ -11,7 +11,7 @@
       @node-click="handleNodeClick"
       @node-contextmenu="handleRightClick"
     >
-      <div slot-scope="{ node, data }" class="tree-item-container">
+      <!-- <div slot-scope="{ node, data }" class="tree-item-container">
         <span>{{ node.label }}</span>
         <div class="more-operation-container">
           <el-divider direction="vertical" />
@@ -26,14 +26,16 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-      </div>
+      </div> -->
     </el-tree>
 
     <transition name="el-zoom-in-top">
       <ul v-show="showMenu" ref="rightMenu" class="right-menu">
-        <li class="menu-item">添加</li>
-        <li class="menu-item">修改</li>
-        <li class="menu-item">删除</li>
+        <li class="menu-item"><i class="el-icon-video-play" />添加</li>
+        <li class="menu-item"><i class="el-icon-turn-off" />启用</li>
+        <li class="menu-item"><i class="el-icon-turn-off" />禁用</li>
+        <li class="menu-item"><i class="el-icon-copy-document" />复制</li>
+        <li class="menu-item"><i class="el-icon-delete" />删除</li>
       </ul>
     </transition>
 
@@ -71,13 +73,12 @@ export default {
     handleNodeClick(node) {
       this.showMenu = false
       this.editorInfo.elementNo = node.elementNo
+      this.editorInfo.elementName = node.elementName
       this.editorInfo.elementType = node.elementType
-      // TODO: 打开详情页
-      // this.$emit('add-tab')
+      this.$emit('add-tab', node.elementNo, node.elementName, node.elementType, 'QUERY')
     },
 
     handleRightClick(mouseEvent, data, node, element) {
-      // TODO: 右键菜单
       this.showMenu = false // 再次右键时，先确保菜单是关闭状态后，再重新唤起
       this.showMenu = true
       this.$refs.rightMenu.style.left = mouseEvent.clientX + 15 + 'px'

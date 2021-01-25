@@ -31,6 +31,7 @@ export default {
         workspaceNo: '',
         collectionNo: '',
         elementNo: '',
+        elementName: '',
         elementType: ''
       }
     }

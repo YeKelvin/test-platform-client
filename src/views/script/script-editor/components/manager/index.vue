@@ -47,10 +47,16 @@
       <el-divider direction="vertical" />
       <el-button type="text" icon="el-icon-sort-down" @click="moveDown">下移</el-button>
       <!-- TODO: 还需要展开，收缩，更多按钮 -->
+      <el-divider direction="vertical" />
+      <!-- 这是展开图标 -->
+      <el-button type="text" icon="el-icon-sort-down" />
+      <el-divider direction="vertical" />
+      <!-- 这是收起图标 -->
+      <el-button type="text" icon="el-icon-sort-down" />
     </div>
     <el-divider />
 
-    <script-tree ref="scriptTree" />
+    <script-tree ref="scriptTree" v-on="$listeners" />
   </div>
 </template>
 
@@ -111,19 +117,13 @@ export default {
       this.$emit('add-tab', elementNo, elementName, elementType, action)
     },
     openNewGroupTab() {
-      this.addTab('0', '新增案例', 'group', 'CREATE')
+      this.addTab('0', '新增案例', 'GROUP', 'CREATE')
     },
     openNewCollectionTab() {
-      this.addTab('0', '新增脚本', 'collection', 'CREATE')
+      this.addTab('0', '新增脚本', 'COLLECTION', 'CREATE')
     },
     openNewHttpSamplerTab() {
-      this.addTab('0', '新增HTTP请求', 'httpSampler', 'CREATE')
-    },
-    openCollectionDetailTab() {
-      this.addTab(this.editorInfo.elementNo, this.editorInfo.elementName, 'collection', 'QUERY')
-    },
-    openGroupDetailTab() {
-      this.addTab(this.editorInfo.elementNo, this.editorInfo.elementName, 'group', 'QUERY')
+      this.addTab('0', '新增HTTP请求', 'HTTP_SAMPLER', 'CREATE')
     },
     moveUp() {
       if (!this.editorInfo.collectionNo && !this.editorInfo.elementNo) {

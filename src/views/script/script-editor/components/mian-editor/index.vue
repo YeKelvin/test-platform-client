@@ -38,9 +38,9 @@ export default {
   data() {
     return {
       elementViews: {
-        collection: 'CollectionEditor',
-        group: 'GroupEditor',
-        httpSampler: 'HTTPSamplerEditor'
+        COLLECTION: 'CollectionEditor',
+        GROUP: 'GroupEditor',
+        HTTP_SAMPLER: 'HTTPSamplerEditor'
       },
       editTabActiveNo: '',
       editTabActiveName: '',
