@@ -151,9 +151,11 @@ export default {
     createGroupElement(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          Element.addElementChildren(
-            { parentNo: this.editorInfo.collectionNo, children: [this.elementForm] }
-          ).then(response => {
+          Element.addElementChildren({
+            rootNo: this.editorInfo.collectionNo,
+            parentNo: this.editorInfo.collectionNo,
+            children: [this.elementForm]
+          }).then(response => {
             if (response['success']) {
               this.$message({ message: '新增测试元素成功', type: 'info', duration: 2 * 1000 })
               // 关闭tab
@@ -179,15 +181,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .group-editor-container{
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    height: 100%;
-    padding: 20px;
-
-    .el-divider--horizontal {
-      margin: 10px 0
-    }
+.group-editor-container{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  .el-divider--horizontal {
+    margin: 10px 0
   }
+}
 </style>

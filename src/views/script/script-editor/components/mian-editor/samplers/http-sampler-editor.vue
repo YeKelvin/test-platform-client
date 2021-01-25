@@ -247,9 +247,11 @@ export default {
     createSamplerElement(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          Element.addElementChildren(
-            { parentNo: this.editorInfo.elementNo, children: [this.elementForm] }
-          ).then(response => {
+          Element.addElementChildren({
+            rootNo: this.editorInfo.collectionNo,
+            parentNo: this.editorInfo.elementNo,
+            children: [this.elementForm]
+          }).then(response => {
             if (response['success']) {
               this.$message({ message: '新增测试元素成功', type: 'info', duration: 2 * 1000 })
               // 关闭tab
@@ -281,32 +283,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .http-sampler-editor-container{
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    height: 100%;
-    padding: 20px;
-
-    .el-divider--horizontal {
-      margin: 10px 0
-    }
+.http-sampler-editor-container{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  .el-divider--horizontal {
+    margin: 10px 0
   }
-
-  .http-edit-tabs{
-    margin-left: 10px;
-    margin-bottom: 22px;
+}
+.http-edit-tabs{
+  margin-left: 10px;
+  margin-bottom: 22px;
+}
+.http-header-table{
+  ::v-deep.el-form-item{
+    margin-bottom: 0;
   }
-
-  .http-header-table{
-    ::v-deep.el-form-item{
-      margin-bottom: 0;
-    }
+}
+.http-body{
+  ::v-deep.el-form-item__content{
+    margin-left: 0 !important;
   }
-
-  .http-body{
-    ::v-deep.el-form-item__content{
-      margin-left: 0 !important;
-    }
-  }
+}
 </style>
