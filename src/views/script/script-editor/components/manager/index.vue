@@ -32,7 +32,7 @@
     <div class="operation-container">
       <el-dropdown trigger="click" placement="bottom-start">
         <span class="el-dropdown-link">
-          <el-button type="text" icon="el-icon-plus">新增</el-button>
+          <el-button type="text" icon="el-icon-plus" />
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="openNewCollectionTab">新增脚本</el-dropdown-item>
@@ -43,15 +43,17 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-top" @click="moveUp">上移</el-button>
+      <el-button type="text" icon="el-icon-top" @click="moveUp" />
       <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-bottom" @click="moveDown">下移</el-button>
+      <el-button type="text" icon="el-icon-bottom" @click="moveDown" />
       <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-zoom-in" /><!-- 这是展开图标 -->
+      <el-button type="text" icon="el-icon-zoom-in" /><!-- 展开 -->
       <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-zoom-out" /><!-- 这是收起图标 -->
+      <el-button type="text" icon="el-icon-zoom-out" /><!-- 收起 -->
       <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-more" class="rotate-90" /><!-- 这是更多图标 -->
+      <el-button type="text" icon="el-icon-refresh" @click="queryGroups" />
+      <el-divider direction="vertical" />
+      <el-button type="text" icon="el-icon-more" class="rotate-90" />
 
     </div>
     <el-divider />
@@ -111,6 +113,9 @@ export default {
       })
     },
     queryGroups() {
+      if (!this.collectionNo) {
+        return
+      }
       this.$refs.scriptTree.queryScriptTree(this.collectionNo)
     },
     addTab(elementNo, elementName, elementType, action) {
