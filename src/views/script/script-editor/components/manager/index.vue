@@ -43,16 +43,16 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-sort-up" @click="moveUp">上移</el-button>
+      <el-button type="text" icon="el-icon-top" @click="moveUp">上移</el-button>
       <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-sort-down" @click="moveDown">下移</el-button>
-      <!-- TODO: 还需要展开，收缩，更多按钮 -->
+      <el-button type="text" icon="el-icon-bottom" @click="moveDown">下移</el-button>
       <el-divider direction="vertical" />
-      <!-- 这是展开图标 -->
-      <el-button type="text" icon="el-icon-sort-down" />
+      <el-button type="text" icon="el-icon-zoom-in" /><!-- 这是展开图标 -->
       <el-divider direction="vertical" />
-      <!-- 这是收起图标 -->
-      <el-button type="text" icon="el-icon-sort-down" />
+      <el-button type="text" icon="el-icon-zoom-out" /><!-- 这是收起图标 -->
+      <el-divider direction="vertical" />
+      <el-button type="text" icon="el-icon-more" class="rotate-90" /><!-- 这是更多图标 -->
+
     </div>
     <el-divider />
 

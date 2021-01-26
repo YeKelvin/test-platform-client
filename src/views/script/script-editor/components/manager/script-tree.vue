@@ -3,7 +3,7 @@
     <el-tree
       ref="scriptTree"
       node-key="elementNo"
-      empty-text="空脚本"
+      empty-text="脚本暂无数据"
       highlight-current
       :indent="32"
       :data="scriptList"
@@ -32,10 +32,10 @@
     <transition name="el-zoom-in-top">
       <ul v-show="showMenu" ref="rightMenu" class="right-menu">
         <li class="menu-item"><i class="el-icon-video-play" />添加</li>
-        <li class="menu-item"><i class="el-icon-turn-off" />启用</li>
-        <li class="menu-item"><i class="el-icon-turn-off" />禁用</li>
+        <li v-if="!currentRightMenuItemData.enabled" class="menu-item" @click="enableElementByRightMenu"><i class="el-icon-open" />启用</li>
+        <li v-else class="menu-item" @click="disableElementByRightMenu"><i class="el-icon-turn-off" />禁用</li>
         <li class="menu-item"><i class="el-icon-copy-document" />复制</li>
-        <li class="menu-item"><i class="el-icon-delete" />删除</li>
+        <li class="menu-item" @click="deleteElementByRightMenu"><i class="el-icon-delete" />删除</li>
       </ul>
     </transition>
 
@@ -59,7 +59,12 @@ export default {
         disabled: 'enabled'
       },
       showMenu: false,
-      currentRightClickNodeData: null
+      currentRightMenuItemData: {
+        elementNo: '',
+        elementName: '',
+        elementType: '',
+        enabled: true
+      }
     }
   },
 
@@ -79,12 +84,18 @@ export default {
     },
 
     handleRightClick(mouseEvent, data, node, element) {
+      this.currentRightMenuItemData.elementNo = data.elementNo
+      this.currentRightMenuItemData.elementName = data.elementName
+      this.currentRightMenuItemData.elementType = data.elementType
+      this.currentRightMenuItemData.enabled = data.enabled
+
       this.showMenu = false // 再次右键时，先确保菜单是关闭状态后，再重新唤起
       this.showMenu = true
+
       this.$refs.rightMenu.style.left = mouseEvent.clientX + 15 + 'px'
       this.$refs.rightMenu.style.top = mouseEvent.clientY + 15 + 'px'
+
       document.addEventListener('click', this.closeRightMenu) // 添加鼠标监听事件，点击任意位置关闭菜单
-      this.currentRightClickNodeData = data
     },
 
     closeRightMenu() {
@@ -141,6 +152,15 @@ export default {
           this.queryScriptTree(this.editorInfo.collectionNo)
         }).catch(() => {})
       }).catch(() => {})
+    },
+    enableElementByRightMenu() {
+      this.enableElement(this.currentRightMenuItemData.elementNo)
+    },
+    disableElementByRightMenu() {
+      this.disableElement(this.currentRightMenuItemData.elementNo)
+    },
+    deleteElementByRightMenu() {
+      this.deleteElement(this.currentRightMenuItemData.elementNo)
     }
   }
 }
@@ -181,8 +201,8 @@ export default {
 
   li {
     cursor: pointer;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 25px;
+    padding-right: 25px;
   }
 
   li:hover {
@@ -192,13 +212,20 @@ export default {
 
 .menu-item {
   line-height: 30px;
-  padding: 0 17px;
   font-size: 14px;
   margin-top: 6px;
 
   &:before {
     height: 6px;
     margin: 0 -17px;
+  }
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  i {
+    padding-right: 5px;
   }
 }
 </style>
