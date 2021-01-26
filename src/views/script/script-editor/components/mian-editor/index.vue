@@ -7,7 +7,6 @@
         :label="tab.elementName"
         :name="`${tab.elementNo}::${tab.elementName}`"
         :closable="true"
-        style="height: 100%; overflow: auto;"
       >
         <keep-alive>
           <!-- :element-no为当前测试元素的 elementNo -->
@@ -26,7 +25,6 @@
 </template>
 
 <script>
-// TODO: 重构页面，增加页尾（回收站，信息输出，设置等）
 import CollectionEditor from './collection-editor'
 import GroupEditor from './group-editor'
 import HTTPSamplerEditor from './samplers/http-sampler-editor'
@@ -106,8 +104,11 @@ export default {
   display: flex;
   flex: 1;
   flex-direction: column;
+
+  overflow: auto;
+
+  margin-left: 6px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  margin-left: 6px;
 }
 </style>

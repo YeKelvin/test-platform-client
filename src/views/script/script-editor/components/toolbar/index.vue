@@ -1,5 +1,5 @@
 <template>
-  <div class="script-toolbar-container">
+  <div class="toolbar-container">
     <span>这里是工具栏</span>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.script-toolbar-container{
+.toolbar-container{
   display: inline-flex;
   justify-content: start;
   align-items: center;
@@ -31,7 +31,6 @@ export default {
   width: 100%;
   min-height: 30px;
 
-  // background: rgb(230, 20, 20);
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 }
