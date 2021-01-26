@@ -10,24 +10,7 @@
       :props="treeProps"
       @node-click="handleNodeClick"
       @node-contextmenu="handleRightClick"
-    >
-      <!-- <div slot-scope="{ node, data }" class="tree-item-container">
-        <span>{{ node.label }}</span>
-        <div class="more-operation-container">
-          <el-divider direction="vertical" />
-          <el-dropdown trigger="click" placement="bottom-start">
-            <i class="el-icon-more rotate-90" />
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-video-play">运行</el-dropdown-item>
-              <el-dropdown-item v-if="data.enabled" icon="el-icon-turn-off" @click.native="disableElement(data.elementNo)">禁用</el-dropdown-item>
-              <el-dropdown-item v-else icon="el-icon-turn-off" @click.native="enableElement(data.elementNo)">启用</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-copy-document">复制</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-delete" @click.native="deleteElement(data.elementNo)">删除</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>
-      </div> -->
-    </el-tree>
+    />
 
     <transition name="el-zoom-in-top">
       <ul v-show="showMenu" ref="rightMenu" class="right-menu">
