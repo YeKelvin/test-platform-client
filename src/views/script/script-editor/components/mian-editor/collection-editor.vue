@@ -16,11 +16,11 @@
       <el-form-item label="注释：" prop="elementComments">
         <el-input v-model="elementForm.elementComments" placeholder="元素注释" clearable :readonly="isReadOnly" />
       </el-form-item>
-      <el-form-item label="顺序执行：" prop="propertys.TestCollection__serialized">
-        <el-switch v-model="elementForm.propertys.TestCollection__serialized" :disabled="isReadOnly" />
+      <el-form-item label="顺序执行：" prop="propertys.serialized">
+        <el-switch v-model="elementForm.propertys.serialized" :disabled="isReadOnly" />
       </el-form-item>
-      <el-form-item label="延迟ms：" prop="propertys.TestCollection__delay">
-        <el-input v-model="elementForm.propertys.TestCollection__delay" placeholder="还没有实现" clearable :readonly="isReadOnly" />
+      <el-form-item label="延迟ms：" prop="propertys.delay">
+        <el-input v-model="elementForm.propertys.delay" placeholder="还没有实现" clearable :readonly="isReadOnly" />
       </el-form-item>
       <el-form-item v-if="isQuery">
         <el-button type="primary" @click="editNow(true)">编辑</el-button>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import elPropertyUtil from '@/utils/element-property'
 import * as Element from '@/api/script/element'
 export default {
   name: 'CollectionEditor',
@@ -65,9 +66,10 @@ export default {
         elementName: '',
         elementComments: '',
         elementType: 'COLLECTION',
+        elementClass: 'TestCollection',
         propertys: {
-          TestCollection__serialized: true,
-          TestCollection__delay: ''
+          serialized: true,
+          delay: ''
         }
       },
       elementFormRules: {
@@ -138,7 +140,9 @@ export default {
     createCollectionElement(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          Element.createElement({ workspaceNo: this.editorInfo.workspaceNo, ...this.elementForm }).then(response => {
+          const elementInfo = { ...this.elementForm }
+          elPropertyUtil.renameKeyToRequest(elementInfo)
+          Element.createElement({ workspaceNo: this.editorInfo.workspaceNo, ...this.elementInfo }).then(response => {
             if (response['success']) {
               this.$message({ message: '新增测试元素成功', type: 'info', duration: 2 * 1000 })
               // 关闭tab
