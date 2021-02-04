@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import propertyUtil from '@/utils/element-property'
 
 export function queryElementList(query) {
   return request({
@@ -17,11 +18,18 @@ export function queryElementAll(query) {
 }
 
 export function queryElementInfo(query) {
-  return request({
+  const res = {}
+
+  request({
     url: '/script/element/info',
     method: 'get',
     params: query
+  }).then(response => {
+    const res = { ...response }
+    propertyUtil.renameKeyToView(res)
   })
+
+  return res
 }
 
 export function queryElementChildren(query) {
