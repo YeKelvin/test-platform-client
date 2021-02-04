@@ -6,10 +6,10 @@
  * @param {string} element
  * @param {string} className
  */
-export function renameKeyToRequest(element, className) {
+export function renameKeyToRequest(element) {
   const renamedPropertys = {}
   Object.getOwnPropertyNames(element.propertys).forEach((key) => {
-    renamedPropertys[`${className}.key`] = element.propertys[key]
+    renamedPropertys[`${element.className}.key`] = element.propertys[key]
   })
   element.propertys = renamedPropertys
 }

@@ -4,6 +4,12 @@ import store from '@/store'
 import { getToken } from '@/utils/auth'
 import _ from 'lodash'
 
+/**
+ * TODO: 优化axios，参考以下网址
+ * https://segmentfault.com/a/1190000027078266
+ * httpshttps://blog.csdn.net/lhjuejiang/article/details/81515839
+ */
+
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 请求的 base url
   timeout: 5000, // 超时时长

@@ -18,18 +18,19 @@ export function queryElementAll(query) {
 }
 
 export function queryElementInfo(query) {
-  const res = {}
-
-  request({
-    url: '/script/element/info',
-    method: 'get',
-    params: query
-  }).then(response => {
-    const res = { ...response }
-    propertyUtil.renameKeyToView(res)
+  // TODO: 需要添加递归children的逻辑
+  return new Promise((resolve, reject) => {
+    request({
+      url: '/script/element/info',
+      method: 'get',
+      params: query
+    }).then(res => {
+      propertyUtil.renameKeyToView(res)
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
   })
-
-  return res
 }
 
 export function queryElementChildren(query) {
@@ -41,6 +42,8 @@ export function queryElementChildren(query) {
 }
 
 export function createElement(data) {
+  // TODO: 需要添加递归children的逻辑
+  propertyUtil.renameKeyToRequest(data)
   return request({
     url: '/script/element',
     method: 'post',
@@ -49,6 +52,8 @@ export function createElement(data) {
 }
 
 export function modifyElement(data) {
+  // TODO: 需要添加递归children的逻辑
+  propertyUtil.renameKeyToRequest(data)
   return request({
     url: '/script/element',
     method: 'put',

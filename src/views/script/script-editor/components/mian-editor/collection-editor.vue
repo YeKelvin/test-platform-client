@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import elPropertyUtil from '@/utils/element-property'
 import * as Element from '@/api/script/element'
+
 export default {
   name: 'CollectionEditor',
   inject: ['editorInfo'],
@@ -140,10 +140,9 @@ export default {
     createCollectionElement(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          const elementInfo = { ...this.elementForm }
-          elPropertyUtil.renameKeyToRequest(elementInfo)
-          Element.createElement({ workspaceNo: this.editorInfo.workspaceNo, ...this.elementInfo }).then(response => {
-            if (response['success']) {
+          Element.createElement({ workspaceNo: this.editorInfo.workspaceNo, ...this.elementForm }).then(response => {
+            const { success } = response
+            if (success) {
               this.$message({ message: '新增测试元素成功', type: 'info', duration: 2 * 1000 })
               // 关闭tab
               this.$emit('close-tab')
