@@ -41,13 +41,13 @@
         <el-button @click="closeTab">关闭</el-button>
       </el-form-item>
       <el-form-item v-else-if="isModify">
-        <el-button type="primary" @click="modifyGroupElement('elementForm')">保存</el-button>
-        <el-button @click="resetModifyForm('elementForm')">重置</el-button>
+        <el-button type="primary" @click="modifyGroupElement">保存</el-button>
+        <el-button @click="resetModifyForm">重置</el-button>
         <el-button @click="closeTab">关闭</el-button>
       </el-form-item>
       <el-form-item v-else-if="isCreate">
-        <el-button type="primary" @click="createGroupElement('elementForm')">保存</el-button>
-        <el-button @click="resetCreateForm('elementForm')">重置</el-button>
+        <el-button type="primary" @click="createGroupElement">保存</el-button>
+        <el-button @click="resetCreateForm">重置</el-button>
         <el-button @click="closeTab">关闭</el-button>
       </el-form-item>
     </el-form>
@@ -126,8 +126,8 @@ export default {
         this.innerAction = 'QUERY'
       }
     },
-    modifyGroupElement(formName) {
-      this.$refs[formName].validate((valid) => {
+    modifyGroupElement() {
+      this.$refs['elementForm'].validate((valid) => {
         if (valid) {
           Element.modifyElement({ elementNo: this.editorInfo.elementNo, ...this.elementForm }).then(response => {
             if (response['success']) {
@@ -149,8 +149,8 @@ export default {
     resetModifyForm() {
       this.elementForm = { ...this.elementInfo }
     },
-    createGroupElement(formName) {
-      this.$refs[formName].validate((valid) => {
+    createGroupElement() {
+      this.$refs['elementForm'].validate((valid) => {
         if (valid) {
           Element.addElementChildren({
             rootNo: this.editorInfo.collectionNo,
@@ -171,8 +171,8 @@ export default {
         }
       })
     },
-    resetCreateForm(formName) {
-      this.$refs[formName].resetFields()
+    resetCreateForm(frmName) {
+      this.$refs['elementForm'].resetFields()
     },
     closeTab() {
       this.$emit('close-tab')
