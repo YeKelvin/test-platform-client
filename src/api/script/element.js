@@ -128,3 +128,11 @@ export function duplicateElement(data) {
     data
   })
 }
+
+export function executeScript(data) {
+  return request({
+    url: '/script/execute',
+    method: 'post',
+    data
+  })
+}

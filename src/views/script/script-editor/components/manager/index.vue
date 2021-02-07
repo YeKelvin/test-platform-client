@@ -43,6 +43,8 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-divider direction="vertical" />
+      <el-button type="text" icon="el-icon-video-play" @click="execute" />
+      <el-divider direction="vertical" />
       <el-button type="text" icon="el-icon-top" @click="moveUp" />
       <el-divider direction="vertical" />
       <el-button type="text" icon="el-icon-bottom" @click="moveDown" />
@@ -98,6 +100,9 @@ export default {
     }
   },
   methods: {
+    execute() {
+      Element.executeScript({ collectionNo: this.collectionNo })
+    },
     queryWorkspaceAll() {
       Workspace.queryWorkspaceAll().then(response => {
         const { result } = response
