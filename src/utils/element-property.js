@@ -3,13 +3,14 @@
  * 作用：新增和修改TestElement时，修改请求参数中的keyName；
  * 目的：改名以满足数据的命名规范
  *
- * @param {string} element
+ * @param {object} element
  * @param {string} className
  */
 export function renameKeyToRequest(element) {
   const renamedPropertys = {}
-  Object.getOwnPropertyNames(element.propertys).forEach((key) => {
-    renamedPropertys[`${element.className}.key`] = element.propertys[key]
+  const { elementClass } = element
+  Object.keys(element.propertys).forEach((key) => {
+    renamedPropertys[`${elementClass}.${key}`] = element.propertys[key]
   })
   element.propertys = renamedPropertys
 }
@@ -19,11 +20,12 @@ export function renameKeyToRequest(element) {
  * 作用：查询TestElement时，修改响应参数中的keyName；
  * 目的：改名以方便前端展示
  *
- * @param {sting} element
+ * @param {object} element
  */
 export function renameKeyToView(element) {
   const renamedPropertys = {}
-  Object.getOwnPropertyNames(element.propertys).forEach((key) => {
+  // const classNameLength = element.elementClass.length
+  Object.keys(element.propertys).forEach((key) => {
     const startIndex = key.indexOf('.')
     const renamedKey = key.substring(startIndex)
     renamedPropertys[renamedKey] = element.propertys[key]
@@ -31,6 +33,15 @@ export function renameKeyToView(element) {
   element.propertys = renamedPropertys
 }
 
-export function iterChildren() {
-  return
+/**
+ * 递归判断element是否存在children，存在则执行fn
+ * @param {object} element
+ * @param {function} fn renameKeyToRequest | renameKeyToView
+ */
+export function iterChildren(element, fn) {
+  fn(element)
+  const hasChildren = Object.prototype.hasOwnProperty.call(element, 'children') && element.children.keys() > 0
+  if (hasChildren) {
+    iterChildren(element, fn)
+  }
 }

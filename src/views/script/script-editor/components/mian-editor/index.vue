@@ -11,7 +11,7 @@
         <keep-alive>
           <!-- :element-no为当前测试元素的 elementNo -->
           <component
-            :is="elementViews[tab.elementType]"
+            :is="elementViews[tab.elementClass]"
             :element-no="tab.elementNo"
             :action="tab.action"
             @rename-tab="renameTab(arguments, tab)"
@@ -36,9 +36,9 @@ export default {
   data() {
     return {
       elementViews: {
-        COLLECTION: 'CollectionEditor',
-        GROUP: 'GroupEditor',
-        HTTP_SAMPLER: 'HTTPSamplerEditor'
+        TestCollection: 'CollectionEditor',
+        CoroutineGroup: 'GroupEditor',
+        HTTPSampler: 'HTTPSamplerEditor'
       },
       editTabActiveNo: '',
       editTabActiveName: '',
@@ -47,7 +47,7 @@ export default {
   },
   mounted: function() {},
   methods: {
-    addTab(elementNo, elementName, elementType, action) {
+    addTab(elementNo, elementName, elementClass, action) {
       const tabs = this.editTabs
       const newTabName = `${elementNo}::${elementName}`
       let isAllowAdd = true
@@ -63,7 +63,7 @@ export default {
         this.editTabs.push({
           elementNo: elementNo,
           elementName: elementName,
-          elementType: elementType,
+          elementClass: elementClass,
           action: action
         })
         this.editTabActiveNo = elementNo

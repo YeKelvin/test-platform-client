@@ -157,7 +157,8 @@ export default {
       elementForm: {
         elementName: '',
         elementComments: '',
-        elementType: 'HTTP_SAMPLER',
+        elementType: 'SAMPLER',
+        elementClass: 'HTTPSampler',
         propertys: {
           HTTPSampler__url: '',
           HTTPSampler__method: 'GET',

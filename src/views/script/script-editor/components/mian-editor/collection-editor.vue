@@ -16,24 +16,24 @@
       <el-form-item label="注释：" prop="elementComments">
         <el-input v-model="elementForm.elementComments" placeholder="元素注释" clearable :readonly="isReadOnly" />
       </el-form-item>
-      <el-form-item label="顺序执行：" prop="propertys.serialized">
-        <el-switch v-model="elementForm.propertys.serialized" :disabled="isReadOnly" />
+      <el-form-item label="顺序执行：" prop="propertys.TestCollection__serialized">
+        <el-switch v-model="elementForm.propertys.TestCollection__serialized" :disabled="isReadOnly" />
       </el-form-item>
-      <el-form-item label="延迟ms：" prop="propertys.delay">
-        <el-input v-model="elementForm.propertys.delay" placeholder="还没有实现" clearable :readonly="isReadOnly" />
+      <el-form-item label="延迟ms：" prop="propertys.TestCollection__delay">
+        <el-input v-model="elementForm.propertys.TestCollection__delay" placeholder="还没有实现" clearable :readonly="isReadOnly" />
       </el-form-item>
       <el-form-item v-if="isQuery">
         <el-button type="primary" @click="editNow(true)">编辑</el-button>
         <el-button @click="closeTab">关闭</el-button>
       </el-form-item>
       <el-form-item v-else-if="isModify">
-        <el-button type="primary" @click="modifyCollectionElement('elementForm')">保存</el-button>
-        <el-button @click="resetModifyForm('elementForm')">重置</el-button>
+        <el-button type="primary" @click="modifyCollectionElement">保存</el-button>
+        <el-button @click="resetModifyForm">重置</el-button>
         <el-button @click="closeTab">关闭</el-button>
       </el-form-item>
       <el-form-item v-else-if="isCreate">
-        <el-button type="primary" @click="createCollectionElement('elementForm')">保存</el-button>
-        <el-button @click="resetCreateForm('elementForm')">重置</el-button>
+        <el-button type="primary" @click="createCollectionElement">保存</el-button>
+        <el-button @click="resetCreateForm">重置</el-button>
         <el-button @click="closeTab">关闭</el-button>
       </el-form-item>
     </el-form>
@@ -68,8 +68,8 @@ export default {
         elementType: 'COLLECTION',
         elementClass: 'TestCollection',
         propertys: {
-          serialized: true,
-          delay: ''
+          TestCollection__serialized: true,
+          TestCollection__delay: ''
         }
       },
       elementFormRules: {
@@ -111,8 +111,8 @@ export default {
         this.innerAction = 'QUERY'
       }
     },
-    modifyCollectionElement(formName) {
-      this.$refs[formName].validate((valid) => {
+    modifyCollectionElement() {
+      this.$refs['elementForm'].validate((valid) => {
         if (valid) {
           Element.modifyElement({ elementNo: this.elementNo, ...this.elementForm }).then(response => {
             if (response['success']) {
@@ -137,8 +137,8 @@ export default {
     /**
      * TODO: workspaceNo非空判断，为空时弹出workspace选择列表
      */
-    createCollectionElement(formName) {
-      this.$refs[formName].validate((valid) => {
+    createCollectionElement() {
+      this.$refs['elementForm'].validate((valid) => {
         if (valid) {
           Element.createElement({ workspaceNo: this.editorInfo.workspaceNo, ...this.elementForm }).then(response => {
             const { success } = response
@@ -156,8 +156,8 @@ export default {
         }
       })
     },
-    resetCreateForm(formName) {
-      this.$refs[formName].resetFields()
+    resetCreateForm() {
+      this.$refs['elementForm'].resetFields()
     },
     closeTab() {
       this.$emit('close-tab')

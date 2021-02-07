@@ -46,6 +46,7 @@ export default {
         elementNo: '',
         elementName: '',
         elementType: '',
+        elementClass: '',
         enabled: true
       }
     }
@@ -63,13 +64,15 @@ export default {
       this.editorInfo.elementNo = node.elementNo
       this.editorInfo.elementName = node.elementName
       this.editorInfo.elementType = node.elementType
-      this.$emit('add-tab', node.elementNo, node.elementName, node.elementType, 'QUERY')
+      this.editorInfo.elementClass = node.elementClass
+      this.$emit('add-tab', node.elementNo, node.elementName, node.elementClass, 'QUERY')
     },
 
     handleRightClick(mouseEvent, data, node, element) {
       this.currentRightMenuItemData.elementNo = data.elementNo
       this.currentRightMenuItemData.elementName = data.elementName
       this.currentRightMenuItemData.elementType = data.elementType
+      this.currentRightMenuItemData.elementClass = data.elementClass
       this.currentRightMenuItemData.enabled = data.enabled
 
       this.showMenu = false // 再次右键时，先确保菜单是关闭状态后，再重新唤起

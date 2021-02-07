@@ -118,17 +118,17 @@ export default {
       }
       this.$refs.scriptTree.queryScriptTree(this.collectionNo)
     },
-    addTab(elementNo, elementName, elementType, action) {
-      this.$emit('add-tab', elementNo, elementName, elementType, action)
+    addTab(elementNo, elementName, elementClass, action) {
+      this.$emit('add-tab', elementNo, elementName, elementClass, action)
     },
     openNewGroupTab() {
-      this.addTab('0', '新增案例', 'GROUP', 'CREATE')
+      this.addTab('0', '新增案例', 'CoroutineGroup', 'CREATE')
     },
     openNewCollectionTab() {
-      this.addTab('0', '新增脚本', 'COLLECTION', 'CREATE')
+      this.addTab('0', '新增脚本', 'TestCollection', 'CREATE')
     },
     openNewHttpSamplerTab() {
-      this.addTab('0', '新增HTTP请求', 'HTTP_SAMPLER', 'CREATE')
+      this.addTab('0', '新增HTTP请求', 'HTTPSampler', 'CREATE')
     },
     moveUp() {
       if (!this.editorInfo.collectionNo && !this.editorInfo.elementNo) {

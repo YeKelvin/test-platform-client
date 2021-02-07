@@ -32,7 +32,8 @@ export default {
         collectionNo: '',
         elementNo: '',
         elementName: '',
-        elementType: ''
+        elementType: '',
+        elementClass: ''
       }
     }
   },

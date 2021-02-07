@@ -75,7 +75,7 @@ export default {
         elementName: '',
         elementComments: '',
         elementType: 'GROUP',
-        elementClass: 'GROUP',
+        elementClass: 'CoroutineGroup',
         propertys: {
           CoroutineGroup__on_sample_error: 'start_next_coroutine_loop',
           CoroutineGroup__number_coroutines: '1',

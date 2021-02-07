@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import propertyUtil from '@/utils/element-property'
+import { get, post } from '@/utils/request'
 
 export function queryElementList(query) {
   return request({
@@ -18,18 +18,10 @@ export function queryElementAll(query) {
 }
 
 export function queryElementInfo(query) {
-  // TODO: 需要添加递归children的逻辑
-  return new Promise((resolve, reject) => {
-    request({
-      url: '/script/element/info',
-      method: 'get',
-      params: query
-    }).then(res => {
-      propertyUtil.renameKeyToView(res)
-      resolve(res)
-    }).catch(err => {
-      reject(err)
-    })
+  return request({
+    url: '/script/element/info',
+    method: 'get',
+    params: query
   })
 }
 
@@ -42,8 +34,6 @@ export function queryElementChildren(query) {
 }
 
 export function createElement(data) {
-  // TODO: 需要添加递归children的逻辑
-  propertyUtil.renameKeyToRequest(data)
   return request({
     url: '/script/element',
     method: 'post',
@@ -52,8 +42,6 @@ export function createElement(data) {
 }
 
 export function modifyElement(data) {
-  // TODO: 需要添加递归children的逻辑
-  propertyUtil.renameKeyToRequest(data)
   return request({
     url: '/script/element',
     method: 'put',
