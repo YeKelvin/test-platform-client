@@ -1,6 +1,7 @@
 <template>
   <div class="toolbar-container">
-    <span>这里是工具栏</span>
+    <el-button>报告</el-button>
+    <el-button>输出</el-button>
   </div>
 </template>
 

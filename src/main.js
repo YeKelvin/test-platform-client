@@ -16,8 +16,14 @@ import '@/permission'
 
 import Lodash from 'lodash'
 
+import SocketIO from 'vue-socket.io'
+
 // 全局注册插件
 Vue.use(ElementUI)
+Vue.use(new SocketIO({
+  debug: true,
+  connection: process.env.VUE_APP_BASE_API
+}))
 
 // 绑定到Vue原型上
 Vue.prototype.$_ = Lodash

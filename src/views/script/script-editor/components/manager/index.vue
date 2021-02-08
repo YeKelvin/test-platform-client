@@ -112,6 +112,13 @@ export default {
   },
   methods: {
     execute() {
+      if (!this.collectionNo) {
+        this.$message({
+          message: '请先选择脚本',
+          type: 'error'
+        })
+        return
+      }
       Element.executeScript({ collectionNo: this.collectionNo })
     },
     queryWorkspaceAll() {
