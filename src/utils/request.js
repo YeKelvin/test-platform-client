@@ -11,6 +11,17 @@ import _ from 'lodash'
  * https://blog.csdn.net/lhjuejiang/article/details/81515839
  */
 
+// loading对象
+let loading
+
+// 当前正在请求的数量
+let needLoadingRequestCount = 0
+
+// axios.defaults.baseURL = process.env.VUE_APP_BASE_API
+// axios.defaults.timeout = 5000
+// axios.defaults.headers['Access-Control-Allow-Origin'] = process.env.VUE_APP_BASE_API
+// axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8'
+
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 请求的 base url
   timeout: 5000, // 超时时长
@@ -19,12 +30,6 @@ const service = axios.create({
     'Access-Control-Allow-Origin': process.env.VUE_APP_BASE_API
   }
 })
-
-// loading对象
-let loading
-
-// 当前正在请求的数量
-let needLoadingRequestCount = 0
 
 // 显示loading
 function showLoading() {

@@ -1,11 +1,3 @@
 import request from '@/utils/request'
 
-const prefix = '/system'
-
-export function queryActionLogList(query) {
-  return request({
-    url: prefix + '/action/log/list',
-    method: 'get',
-    params: query
-  })
-}
+export const queryActionLogList = params => request.get('/system/action/log/list', { params: params })

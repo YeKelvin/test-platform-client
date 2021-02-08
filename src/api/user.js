@@ -1,229 +1,59 @@
 import request from '@/utils/request'
 
-export function encryptionFactor(query) {
-  return request({
-    url: '/user/encryption/factor',
-    method: 'get',
-    params: query
-  })
-}
+export const encryptionFactor = params => request.get('/user/encryption/factor', { params: params })
 
-export function login(data) {
-  return request({
-    url: '/user/login',
-    method: 'post',
-    data
-  })
-}
+export const login = data => request.post('/user/login', data)
 
-export function logout() {
-  return request({
-    url: '/user/logout',
-    method: 'post'
-  })
-}
+export const logout = data => request.post('/user/logout', data)
 
-export function register(data) {
-  return request({
-    url: '/user/register',
-    method: 'post',
-    data
-  })
-}
+export const register = data => request.post('/user/register', data)
 
-export function resetPassword(data) {
-  return request({
-    url: '/user/password/reset',
-    method: 'patch',
-    data
-  })
-}
+export const resetPassword = data => request.patch('/user/password/reset', data)
 
-export function queryInfo() {
-  return request({
-    url: '/user/info',
-    method: 'get'
-  })
-}
+export const queryInfo = () => request.get('/user/info')
 
-export function queryUserList(query) {
-  return request({
-    url: '/user/list',
-    method: 'get',
-    params: query
-  })
-}
+export const queryUserList = params => request.get('/user/list', { params: params })
 
-export function queryUserAll() {
-  return request({
-    url: '/user/all',
-    method: 'get'
-  })
-}
+export const queryUserAll = () => request.get('/user/all')
 
-export function modifyUser(data) {
-  return request({
-    url: '/user/info',
-    method: 'put',
-    data
-  })
-}
+export const modifyUser = data => request.put('/user/info', data)
 
-export function modifyUserState(data) {
-  return request({
-    url: '/user/info/state',
-    method: 'patch',
-    data
-  })
-}
+export const modifyUserState = data => request.patch('/user/info/state', data)
 
-export function deleteUser(data) {
-  return request({
-    url: '/user',
-    method: 'delete',
-    data
-  })
-}
+export const deleteUser = data => request.delete('/user', data)
 
-export function queryPermissionList(query) {
-  return request({
-    url: '/user/permission/list',
-    method: 'get',
-    params: query
-  })
-}
+export const queryPermissionList = params => request.get('/user/permission/list', { params: params })
 
-export function queryPermissionAll() {
-  return request({
-    url: '/user/permission/all',
-    method: 'get'
-  })
-}
+export const queryPermissionAll = () => request.get('/user/permission/all')
 
-export function createPermission(data) {
-  return request({
-    url: '/user/permission',
-    method: 'post',
-    data
-  })
-}
+export const createPermission = data => request.post('/user/permission', data)
 
-export function modifyPermission(data) {
-  return request({
-    url: '/user/permission',
-    method: 'put',
-    data
-  })
-}
+export const modifyPermission = data => request.put('/user/permission', data)
 
-export function modifyPermissionState(data) {
-  return request({
-    url: '/user/permission/state',
-    method: 'patch',
-    data
-  })
-}
+export const modifyPermissionState = data => request.patch('/user/permission/state', data)
 
-export function deletePermission(data) {
-  return request({
-    url: '/user/permission',
-    method: 'delete',
-    data
-  })
-}
+export const deletePermission = data => request.delete('/user/permission', data)
 
-export function queryRoleList(query) {
-  return request({
-    url: '/user/role/list',
-    method: 'get',
-    params: query
-  })
-}
+export const queryRoleList = params => request.get('/user/role/list', { params: params })
 
-export function queryRoleAll() {
-  return request({
-    url: '/user/role/all',
-    method: 'get'
-  })
-}
+export const queryRoleAll = () => request.get('/user/role/all')
 
-export function createRole(data) {
-  return request({
-    url: '/user/role',
-    method: 'post',
-    data
-  })
-}
+export const createRole = data => request.post('/user/role', data)
 
-export function modifyRole(data) {
-  return request({
-    url: '/user/role',
-    method: 'put',
-    data
-  })
-}
+export const modifyRole = data => request.put('/user/role', data)
 
-export function modifyRoleState(data) {
-  return request({
-    url: '/user/role/state',
-    method: 'patch',
-    data
-  })
-}
+export const modifyRoleState = data => request.patch('/user/role/state', data)
 
-export function deleteRole(data) {
-  return request({
-    url: '/user/role',
-    method: 'delete',
-    data
-  })
-}
+export const deleteRole = data => request.delete('/user/role', data)
 
-export function queryUserRoleRelList(query) {
-  return request({
-    url: '/user/role/rel/list',
-    method: 'get',
-    params: query
-  })
-}
+export const queryUserRoleRelList = params => request.get('/user/role/rel/list', { params: params })
 
-export function createUserRoleRel(data) {
-  return request({
-    url: '/user/role/rel',
-    method: 'post',
-    data
-  })
-}
+export const createUserRoleRel = data => request.post('/user/role/rel', data)
 
-export function deleteUserRoleRel(data) {
-  return request({
-    url: '/user/role/rel',
-    method: 'delete',
-    data
-  })
-}
+export const deleteUserRoleRel = data => request.delete('/user/role/rel', data)
 
-export function queryRolePermissionRelList(query) {
-  return request({
-    url: '/user/role/permission/rel/list',
-    method: 'get',
-    params: query
-  })
-}
+export const queryRolePermissionRelList = params => request.get('/user/role/permission/rel/list', { params: params })
 
-export function createRolePermissionRel(data) {
-  return request({
-    url: '/user/role/permission/rel',
-    method: 'post',
-    data
-  })
-}
+export const createRolePermissionRel = data => request.post('/user/role/permission/rel', data)
 
-export function deleteRolePermissionRel(data) {
-  return request({
-    url: '/user/role/permission/rel',
-    method: 'delete',
-    data
-  })
-}
-
+export const deleteRolePermissionRel = data => request.delete('/user/role/permission/rel', data)

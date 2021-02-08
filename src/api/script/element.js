@@ -1,138 +1,35 @@
 import request from '@/utils/request'
-import { get, post } from '@/utils/request'
 
-export function queryElementList(query) {
-  return request({
-    url: '/script/element/list',
-    method: 'get',
-    params: query
-  })
-}
+export const queryElementList = params => request.get('/script/element/list', { params: params })
 
-export function queryElementAll(query) {
-  return request({
-    url: '/script/element/all',
-    method: 'get',
-    params: query
-  })
-}
+export const queryElementAll = params => request.get('/script/element/all', { params: params })
 
-export function queryElementInfo(query) {
-  return request({
-    url: '/script/element/info',
-    method: 'get',
-    params: query
-  })
-}
+export const queryElementInfo = params => request.get('/script/element/info', { params: params })
 
-export function queryElementChildren(query) {
-  return request({
-    url: '/script/element/children',
-    method: 'get',
-    params: query
-  })
-}
+export const queryElementChildren = params => request.get('/script/element/children', { params: params })
 
-export function createElement(data) {
-  return request({
-    url: '/script/element',
-    method: 'post',
-    data
-  })
-}
+export const createElement = data => request.post('/script/element', data)
 
-export function modifyElement(data) {
-  return request({
-    url: '/script/element',
-    method: 'put',
-    data
-  })
-}
+export const modifyElement = data => request.put('/script/element', data)
 
-export function deleteElement(data) {
-  return request({
-    url: '/script/element',
-    method: 'delete',
-    data
-  })
-}
+export const deleteElement = data => request.delete('/script/element', data)
 
-export function enableElement(data) {
-  return request({
-    url: '/script/element/enable',
-    method: 'patch',
-    data
-  })
-}
+export const enableElement = data => request.patch('/script/element/enable', data)
 
-export function disableElement(data) {
-  return request({
-    url: '/script/element/disable',
-    method: 'patch',
-    data
-  })
-}
+export const disableElement = data => request.patch('/script/element/disable', data)
 
-export function addElementProperty(data) {
-  return request({
-    url: '/script/element/property',
-    method: 'post',
-    data
-  })
-}
+export const addElementProperty = data => request.post('/script/element/property', data)
 
-export function modifyElementProperty(data) {
-  return request({
-    url: '/script/element/property',
-    method: 'put',
-    data
-  })
-}
+export const modifyElementProperty = data => request.put('/script/element/property', data)
 
-export function addElementChildren(data) {
-  return request({
-    url: '/script/element/children',
-    method: 'post',
-    data
-  })
-}
+export const addElementChildren = data => request.post('/script/element/children', data)
 
-export function modifyElementChildren(data) {
-  return request({
-    url: '/script/element/children',
-    method: 'put',
-    data
-  })
-}
+export const modifyElementChildren = data => request.put('/script/element/children', data)
 
-export function moveUpElementChildOrder(data) {
-  return request({
-    url: '/script/element/child/order/up',
-    method: 'patch',
-    data
-  })
-}
+export const moveUpElementChildOrder = data => request.patch('/script/element/child/order/up', data)
 
-export function moveDownElementChildOrder(data) {
-  return request({
-    url: '/script/element/child/order/down',
-    method: 'patch',
-    data
-  })
-}
+export const moveDownElementChildOrder = data => request.patch('/script/element/child/order/down', data)
 
-export function duplicateElement(data) {
-  return request({
-    url: '/script/element/duplicate',
-    method: 'post',
-    data
-  })
-}
+export const duplicateElement = data => request.post('/script/element/duplicate', data)
 
-export function executeScript(data) {
-  return request({
-    url: '/script/execute',
-    method: 'post',
-    data
-  })
-}
+export const executeScript = data => request.post('/script/execute', data)

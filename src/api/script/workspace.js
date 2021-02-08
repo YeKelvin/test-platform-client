@@ -1,40 +1,11 @@
 import request from '@/utils/request'
 
-export function queryWorkspaceList(query) {
-  return request({
-    url: '/script/workspace/list',
-    method: 'get',
-    params: query
-  })
-}
+export const queryWorkspaceList = params => request.get('/script/workspace/list', { params: params })
 
-export function queryWorkspaceAll() {
-  return request({
-    url: '/script/workspace/all',
-    method: 'get'
-  })
-}
+export const queryWorkspaceAll = () => request.get('/script/workspace/all')
 
-export function createWorkspace(data) {
-  return request({
-    url: '/script/workspace',
-    method: 'post',
-    data
-  })
-}
+export const createWorkspace = data => request.post('/script/workspace', data)
 
-export function modifyWorkspace(data) {
-  return request({
-    url: '/script/workspace',
-    method: 'put',
-    data
-  })
-}
+export const modifyWorkspace = data => request.put('/script/workspace', data)
 
-export function deleteWorkspace(data) {
-  return request({
-    url: '/script/workspace',
-    method: 'delete',
-    data
-  })
-}
+export const deleteWorkspace = data => request.delete('/script/workspace', data)

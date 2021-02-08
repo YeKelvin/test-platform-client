@@ -1,40 +1,11 @@
 import request from '@/utils/request'
 
-export function queryTopicList(query) {
-  return request({
-    url: '/script/topic/list',
-    method: 'get',
-    params: query
-  })
-}
+export const queryTopicList = params => request.get('/script/topic/list', { params: params })
 
-export function queryTopicAll() {
-  return request({
-    url: '/script/topic/all',
-    method: 'get'
-  })
-}
+export const queryTopicAll = () => request.get('/script/topic/all')
 
-export function createTopic(data) {
-  return request({
-    url: '/script/topic',
-    method: 'post',
-    data
-  })
-}
+export const createTopic = data => request.post('/script/topic', data)
 
-export function modifyTopic(data) {
-  return request({
-    url: '/script/topic',
-    method: 'put',
-    data
-  })
-}
+export const modifyTopic = data => request.put('/script/topic', data)
 
-export function deleteTopic(data) {
-  return request({
-    url: '/script/topic',
-    method: 'delete',
-    data
-  })
-}
+export const deleteTopic = data => request.delete('/script/topic', data)

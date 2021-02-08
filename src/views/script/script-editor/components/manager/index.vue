@@ -30,7 +30,7 @@
     <el-divider />
 
     <div class="operation-container">
-      <el-dropdown trigger="click" placement="bottom-start">
+      <el-dropdown trigger="hover" placement="bottom-start" :show-timeout="50" :hide-timeout="50">
         <span class="el-dropdown-link">
           <el-button type="text" icon="el-icon-plus" />
         </span>
@@ -44,14 +44,25 @@
       </el-dropdown>
       <el-divider direction="vertical" />
       <el-button type="text" icon="el-icon-video-play" @click="execute" />
+
       <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-top" @click="moveUp" />
+      <el-dropdown trigger="hover" placement="bottom" :show-timeout="50" :hide-timeout="50">
+        <el-button type="text" icon="el-icon-sort" />
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="moveUp"><i class="el-icon-top" />上移</el-dropdown-item>
+          <el-dropdown-item @click.native="moveDown"><i class="el-icon-bottom" />下移</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
       <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-bottom" @click="moveDown" />
-      <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-zoom-in" /><!-- 展开 -->
-      <el-divider direction="vertical" />
-      <el-button type="text" icon="el-icon-zoom-out" /><!-- 收起 -->
+      <el-dropdown trigger="hover" placement="bottom" :show-timeout="50" :hide-timeout="50">
+        <el-button type="text" icon="el-icon-zoom-in" />
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="moveUp"><i class="el-icon-zoom-in" />展开</el-dropdown-item>
+          <el-dropdown-item @click.native="moveDown"><i class="el-icon-zoom-out" />收起</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
       <el-divider direction="vertical" />
       <el-button type="text" icon="el-icon-refresh" @click="queryGroups" />
       <el-divider direction="vertical" />
