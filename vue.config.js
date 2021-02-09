@@ -31,13 +31,6 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    proxy: {
-      '/socket.io': {
-        target: process.env.VUE_APP_BASE_API,
-        ws: true,
-        changeOrigin: true
-      }
-    },
     disableHostCheck: true,
     open: true,
     overlay: {
