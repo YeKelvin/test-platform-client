@@ -3,19 +3,19 @@
     <el-badge :is-dot="hasUnreadReport">
       <el-button size="small" @click="showReportDrawer = !showReportDrawer">报告</el-button>
     </el-badge>
-    <el-badge :is-dot="hasUnreadLog">
+    <!-- <el-badge :is-dot="hasUnreadLog">
       <el-button size="small" @click="showLogDrawer = !showLogDrawer">输出</el-button>
-    </el-badge>
+    </el-badge> -->
     <el-button size="small" @click="socketConnect">调试socket</el-button>
 
     <el-drawer direction="btt" size="50%" :visible.sync="showReportDrawer">
       <span slot="title">ReportDrawer</span>
     </el-drawer>
 
-    <el-drawer direction="btt" size="50%" :visible.sync="showLogDrawer">
+    <!-- <el-drawer direction="btt" size="50%" :visible.sync="showLogDrawer">
       <span slot="title">LogDrawer</span>
       <div>{{ logContent }}</div>
-    </el-drawer>
+    </el-drawer> -->
   </div>
 
 </template>
@@ -30,44 +30,65 @@ export default {
   data() {
     return {
       hasUnreadReport: false,
-      hasUnreadLog: false,
       showReportDrawer: false,
-      showLogDrawer: false,
-      logContent: ''
+      reportContent: ''
+      // hasUnreadLog: false,
+      // showLogDrawer: false,
+      // logContent: '',
     }
   },
 
+  beforeDestroy() {
+    this.sockets.unsubscribe('execution_result')
+    this.sockets.unsubscribe('execution_log')
+  },
+
   methods: {
+    // TODO: 做成mixins
+    setAuthorization() {
+      this.$socket.io.opts['transportOptions'] = {
+        polling: {
+          extraHeaders: {
+            Authorization: `JWT ${this.$store.state.user.token}`
+          }
+        }
+      }
+    },
     socketConnect() {
+      this.setAuthorization()
       if (this.$socket.disconnected) {
         this.$socket.open()
       }
       this.$socket.emit('test', 'i am vue')
     }
   },
+
   sockets: {
     connect: function() {
-      console.log('socket connected')
-      this.logContent += 'socket connected'
+      console.log(`socket connected, sid:[ ${this.$socket.id} ]`)
     },
     message: function(msg) {
-      console.log(`receive ${msg}`)
-      this.logContent += msg
+      console.log(`received message:[ ${msg} ]`)
+    },
+    execution_result: function(msg) {
+      console.log(`event:[ execution_result ] received message:[ ${msg} ]`)
+      this.reportContent += msg
+    },
+    execution_log: function(msg) {
+      console.log(`event:[ execution_log ] received message:[ ${msg} ]`)
     }
     /*
-$connect: [ƒ]
-$connect_error: [ƒ]
-$connect_timeout: [ƒ]
-$connecting: [ƒ]
-$disconnect: [ƒ]
-$error: [ƒ]
-$ping: [ƒ]
-$pong: [ƒ]
-$reconnect: [ƒ]
-$reconnect_attempt: [ƒ]
-$reconnect_error: [ƒ]
-$reconnect_failed: [ƒ]
-$reconnecting: [ƒ]
+      $connect: [ƒ]
+      $connect_error: [ƒ]
+      $connect_timeout: [ƒ]
+      $connecting: [ƒ]
+      $disconnect: [ƒ]
+      $error: [ƒ]
+      $reconnect: [ƒ]
+      $reconnect_attempt: [ƒ]
+      $reconnect_error: [ƒ]
+      $reconnect_failed: [ƒ]
+      $reconnecting: [ƒ]
     */
   }
 }
