@@ -16,12 +16,11 @@ import '@/permission'
 
 import Lodash from 'lodash'
 
-import VueSocketIO from 'vue-socket.io'
-import sio from '@/plugins/socketio'
+import VueSocketIO from '@/plugins/vue-socketio'
 
 // 全局注册插件
 Vue.use(ElementUI)
-Vue.use(new VueSocketIO({ debug: process.env.NODE_ENV === 'development', connection: sio }))
+Vue.use(VueSocketIO)
 
 // 绑定到Vue原型上
 Vue.prototype.$_ = Lodash

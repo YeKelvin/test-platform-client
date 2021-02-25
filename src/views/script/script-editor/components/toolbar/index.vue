@@ -64,11 +64,17 @@ export default {
   },
 
   sockets: {
-    connect: function() {
-      console.log(`socket connected, sid:[ ${this.$socket.id} ]`)
+    // connect: function() {
+    //   console.log(`socket sid:[ ${this.$socket.id} ] event:[ connect ]`)
+    // },
+    connect_error: function(e) {
+      console.log(`socket sid:[ ${this.$socket.id} ] event:[ connect_error ] error:[ ${e} ]`)
     },
-    message: function(msg) {
-      console.log(`received message:[ ${msg} ]`)
+    reconnect: function() {
+      console.log(`socket sid:[ ${this.$socket.id} ] event:[ reconnect ]`)
+    },
+    disconnect: function() {
+      console.log(`socket sid:[ ${this.$socket.id} ] event:[ disconnect ]`)
     },
     execution_result: function(msg) {
       console.log(`event:[ execution_result ] received message:[ ${msg} ]`)
@@ -77,19 +83,6 @@ export default {
     execution_log: function(msg) {
       console.log(`event:[ execution_log ] received message:[ ${msg} ]`)
     }
-    /*
-      $connect: [ƒ]
-      $connect_error: [ƒ]
-      $connect_timeout: [ƒ]
-      $connecting: [ƒ]
-      $disconnect: [ƒ]
-      $error: [ƒ]
-      $reconnect: [ƒ]
-      $reconnect_attempt: [ƒ]
-      $reconnect_error: [ƒ]
-      $reconnect_failed: [ƒ]
-      $reconnecting: [ƒ]
-    */
   }
 }
 </script>
