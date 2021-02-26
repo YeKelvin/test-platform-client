@@ -64,18 +64,6 @@ export default {
   },
 
   sockets: {
-    // connect: function() {
-    //   console.log(`socket sid:[ ${this.$socket.id} ] event:[ connect ]`)
-    // },
-    connect_error: function(e) {
-      console.log(`socket sid:[ ${this.$socket.id} ] event:[ connect_error ] error:[ ${e} ]`)
-    },
-    reconnect: function() {
-      console.log(`socket sid:[ ${this.$socket.id} ] event:[ reconnect ]`)
-    },
-    disconnect: function() {
-      console.log(`socket sid:[ ${this.$socket.id} ] event:[ disconnect ]`)
-    },
     execution_result: function(msg) {
       console.log(`event:[ execution_result ] received message:[ ${msg} ]`)
       this.reportContent += msg

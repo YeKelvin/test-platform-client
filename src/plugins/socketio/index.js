@@ -1,12 +1,10 @@
 import SocketIO from 'socket.io-client'
 
-const socketOptions = {
+const options = {
   autoConnect: false
 }
 
-const sio = SocketIO(process.env.VUE_APP_BASE_API, socketOptions)
-
-export default sio
+export const sio = SocketIO(process.env.VUE_APP_BASE_API, options)
 
 /*
 添加Authorization请求头

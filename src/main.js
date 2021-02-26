@@ -16,7 +16,7 @@ import '@/permission'
 
 import Lodash from 'lodash'
 
-import VueSocketIO from '@/plugins/vue-socketio'
+import { vsio as VueSocketIO, sockets } from '@/plugins/vue-socketio'
 
 // 全局注册插件
 Vue.use(ElementUI)
@@ -30,6 +30,7 @@ Vue.config.productionTip = false
 
 new Vue({
   el: '#app',
+  sockets: sockets,
   router,
   store,
   render: h => h(App)
