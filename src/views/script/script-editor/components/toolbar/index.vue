@@ -6,10 +6,13 @@
     <!-- <el-badge :is-dot="hasUnreadLog">
       <el-button size="small" @click="showLogDrawer = !showLogDrawer">输出</el-button>
     </el-badge> -->
-    <el-button size="small" @click="socketConnect">调试socket</el-button>
+
+    <el-button size="small" @click="socketConnect">open socket</el-button>
+    <el-button size="small" @click="socketDisconnect">close socket</el-button>
 
     <el-drawer direction="btt" size="50%" :visible.sync="showReportDrawer">
       <span slot="title">ReportDrawer</span>
+      <div>{{ reportContent }}</div>
     </el-drawer>
 
     <!-- <el-drawer direction="btt" size="50%" :visible.sync="showLogDrawer">
@@ -59,7 +62,11 @@ export default {
       if (this.$socket.disconnected) {
         this.$socket.open()
       }
-      this.$socket.emit('test', 'i am vue')
+    },
+    socketDisconnect() {
+      if (this.$socket.connected) {
+        this.$socket.close()
+      }
     }
   },
 
