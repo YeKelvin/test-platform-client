@@ -80,11 +80,17 @@ import * as Element from '@/api/script/element'
 import * as Workspace from '@/api/script/workspace'
 
 import ScriptTree from './script-tree'
+import SocketIOMixin from '@/mixins/socket-io'
 
 export default {
   name: 'Manager',
+
   components: { ScriptTree },
+
+  mixins: [SocketIOMixin],
+
   inject: ['editorInfo'],
+
   data() {
     return {
       workspaces: [],
@@ -111,6 +117,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * 根据集合编号执行脚本
+     */
     execute() {
       if (!this.collectionNo) {
         this.$message({
@@ -121,6 +130,10 @@ export default {
       }
       Element.executeScript({ collectionNo: this.collectionNo })
     },
+
+    /**
+     * 查询所有工作空间
+     */
     queryWorkspaceAll() {
       Workspace.queryWorkspaceAll().then(response => {
         const { result } = response
@@ -128,6 +141,10 @@ export default {
       }).catch(() => {
       })
     },
+
+    /**
+     * 根据工作空间编号查询测试集合
+     */
     queryCollections() {
       Element.queryElementAll({ workspaceNo: this.workspaceNo, elementType: 'COLLECTION' }).then(response => {
         const { result } = response
@@ -135,24 +152,48 @@ export default {
       }).catch(() => {
       })
     },
+
+    /**
+     * 根据集合编号查询测试案例
+     */
     queryGroups() {
       if (!this.collectionNo) {
         return
       }
       this.$refs.scriptTree.queryScriptTree(this.collectionNo)
     },
+
+    /**
+     * 添加Tab
+     */
     addTab(elementNo, elementName, elementClass, action) {
       this.$emit('add-tab', elementNo, elementName, elementClass, action)
     },
+
+    /**
+     * 添加新增案例的Tab
+     */
     openNewGroupTab() {
       this.addTab('0', '新增案例', 'CoroutineGroup', 'CREATE')
     },
+
+    /**
+     * 添加新增集合的Tab
+     */
     openNewCollectionTab() {
       this.addTab('0', '新增脚本', 'TestCollection', 'CREATE')
     },
+
+    /**
+     * 添加新增HTTP请求的Tab
+     */
     openNewHttpSamplerTab() {
       this.addTab('0', '新增HTTP请求', 'HTTPSampler', 'CREATE')
     },
+
+    /**
+     * 上移测试元素
+     */
     moveUp() {
       if (!this.editorInfo.collectionNo && !this.editorInfo.elementNo) {
         return
@@ -165,6 +206,10 @@ export default {
       }).catch(() => {
       })
     },
+
+    /**
+     * 下移测试元素
+     */
     moveDown() {
       if (!this.editorInfo.collectionNo && !this.editorInfo.elementNo) {
         return

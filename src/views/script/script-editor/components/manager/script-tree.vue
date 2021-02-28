@@ -14,7 +14,7 @@
 
     <transition name="el-zoom-in-top">
       <ul v-show="showMenu" ref="rightMenu" class="right-menu">
-        <li class="menu-item"><i class="el-icon-video-play" />添加</li>
+        <li class="menu-item"><i class="el-icon-plus" />添加</li>
         <li v-if="!currentRightMenuItemData.enabled" class="menu-item" @click="enableElementByRightMenu"><i class="el-icon-open" />启用</li>
         <li v-else class="menu-item" @click="disableElementByRightMenu"><i class="el-icon-turn-off" />禁用</li>
         <li class="menu-item"><i class="el-icon-copy-document" />复制</li>

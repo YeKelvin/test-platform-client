@@ -1,7 +1,10 @@
 import VueSocketIO from 'vue-socket.io'
 import { sio as SocketIO } from '@/plugins/socketio'
 
-export const vsio = new VueSocketIO({ debug: process.env.NODE_ENV === 'development', connection: SocketIO })
+export const vsio = new VueSocketIO({
+  debug: process.env.NODE_ENV === 'development',
+  connection: SocketIO
+})
 
 // 全局事件
 export const sockets = {

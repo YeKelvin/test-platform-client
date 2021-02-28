@@ -12,7 +12,8 @@
 
     <el-drawer direction="btt" size="50%" :visible.sync="showReportDrawer">
       <span slot="title">ReportDrawer</span>
-      <div>{{ reportContent }}</div>
+      <!-- <div>{{ reportContent }}</div> -->
+      <div>{{ executionResult }}</div>
     </el-drawer>
 
     <!-- <el-drawer direction="btt" size="50%" :visible.sync="showLogDrawer">
@@ -34,7 +35,8 @@ export default {
     return {
       hasUnreadReport: false,
       showReportDrawer: false,
-      reportContent: ''
+      reportContent: '',
+      executionResult: {}
       // hasUnreadLog: false,
       // showLogDrawer: false,
       // logContent: '',
@@ -71,12 +73,15 @@ export default {
   },
 
   sockets: {
-    execution_result: function(msg) {
-      console.log(`event:[ execution_result ] received message:[ ${msg} ]`)
-      this.reportContent += msg
+    execution_result: function(data) {
+      console.log(`event:[ execution_result ] received message:[ ${data} ]`)
+      this.reportContent += data
     },
-    execution_log: function(msg) {
-      console.log(`event:[ execution_log ] received message:[ ${msg} ]`)
+    execution_completed: function() {
+      this.$socket.close()
+    },
+    execution_log: function(data) {
+      console.log(`event:[ execution_log ] received message:[ ${data} ]`)
     }
   }
 }
